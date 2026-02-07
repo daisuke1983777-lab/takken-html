@@ -1,459 +1,236 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>宅建 民法（中レベル・長文ややこしめ）20問</title>
+<meta charset="utf-8">
+<title>宅建 民法 レベル中B（言い回し違い）20問</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  :root{--bd:#d9d9d9;--ok:#e9f8ee;--ng:#fdeaea;--mut:#666;}
-  body{font-family:system-ui,-apple-system,"Segoe UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;margin:0;background:#f6f6f6;color:#111;}
-  header{background:#111;color:#fff;padding:14px 12px}
-  header h1{margin:0;font-size:18px}
-  header p{margin:6px 0 0;font-size:12px;opacity:.9}
-  .wrap{max-width:980px;margin:0 auto;padding:12px}
-  .panel{position:sticky;top:0;z-index:9;background:#fff;border:1px solid var(--bd);border-radius:12px;padding:10px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
-  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  button{border:1px solid #111;background:#111;color:#fff;padding:10px 12px;border-radius:10px;font-weight:800;cursor:pointer}
-  button.sec{background:#fff;color:#111;border:1px solid var(--bd)}
-  button.dng{background:#fff;color:#c00;border:1px solid #f1c0c0}
-  .score{margin-top:8px;font-weight:900}
-  .note{margin-top:6px;color:var(--mut);font-size:12px}
-  .grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
-  @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
-  .q{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:12px}
-  .q.correct{background:var(--ok);border-color:#7bd38a}
-  .q.incorrect{background:var(--ng);border-color:#f2a6a6}
-  .q h3{margin:0 0 8px;font-size:15px}
-  .q p{margin:0 0 10px;line-height:1.8}
-  label{display:flex;gap:10px;align-items:flex-start;padding:7px 8px;border-radius:10px;border:1px solid transparent;cursor:pointer}
-  label:hover{background:#f2f2f2}
-  input{margin-top:2px}
-  .tag{font-size:12px;color:var(--mut);font-weight:700;margin-top:6px}
-  .explain{display:none;margin-top:10px;padding:10px;border:1px dashed var(--bd);border-radius:10px;background:#fff}
-  .explain b{display:block;margin-bottom:6px}
-  .mini{font-size:12px;color:var(--mut);margin-top:6px}
-  textarea{width:100%;min-height:92px;border:1px solid var(--bd);border-radius:10px;padding:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-  .foot{margin:14px 0 0;color:var(--mut);font-size:12px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;margin:0;background:#f6f7f9}
+header{background:#111;color:#fff;padding:16px 20px}
+main{padding:16px;max-width:1100px;margin:auto}
+.controls{background:#fff;border-radius:12px;padding:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.controls button{padding:10px 14px;border-radius:10px;border:1px solid #ddd;background:#fff;cursor:pointer}
+.controls button.primary{background:#111;color:#fff;border-color:#111}
+.controls button.warn{border-color:#e55;color:#e55}
+.score{margin-left:auto;font-weight:700}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.card{background:#fff;border-radius:14px;padding:14px;border:2px solid #e5e7eb}
+.card.correct{border-color:#7cd992;background:#eefcf3}
+.card.wrong{border-color:#f2a3a3;background:#fff1f1}
+.qtitle{font-weight:700;margin-bottom:8px}
+.opts label{display:block;padding:6px 0;cursor:pointer}
+.explain{display:none;margin-top:10px;font-size:14px;color:#333}
+textarea{width:100%;min-height:80px;border-radius:10px;border:1px solid #ddd;padding:8px}
+footer{padding:16px;color:#666;font-size:12px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header>
-  <h1>宅建 民法（中レベル・長文ややこしめ）20問</h1>
-  <p>本試験っぽく「長文＋一見わかりづらい言い回し」に寄せています（中身は中レベル）。1問1択。採点/解説/コピー/保存/復元あり。</p>
+  <h1>宅建 民法 レベル中B（言い回し違い）20問</h1>
+  <div>1問1択／採点・解説・保存・復元すべて同一ページ。長文化（本試験想定）。</div>
 </header>
 
-<div class="wrap">
-  <div class="panel">
-    <div class="row">
-      <button id="grade">採点する</button>
-      <button id="show" class="sec">解説を表示</button>
-      <button id="copy" class="sec">回答をコピー</button>
-      <button id="save" class="sec">回答を保存</button>
-      <button id="restore" class="sec">回答を貼って復元</button>
-      <button id="reset" class="dng">リセット</button>
-    </div>
-    <div class="score" id="score">合計：20問中 0 正解（未採点）</div>
-    <div class="note">※端末内保存です。「回答をコピー」をメモに残すと、消えても復元できます。</div>
-
-    <div style="margin-top:10px">
-      <div class="mini"><b>復元用（必要なときだけ）</b></div>
-      <textarea id="restoreBox" placeholder="ここに「回答をコピー」で出た文字列を貼ってから「回答を貼って復元」"></textarea>
-      <div class="mini">※この枠は普段は使いません（事故の保険）。</div>
-    </div>
+<main>
+  <div class="controls">
+    <button class="primary" onclick="grade()">採点する</button>
+    <button onclick="toggleExplain()">解説を表示</button>
+    <button onclick="copyAnswers()">回答をコピー</button>
+    <button onclick="saveAnswers()">回答を保存</button>
+    <button onclick="restoreFromText()">回答を貼って復元</button>
+    <button class="warn" onclick="resetAll()">リセット</button>
+    <div class="score" id="score">未採点</div>
   </div>
 
-  <div class="grid" id="qs"></div>
-  <div class="foot">※このページはオフラインでも動きます（保存・復元は端末内）。</div>
-</div>
+  <div style="margin-top:10px">
+    <div>復元用（必要なときだけ）</div>
+    <textarea id="restoreBox" placeholder="ここに『回答をコピー』で出た文字列を貼り付けて復元"></textarea>
+  </div>
+
+  <div class="grid" id="quiz"></div>
+</main>
+
+<footer>
+  ※保存は端末内（localStorage）。GitHub Pagesでそのまま閲覧可。
+</footer>
 
 <script>
-const DATA = [
-  {
-    no: 1,
-    q: "AはBに対し、「この時計を10万円で売る。今日中に返事がなければ断る」との趣旨の申込み（申込=契約してくれという提案）をした。Bは当日中に『買う』と口頭で伝えたが、その直後にAは『やっぱりやめる』と言った。この場合の契約の成立（成立=当事者の意思が一致して契約ができること）について、最も適切なものはどれか。",
-    c: {
-      A: "Aが先に撤回（撤回=申込みを取り消すこと）を言った以上、Bの承諾（承諾=申込みにOKすること）があっても契約は成立しない。",
-      B: "Bが期限内に承諾した時点で契約は成立し、その後のAの『やめる』は一方的には通らない。",
-      C: "契約は必ず書面（書面=紙の契約書）でなければ成立しないから、口頭では成立しない。",
-      D: "Aの申込みは『返事がなければ断る』なので、Bが返事をした時点で当然に無効になる。"
-    },
-    a: "B",
-    e: "申込みに対する承諾が期限内に到達（到達=相手が知り得る状態）すれば契約成立。成立後の一方的取消は原則不可。"
-  },
-  {
-    no: 2,
-    q: "AがBに対してした申込み（申込=契約の提案）について、Aが『この申込みはいつでも自由に撤回できる』と考えていたとしても、民法上の原則として、申込みの拘束力（拘束力=勝手に引っ込められない力）に関する説明として正しいものはどれか（※細かい例外は置く）。",
-    c: {
-      A: "申込みは、原則として承諾があるまで自由に撤回できる。",
-      B: "申込みは、原則として相手方が承諾するまでの間、申込者を拘束する（勝手に撤回できない場合がある）。",
-      C: "申込みは、常に書面でなければ効力がない。",
-      D: "申込みは、相手方が承諾する前に必ず失効する。"
-    },
-    a: "B",
-    e: "原則として申込みは一定の拘束力を持つ。期限付き申込み等では特に撤回が制限される方向で理解する。"
-  },
-  {
-    no: 3,
-    q: "Aは、Bに対して『土地を売る』と伝え、Bも『買う』と答えたが、二人とも代金や引渡時期（引渡=物を渡すこと）を細かく決めていなかった。このとき、契約の成立に関する説明として最も適切なものはどれか（※一般論として）。",
-    c: {
-      A: "代金や時期の合意がなくても、売る・買うの意思が一致すれば契約は成立し得る。",
-      B: "代金を決めていない売買は絶対に成立しない。",
-      C: "不動産の契約は必ず公証（公証=公的に証明する手続）しなければ成立しない。",
-      D: "契約は署名押印（署名押印=サインとハンコ）をして初めて成立する。"
-    },
-    a: "A",
-    e: "契約成立は意思の合致が基本。細部は慣習・補充規定（補充規定=足りない部分を埋めるルール）で埋まることがある。"
-  },
-  {
-    no: 4,
-    q: "AがBに対し、Aの所有する自動車を売る契約をした。ところがAは契約時点で、その自動車が既に第三者Cに売却済みで引渡できない状態だった。この場合の法律関係について、最も適切なものはどれか（※中レベルの一般論）。",
-    c: {
-      A: "Aは引渡不能（不能=できないこと）であっても責任を負わない。",
-      B: "Aは債務不履行（債務不履行=約束どおりしないこと）として損害賠償等の責任を負い得る。",
-      C: "契約は当然に無効（無効=最初から効力がない）となるため、Bは一切請求できない。",
-      D: "Bは必ず契約を解除（解除=契約をやめること）できるが、損害賠償は一切請求できない。"
-    },
-    a: "B",
-    e: "引渡できないなら債務不履行の方向。解除・損害賠償は要件により可能。"
-  },
-  {
-    no: 5,
-    q: "意思表示（意思表示=『売る』『買う』などの意思を外に示すこと）の瑕疵（瑕疵=欠陥）として『錯誤（錯誤=勘違い）』に関する説明として最も適切なものはどれか。",
-    c: {
-      A: "錯誤は常に無条件で無効となり、誰でもいつでも主張できる。",
-      B: "錯誤は一定の場合に取り消す（取消=後から無かったことにする）ことができる方向で整理される。",
-      C: "錯誤は詐欺（詐欺=だまして意思表示させる）と同じである。",
-      D: "錯誤は意思表示の問題ではなく、契約書の書き間違いだけを指す。"
-    },
-    a: "B",
-    e: "錯誤は原則『取消し』の枠で考える。中レベルでは『無条件で無効』と断言してくる選択肢は基本×。"
-  },
-  {
-    no: 6,
-    q: "AはBにだまされて（詐欺=だまして意思表示させる）売買契約を結んだ。Aがその後に取消し（取消=後から無かったことにする）をする場合に関する説明として最も適切なものはどれか（※一般論）。",
-    c: {
-      A: "詐欺による契約は常に無効であり、取消しは不要である。",
-      B: "詐欺による契約は取り消すことができ、取り消されると原則として初めから無かったことになる方向で処理される。",
-      C: "詐欺による契約は解除しかできず、取消しはできない。",
-      D: "詐欺は刑法の問題だけで、民法上は一切影響しない。"
-    },
-    a: "B",
-    e: "詐欺は取消しの典型。取消しの効果は原則遡及（遡及=最初にさかのぼる）で整理。"
-  },
-  {
-    no: 7,
-    q: "代理（代理=本人の代わりに法律行為をすること）に関し、AがBに代理権（代理権=代理する権限）を与えていた。Bがその範囲内でCと契約した場合の効果について、最も適切なものはどれか。",
-    c: {
-      A: "契約の効果はBに帰属（帰属=効果が及ぶ先）する。",
-      B: "契約の効果は原則として本人Aに帰属する。",
-      C: "代理は必ず書面でなければ無効である。",
-      D: "代理で結んだ契約は本人が追認（追認=あとからOKする）しないと効力がない。"
-    },
-    a: "B",
-    e: "有権代理（有権代理=権限あり代理）なら効果は本人へ。追認が必要なのは無権代理（無権代理=権限なし）側。"
-  },
-  {
-    no: 8,
-    q: "無権代理（無権代理=代理権なしで代理人のように行動すること）について、本人Aが追認（追認=あとからOKする）した場合の説明として最も適切なものはどれか。",
-    c: {
-      A: "追認しても契約は無効のままである。",
-      B: "追認により原則として契約は有効となり、一定の範囲で遡及（遡及=さかのぼって効く）する方向で扱われる。",
-      C: "追認は相手方Cの同意がなければ絶対にできない。",
-      D: "追認があっても効果は代理人Bにのみ及ぶ。"
-    },
-    a: "B",
-    e: "無権代理は追認で有効化。基本は遡及。"
-  },
-  {
-    no: 9,
-    q: "保証（保証=他人の借金を肩代わりする約束）に関し、AがBの借金を保証した。保証債務（保証債務=保証人の負う支払義務）の性質について、一般的説明として最も適切なものはどれか。",
-    c: {
-      A: "保証債務は主債務（主債務=元の借金）と無関係に独立して存在する。",
-      B: "保証債務は主債務に従う（付従性=主にくっついて動く性質）が基本である。",
-      C: "保証は口頭で必ず成立し、書面は不要である。",
-      D: "保証人は常に何も主張できず、請求が来たら即払うしかない。"
-    },
-    a: "B",
-    e: "保証は主債務に付従するのが基本（付従性）。"
-  },
-  {
-    no: 10,
-    q: "時効（時効=一定期間で権利が消える等の制度）に関し、消滅時効（消滅時効=請求しない期間が続くと権利が消える）の完成（完成=時効が成立すること）について、一般的説明として最も適切なものはどれか（※中レベル）。",
-    c: {
-      A: "時効は完成すると自動的に当然消滅し、誰も何も言わなくても確定する。",
-      B: "時効は完成しても、援用（援用=時効を使うと主張すること）がなければ効果が生じない方向で整理される。",
-      C: "時効は裁判所が必ず職権（職権=勝手に）で適用する。",
-      D: "時効は不動産にだけ存在し、金銭には存在しない。"
-    },
-    a: "B",
-    e: "時効は原則『援用』が必要。自動確定と断言するのは×。"
-  },
-  {
-    no: 11,
-    q: "時効の更新（更新=時効期間がリセットされること）に関し、債務承認（債務承認=借金があると認める行為）について最も適切なものはどれか。",
-    c: {
-      A: "債務承認があっても時効には一切影響しない。",
-      B: "債務承認は時効の更新事由（更新事由=リセット原因）となり得る。",
-      C: "債務承認は時効完成後にしかできない。",
-      D: "債務承認は裁判を起こした場合にだけ成立する。"
-    },
-    a: "B",
-    e: "債務承認は更新事由の典型。"
-  },
-  {
-    no: 12,
-    q: "賃貸借（賃貸借=家などを借りる契約）における対抗要件（対抗要件=第三者に『自分の権利だ』と言える条件）について、一般的説明として最も適切なものはどれか（※宅建レベル）。",
-    c: {
-      A: "賃借人は契約書があるだけで、誰にでも必ず対抗できる。",
-      B: "賃借人が対抗するには、原則として登記（登記=公の記録）など一定の要件を満たす必要がある。",
-      C: "対抗要件は所有権だけの話で、賃貸借には存在しない。",
-      D: "賃借人は入居していても対抗できない。"
-    },
-    a: "B",
-    e: "賃貸借の対抗は原則『登記等』が軸。中レベルでは『契約書だけでOK』は×。"
-  },
-  {
-    no: 13,
-    q: "共有（共有=1つの物を複数人で持つこと）物について、共有者の持分（持分=自分の割合）に関する説明として最も適切なものはどれか。",
-    c: {
-      A: "共有者は自分の持分を自由に処分（処分=売る等）できない。",
-      B: "共有者は原則として自分の持分を処分できる（ただし共有物全体の処分は別問題）。",
-      C: "共有は必ず等分であり、持分は変えられない。",
-      D: "共有者の持分は登記されないので無意味である。"
-    },
-    a: "B",
-    e: "持分処分は原則自由。共有物全体の変更・処分は同意要件が重くなる。"
-  },
-  {
-    no: 14,
-    q: "共有物の変更（変更=性質を変える大きな行為）や処分（処分=売却等）に関する説明として、中レベルの一般論として最も適切なものはどれか。",
-    c: {
-      A: "共有物の処分は、持分の過半数（過半数=半分超）で決められる。",
-      B: "共有物の処分は、原則として共有者全員の同意（同意=OK）が必要である。",
-      C: "共有物の変更は、単独で自由にできる。",
-      D: "共有物は一切使えず、管理もできない。"
-    },
-    a: "B",
-    e: "処分・変更は原則全員同意。管理（管理=日常の運用）は過半数など別枠。"
-  },
-  {
-    no: 15,
-    q: "不法行為（不法行為=わざと/過失で他人に損害を与える）に基づく損害賠償（損害賠償=損した分を払う）について、一般的要件として最も適切なものはどれか。",
-    c: {
-      A: "損害がなくても必ず賠償義務がある。",
-      B: "故意（故意=わざと）または過失（過失=うっかり）により、権利侵害（権利侵害=他人の権利を傷つける）と損害があり、因果関係（因果関係=原因と結果のつながり）が必要である。",
-      C: "不法行為は契約がある場合にだけ成立する。",
-      D: "不法行為は刑罰だけで、民事の賠償は発生しない。"
-    },
-    a: "B",
-    e: "中レベルは『故意過失＋侵害＋損害＋因果関係』が基本セット。"
-  },
-  {
-    no: 16,
-    q: "債務不履行（債務不履行=約束どおりしない）における解除（解除=契約をやめる）について、一般的説明として最も適切なものはどれか（※細かい例外は置く）。",
-    c: {
-      A: "どんな小さな不履行でも、必ず無条件で解除できる。",
-      B: "一定の場合に解除が認められ、履行請求（履行請求=約束どおりやれ）や損害賠償と並ぶ手段になる。",
-      C: "解除は裁判をして勝たないと絶対できない。",
-      D: "解除をすると、損害賠償は一切請求できない。"
-    },
-    a: "B",
-    e: "解除は不履行への主要手段。要件はあるが『無条件』『裁判必須』『賠償不可』は極端で×。"
-  },
-  {
-    no: 17,
-    q: "債権譲渡（債権譲渡=『お金を請求できる権利』を他人に移す）について、譲渡の効力と第三者対抗（第三者対抗=第三者にも言える）に関する説明として最も適切なものはどれか（※中レベル）。",
-    c: {
-      A: "債権譲渡は必ず債務者（債務者=払う側）の承諾がなければ無効である。",
-      B: "債権譲渡は当事者間では成立し得るが、第三者対抗には通知（通知=知らせる）や承諾など一定の要件が問題となる。",
-      C: "債権譲渡は登記しないと無効である。",
-      D: "債権は譲渡できないのが原則である。"
-    },
-    a: "B",
-    e: "譲渡は原則自由。対抗は通知・承諾が鍵（宅建レベルの整理）。"
-  },
-  {
-    no: 18,
-    q: "危険負担（危険負担=目的物が偶然ダメになったとき、代金などをどうするか）の基本的考え方について、中レベルの一般論として最も適切なものはどれか（※細かい条文の枝葉は置く）。",
-    c: {
-      A: "目的物が偶然滅失（滅失=完全にダメ）したら、常に買主が代金を払う。",
-      B: "目的物が偶然滅失したら、原則として代金支払義務がどうなるかは契約・履行との関係で整理され、単純に『常に買主負担』とは言えない。",
-      C: "危険負担は賃貸借にしか存在しない。",
-      D: "危険負担は刑法の概念である。"
-    },
-    a: "B",
-    e: "現代民法の整理は単純な『買主が常に負担』ではない方向。極端な断言は×。"
-  },
-  {
-    no: 19,
-    q: "不当利得（不当利得=理由なく得をして他人が損をする）について、成立要件の説明として最も適切なものはどれか。",
-    c: {
-      A: "相手が得をしていれば、理由は不要で常に返還義務がある。",
-      B: "相手の利得（利得=得）とこちらの損失（損失=損）に対応関係があり、法律上の原因（原因=正当な理由）がないことが基本要件である。",
-      C: "不当利得は契約がある場合にだけ成立する。",
-      D: "不当利得は損害賠償と同じで、故意過失が必要である。"
-    },
-    a: "B",
-    e: "不当利得は『利得＋損失＋原因なし』。不法行為と違い故意過失は必須ではない整理。"
-  },
-  {
-    no: 20,
-    q: "同時履行の抗弁（同時履行の抗弁=相手が先にやらないなら自分もやらないと言える権利）について、売買で『引渡し（引渡=物を渡す）』と『代金支払（代金支払=お金を払う）』が対になっている場合の説明として最も適切なものはどれか。",
-    c: {
-      A: "買主は代金を払う義務がある以上、売主が引渡ししなくても必ず先に払わなければならない。",
-      B: "互いの債務が同時履行関係なら、相手が履行提供（履行提供=やる準備を示す）しない限り、自分も履行を拒める場合がある。",
-      C: "同時履行の抗弁は不動産には使えない。",
-      D: "同時履行の抗弁は裁判でしか主張できない。"
-    },
-    a: "B",
-    e: "引渡と代金は同時履行関係になりやすい。相手の提供がない限り拒めるのが基本像。"
-  }
+const questions = [
+/* 1 */
+{q:"当事者の一方が、売買契約の内容について概ね理解した旨を口頭で示した段階において、相手方がこれを了承した場合に、民法上の契約成立時期として最も適切なものはどれか。",
+ a:["書面が作成され署名押印が完了した時点でのみ成立する","重要事項の説明がすべて終了した後でなければ成立しない","当事者双方の意思が合致した時点で成立すると解する","代金の一部が支払われた時点で初めて成立する"],
+ c:2,
+ e:"契約は方式自由が原則。書面や支払は成立要件ではなく、意思の合致で成立。"},
+/* 2 */
+{q:"申込みに対し承諾の意思表示が到達した場合において、当該承諾が申込みの内容と軽微に異なるときの法律関係として正しいものはどれか。",
+ a:["常に新たな申込みとして扱われる","申込みは失効し契約は成立しない","異なる部分を除き契約は成立する","原則として承諾は無効となる"],
+ c:0,
+ e:"内容の不一致があれば承諾とはならず、原則は新たな申込み。"},
+/* 3 */
+{q:"意思表示が相手方に到達した後に錯誤が判明した場合の取消しについて、民法の原則に照らし最も適切なものはどれか。",
+ a:["常に無条件で取り消すことができる","重要な錯誤であれば取り消すことができる","過失がある場合でも必ず取り消せる","第三者に対しては常に主張できる"],
+ c:1,
+ e:"重要な錯誤であることが必要。第三者対抗には制限。"},
+/* 4 */
+{q:"詐欺による意思表示について、第三者との関係で取消しを主張できるか否かの判断として適切なものはどれか。",
+ a:["第三者が善意であっても常に主張できる","第三者が悪意である場合に限り主張できる","第三者の善悪は問われない","第三者が善意無過失なら主張できる"],
+ c:1,
+ e:"詐欺取消しは、第三者が悪意の場合にのみ対抗可。"},
+/* 5 */
+{q:"制限行為能力者が単独で行った契約について、取り消し得る主体として最も適切なものはどれか。",
+ a:["相手方のみ","本人のみ","法定代理人のみ","本人および法定代理人"],
+ c:3,
+ e:"取消権者は本人・法定代理人。"},
+/* 6 */
+{q:"意思表示の到達に関する説明として、民法の原則に合致するものはどれか。",
+ a:["発信した時点で常に到達とみなす","相手方が現実に認識した時点で到達","相手方の支配圏に入った時点で到達","書面でなければ到達しない"],
+ c:2,
+ e:"到達主義。支配圏に入れば足りる。"},
+/* 7 */
+{q:"契約成立後に履行不能が生じた場合の効果として、原則的な説明として適切なものはどれか。",
+ a:["常に契約は無効となる","解除や損害賠償の問題となる","自動的に代替履行が生じる","履行不能でも履行請求できる"],
+ c:1,
+ e:"無効ではなく、解除・損害賠償の問題。"},
+/* 8 */
+{q:"同時履行の抗弁に関する説明として正しいものはどれか。",
+ a:["常に債務を免れることができる","相手の履行があるまで自己の履行を拒める","期限の定めがある場合でも使えない","第三者にも主張できる"],
+ c:1,
+ e:"同時履行は履行拒絶の抗弁。"},
+/* 9 */
+{q:"危険負担について、債権者主義が採用される場面として適切なものはどれか。",
+ a:["常に債務者主義が適用される","特定物売買で債務者の帰責事由がない場合","不特定物売買の場合","債権者に帰責事由がある場合"],
+ c:1,
+ e:"特定物で債務者無責なら債権者主義。"},
+/*10*/
+{q:"手付に関する説明として、解約手付の効果を正しく述べたものはどれか。",
+ a:["常に損害賠償の予定となる","履行に着手するまで解除できる","解除は書面でのみ可能","倍返しは無効である"],
+ c:1,
+ e:"履行着手前なら手付放棄・倍返しで解除可。"},
+/*11*/
+{q:"申込金と手付の区別に関し、民法上の位置づけとして最も適切なものはどれか。",
+ a:["申込金は常に手付と同一","特約がなければ申込金は手付にならない","申込金は必ず返還されない","名称にかかわらず常に解約手付"],
+ c:1,
+ e:"特約がなければ申込金＝手付とはならない。"},
+/*12*/
+{q:"解除の意思表示の効力発生時期として正しいものはどれか。",
+ a:["発信時","到達時","履行完了時","相手の承諾時"],
+ c:1,
+ e:"解除も意思表示。到達時。"},
+/*13*/
+{q:"無効と取消しの効果の違いとして適切なものはどれか。",
+ a:["どちらも追認できない","無効は最初から効力がない","取消しは常に遡及しない","無効は第三者にのみ主張不可"],
+ c:1,
+ e:"無効は初めから無効。"},
+/*14*/
+{q:"条件付法律行為に関する説明として正しいものはどれか。",
+ a:["条件成就前でも当然に効力が生じる","停止条件付は条件成就で効力発生","解除条件付は成就で効力発生","条件は禁止されている"],
+ c:1,
+ e:"停止条件は成就で効力発生。"},
+/*15*/
+{q:"代理権の濫用に関する説明として適切なものはどれか。",
+ a:["常に本人に効果帰属","相手方が悪意の場合に本人に帰属","代理人の内心は無関係","表見代理となる"],
+ c:1,
+ e:"相手方悪意なら本人帰属。"},
+/*16*/
+{q:"表見代理が成立するための要件として最も適切なものはどれか。",
+ a:["本人の帰責性は不要","相手方の善意無過失","代理人の悪意","常に書面が必要"],
+ c:1,
+ e:"相手方善意無過失が要件。"},
+/*17*/
+{q:"債権譲渡における対抗要件として正しいものはどれか。",
+ a:["口頭通知","確定日付ある通知または承諾","登記","公示送達"],
+ c:1,
+ e:"確定日付が必要。"},
+/*18*/
+{q:"連帯債務に関する説明として正しいものはどれか。",
+ a:["各債務者は分割でのみ履行","一人の履行で全員免責","一人の時効中断は他に及ばない","常に等分負担"],
+ c:1,
+ e:"一人の履行で全員免責。"},
+/*19*/
+{q:"時効の完成猶予と更新についての説明として正しいものはどれか。",
+ a:["完成猶予は時効期間をゼロに戻す","更新は新たに時効が進行する","完成猶予は効果がない","更新と猶予は同義"],
+ c:1,
+ e:"更新で新たに進行。"},
+/*20*/
+{q:"不当利得の成立要件として最も適切なものはどれか。",
+ a:["法律上の原因がない利得","常に損害の発生","故意過失","契約の存在"],
+ c:0,
+ e:"法律上の原因なき利得が要件。"}
 ];
 
-const KEY = "takken_minpou_mid_longhard_v1";
-const $qs = document.getElementById("qs");
-const $score = document.getElementById("score");
-const $restoreBox = document.getElementById("restoreBox");
-
-function esc(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-function loadAnswers(){
-  try{ const raw = localStorage.getItem(KEY); if(!raw) return {}; const obj = JSON.parse(raw); return (obj && typeof obj === "object") ? obj : {}; }
-  catch(e){ return {}; }
-}
-function saveAnswers(obj){
-  try{ localStorage.setItem(KEY, JSON.stringify(obj)); }
-  catch(e){ console.warn("save failed:", e); }
-}
-
-function build(){
-  const ans = loadAnswers();
-  const frag = document.createDocumentFragment();
-
-  DATA.forEach(item=>{
-    const div = document.createElement("div");
-    div.className = "q";
-    div.id = `q${item.no}`;
-    const picked = ans[item.no] || "";
-    const c = item.c;
-
-    div.innerHTML = `
-      <h3>Q${item.no}</h3>
-      <p>${esc(item.q)}</p>
-      <div>
-        ${["A","B","C","D"].map(k=>`
-          <label>
-            <input type="radio" name="q${item.no}" value="${k}" ${picked===k?"checked":""} />
-            <div><b>${k}</b>　${esc(c[k])}</div>
-          </label>
-        `).join("")}
-      </div>
-      <div class="tag">※1つだけ選択</div>
-      <div class="explain" id="ex${item.no}">
-        <b>正解：${esc(item.a)}</b>
-        <div>${esc(item.e)}</div>
-      </div>
-    `;
-    frag.appendChild(div);
-  });
-  $qs.appendChild(frag);
-
-  $qs.addEventListener("change", (ev)=>{
-    const t = ev.target;
-    if(!t || t.tagName !== "INPUT") return;
-    const no = Number(t.name.replace("q",""));
-    const obj = loadAnswers();
-    obj[no] = t.value;
-    saveAnswers(obj);
-  });
-}
+const quiz = document.getElementById('quiz');
+questions.forEach((o,i)=>{
+  const c=document.createElement('div');
+  c.className='card';
+  c.id='q'+(i+1);
+  c.innerHTML=`<div class="qtitle">Q${i+1}</div><div>${o.q}</div>
+  <div class="opts">${o.a.map((t,j)=>`
+    <label><input type="radio" name="q${i+1}" value="${j}"> ${String.fromCharCode(65+j)}. ${t}</label>`).join('')}
+  </div><div class="explain"><b>解説：</b>${o.e}</div>`;
+  quiz.appendChild(c);
+});
 
 function grade(){
-  const obj = loadAnswers();
-  let ok = 0;
-  DATA.forEach(item=>{
-    const div = document.getElementById(`q${item.no}`);
-    div.classList.remove("correct","incorrect");
-    const picked = obj[item.no] || "";
-    if(!picked) return;
-    if(picked === item.a){ ok++; div.classList.add("correct"); }
-    else{ div.classList.add("incorrect"); }
+  let ok=0;
+  questions.forEach((o,i)=>{
+    const card=document.getElementById('q'+(i+1));
+    card.classList.remove('correct','wrong');
+    const v=document.querySelector(`input[name="q${i+1}"]:checked`);
+    if(v && Number(v.value)===o.c){ok++;card.classList.add('correct');}
+    else{card.classList.add('wrong');}
   });
-  $score.textContent = `合計：20問中 ${ok} 正解（採点済み）`;
+  document.getElementById('score').textContent=`合計：20問中 ${ok} 正解`;
 }
-
-function showExplain(){ DATA.forEach(item=>{ const ex=document.getElementById(`ex${item.no}`); if(ex) ex.style.display="block"; }); }
-function hideExplain(){ DATA.forEach(item=>{ const ex=document.getElementById(`ex${item.no}`); if(ex) ex.style.display="none"; }); }
-
-function exportAnswers(){
-  const obj = loadAnswers();
-  return DATA.map(item=>`${item.no}:${obj[item.no]||""}`).join(",");
-}
-function importAnswers(str){
-  const out = {};
-  const s = String(str||"").trim();
-  if(!s) return out;
-  s.split(",").forEach(p=>{
-    const m=p.split(":"); if(m.length!==2) return;
-    const no=Number(m[0]); const v=m[1];
-    if(!Number.isFinite(no)) return;
-    if(!["A","B","C","D",""].includes(v)) return;
-    out[no]=v;
+function toggleExplain(){
+  document.querySelectorAll('.explain').forEach(e=>{
+    e.style.display = (e.style.display==='block'?'none':'block');
   });
-  return out;
 }
-function applyAnswers(obj){
-  DATA.forEach(item=>{
-    const v=obj[item.no]||"";
-    document.querySelectorAll(`input[name="q${item.no}"]`).forEach(r=>{ r.checked=(r.value===v); });
+function copyAnswers(){
+  const arr=[];
+  questions.forEach((_,i)=>{
+    const v=document.querySelector(`input[name="q${i+1}"]:checked`);
+    arr.push(`Q${i+1}:${v?String.fromCharCode(65+Number(v.value)):'-'}`);
   });
-  saveAnswers(obj);
+  const s=arr.join(',');
+  navigator.clipboard.writeText(s);
+  document.getElementById('restoreBox').value=s;
 }
-
-document.getElementById("grade").addEventListener("click", ()=>grade());
-
-let explained=false;
-document.getElementById("show").addEventListener("click", ()=>{
-  explained=!explained;
-  if(explained){ showExplain(); document.getElementById("show").textContent="解説を隠す"; }
-  else{ hideExplain(); document.getElementById("show").textContent="解説を表示"; }
-});
-
-document.getElementById("copy").addEventListener("click", async ()=>{
-  const s=exportAnswers();
-  try{ await navigator.clipboard.writeText(s); alert("回答をコピーしました。"); }
-  catch(e){
-    $restoreBox.value=s; $restoreBox.focus(); $restoreBox.select();
-    alert("クリップボード権限がないため、復元欄に出しました。手動でコピーしてください。");
-  }
-});
-
-document.getElementById("save").addEventListener("click", ()=>{
-  saveAnswers(loadAnswers());
-  alert("端末内に保存しました。");
-});
-
-document.getElementById("restore").addEventListener("click", ()=>{
-  const obj=importAnswers($restoreBox.value);
-  applyAnswers(obj);
-  alert("復元しました。");
-});
-
-document.getElementById("reset").addEventListener("click", ()=>{
-  if(!confirm("回答を全削除します。よろしいですか？")) return;
-  try{ localStorage.removeItem(KEY); }catch(e){}
-  DATA.forEach(item=>{
-    document.querySelectorAll(`input[name="q${item.no}"]`).forEach(r=>r.checked=false);
-    const div=document.getElementById(`q${item.no}`);
-    if(div) div.classList.remove("correct","incorrect");
+function saveAnswers(){
+  const data={};
+  questions.forEach((_,i)=>{
+    const v=document.querySelector(`input[name="q${i+1}"]:checked`);
+    if(v) data['q'+(i+1)]=v.value;
   });
-  hideExplain(); explained=false; document.getElementById("show").textContent="解説を表示";
-  $score.textContent="合計：20問中 0 正解（未採点）";
-  $restoreBox.value="";
-});
-
-build();
-hideExplain();
+  localStorage.setItem('minpo_midB',JSON.stringify(data));
+  alert('保存しました');
+}
+function restoreFromText(){
+  const t=document.getElementById('restoreBox').value.trim();
+  if(!t) return;
+  t.split(',').forEach(p=>{
+    const [q,a]=p.split(':');
+    if(a && a!=='-'){
+      const idx=a.charCodeAt(0)-65;
+      const el=document.querySelector(`input[name="${q}"][value="${idx}"]`);
+      if(el) el.checked=true;
+    }
+  });
+}
+function resetAll(){
+  document.querySelectorAll('input[type=radio]').forEach(i=>i.checked=false);
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('correct','wrong'));
+  document.getElementById('score').textContent='未採点';
+}
+(function load(){
+  const s=localStorage.getItem('minpo_midB');
+  if(!s) return;
+  const d=JSON.parse(s);
+  Object.keys(d).forEach(k=>{
+    const el=document.querySelector(`input[name="${k}"][value="${d[k]}"]`);
+    if(el) el.checked=true;
+  });
+})();
 </script>
 </body>
 </html>
