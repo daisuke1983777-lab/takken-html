@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>宅建 業法 中B（言い回し違い・ややこしめ）20問</title>
+<style>
+  :root{--bd:#d9d9d9;--ok:#e9f8ee;--ng:#fdeaea;--mut:#666;}
+  body{font-family:system-ui,-apple-system,"Segoe UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;margin:0;background:#f6f6f6;color:#111;}
+  header{background:#111;color:#fff;padding:14px 12px}
+  header h1{margin:0;font-size:18px}
+  header p{margin:6px 0 0;font-size:12px;opacity:.9}
+
+  .wrap{max-width:980px;margin:0 auto;padding:12px}
+  .panel{position:sticky;top:0;z-index:9;background:#fff;border:1px solid var(--bd);border-radius:12px;padding:10px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  button{border:1px solid #111;background:#111;color:#fff;padding:10px 12px;border-radius:10px;font-weight:800;cursor:pointer}
+  button.sec{background:#fff;color:#111;border:1px solid var(--bd)}
+  button.dng{background:#fff;color:#c00;border:1px solid #f1c0c0}
+  .score{margin-top:8px;font-weight:900}
+  .note{margin-top:6px;color:var(--mut);font-size:12px}
+  .grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+  @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
+
+  .q{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:12px}
+  .q.correct{background:var(--ok);border-color:#7bd38a}
+  .q.incorrect{background:var(--ng);border-color:#f2a6a6}
+  .q h3{margin:0 0 8px;font-size:15px}
+  .q p{margin:0 0 10px;line-height:1.65}
+  label{display:flex;gap:10px;align-items:flex-start;padding:7px 8px;border-radius:10px;border:1px solid transparent;cursor:pointer}
+  label:hover{background:#f2f2f2}
+  input{margin-top:2px}
+  .tag{font-size:12px;color:var(--mut);font-weight:700;margin-top:6px}
+  .explain{display:none;margin-top:10px;padding:10px;border:1px dashed var(--bd);border-radius:10px;background:#fff}
+  .explain b{display:block;margin-bottom:6px}
+  .mini{font-size:12px;color:var(--mut);margin-top:6px}
+  textarea{width:100%;min-height:92px;border:1px solid var(--bd);border-radius:10px;padding:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .foot{margin:14px 0 0;color:var(--mut);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>宅建 業法 中B（言い回し違い・ややこしめ）20問</h1>
+  <p>同じ論点・同じ正解。文章だけ「ひっかけっぽく」してます。1問1択。採点/解説/コピー/保存/復元あり。</p>
+</header>
+
+<div class="wrap">
+  <div class="panel">
+    <div class="row">
+      <button id="grade">採点する</button>
+      <button id="show" class="sec">解説を表示</button>
+      <button id="copy" class="sec">回答をコピー</button>
+      <button id="save" class="sec">回答を保存</button>
+      <button id="restore" class="sec">回答を貼って復元</button>
+      <button id="reset" class="dng">リセット</button>
+    </div>
+    <div class="score" id="score">合計：20問中 0 正解（未採点）</div>
+    <div class="note">※端末内保存です。「回答をコピー」をメモに残すと、消えても復元できます。</div>
+
+    <div style="margin-top:10px">
+      <div class="mini"><b>復元用（必要なときだけ）</b></div>
+      <textarea id="restoreBox" placeholder="ここに「回答をコピー」で出た文字列を貼ってから「回答を貼って復元」"></textarea>
+      <div class="mini">※この枠は普段は使いません（事故の保険）。</div>
+    </div>
+  </div>
+
+  <div class="grid" id="qs"></div>
+  <div class="foot">※このページはオフラインでも動きます（保存・復元は端末内）。</div>
+</div>
+
+<script>
+/*
+  ★内容(正解・論点)は前の20問と同じ
+  ★問題文と選択肢だけ「ややこしく」言い換え
+*/
+const DATA = [
+  {
+    no: 1,
+    q: "35条（重要事項説明=重説）の『やるタイミング』として最も適切なのはどれか。※ここでいう「タイミング」は、当事者が(契約する意思=やると決める気持ち)を固める前後のことを指す。",
+    c: {
+      A: "当事者間で(契約成立=意思合致)が終わってからでよい（あとから説明で足りる）。",
+      B: "(契約締結と同時=成立の瞬間あたり)に行えばよい（前後は気にしない）。",
+      C: "当事者が「この条件で契約する」と(意思を固める前=判断前)に行う。",
+      D: "37条書面（契約書面=契約後の書面）を交付した後に、整合をとって説明すればよい。"
+    },
+    a: "C",
+    e: "35条は『判断材料』なので(契約前)。『同時』『後』『37条の後』はアウト側。"
+  },
+  {
+    no: 2,
+    q: "37条書面（契約書面=成立した契約内容の書面）について、交付の時期として正しいものはどれか。",
+    c: {
+      A: "契約が成立する前に出しておかないと無効になる。",
+      B: "(契約成立後=意思合致のあと)に交付する。",
+      C: "(申込時=買いたいと言った時)に出しておけば足りる。",
+      D: "重説の前に出すのが順番として正しい。"
+    },
+    a: "B",
+    e: "37条は『結果の記録』なので(契約後)。覚え方は(35=前)(37=後)。"
+  },
+  {
+    no: 3,
+    q: "売買契約の(成立=できあがる瞬間)について、一般論として正しい説明はどれか。",
+    c: {
+      A: "(署名押印=サインとハンコ)をした時点でないと成立しない。",
+      B: "(書面の交付=紙を渡す)があった時点で成立する。",
+      C: "(当事者の意思の合致=売る/買うが一致)があった時点で成立する。",
+      D: "(手付金の支払い=お金が動く)があった時点で成立する。"
+    },
+    a: "C",
+    e: "原則は(意思の合致)で成立。署名・書面・手付は『証拠/手続』であって成立要件ではない（原則）。"
+  },
+  {
+    no: 4,
+    q: "いわゆる(申込金=申込みの意思を強める金)の位置づけとして、最も適切なのはどれか。※ここでは契約がまだ成立していない場面を想定する。",
+    c: {
+      A: "名称が申込金でも、常に手付金と同じ効力を持つ。",
+      B: "契約成立後に支払うのが申込金である（契約後の金銭）。",
+      C: "(契約前=成立前)に、申込みの意思を強める趣旨で授受される金銭。",
+      D: "申込金は一度払うと理由を問わず返還されない。"
+    },
+    a: "C",
+    e: "申込金は(成立前)のことが多く、手付とは別。成立しなければ原則返還の整理になる。"
+  },
+  {
+    no: 5,
+    q: "名目がどう書かれていても、実質として(手付金=契約成立後の金)になりやすいのはどれか。",
+    c: {
+      A: "契約成立前に、売主の承諾待ちの段階で預ける金銭。",
+      B: "(契約成立後=意思合致後)に、代金の一部として授受される金銭。",
+      C: "申込書を書いたことの証として預け、成立しなければ全額返す金銭。",
+      D: "いつでも返す前提で一時的に預ける金銭（単なる預り金）。"
+    },
+    a: "B",
+    e: "境界線は(契約成立前/後)。成立後に代金の一部として動けば名目が申込金でも手付扱いに寄る。"
+  },
+  {
+    no: 6,
+    q: "専属専任媒介契約（(縛り最強=1社に任せて制限が強い)）の説明として誤っているものはどれか。",
+    c: {
+      A: "(自己発見取引=自分で買主を見つける)はできない。",
+      B: "一定の(報告義務=進捗報告)がある。",
+      C: "レインズ（物件登録サイト）への登録義務がある。",
+      D: "自己発見取引は自由にできる（業者を通さなくてよい）。"
+    },
+    a: "D",
+    e: "専属専任は(自己発見NG)。報告義務・レインズ登録義務もセット。"
+  },
+  {
+    no: 7,
+    q: "専任媒介契約の(報告頻度=進捗を伝える回数)として正しいものはどれか。",
+    c: {
+      A: "(週1回以上)が必須。",
+      B: "(2週に1回以上)が基本。",
+      C: "(月1回)で足りる。",
+      D: "そもそも報告義務はない。"
+    },
+    a: "B",
+    e: "専任は(2週1回以上)。専属専任は(週1回以上)。"
+  },
+  {
+    no: 8,
+    q: "専属専任媒介契約の(報告頻度=進捗を伝える回数)として正しいものはどれか。",
+    c: {
+      A: "(月1回)が必須。",
+      B: "報告義務はない。",
+      C: "(週1回以上)が基本。",
+      D: "(2週に1回以上)が基本。"
+    },
+    a: "C",
+    e: "専属専任は(週1回以上)。"
+  },
+  {
+    no: 9,
+    q: "35条の重要事項説明（重説）を『実際に説明する人』として正しいものはどれか。",
+    c: {
+      A: "宅建業者の従業員なら誰でもよい。",
+      B: "代表者（社長）しかできない。",
+      C: "宅建士（宅地建物取引士）が行う必要がある。",
+      D: "事務員が読み上げれば足りる。"
+    },
+    a: "C",
+    e: "重説は(宅建士が説明)。"
+  },
+  {
+    no: 10,
+    q: "35条の重要事項説明の場面で、宅建士が必ず行うべき行為として正しいものはどれか。",
+    c: {
+      A: "印鑑登録証明書を提示する。",
+      B: "宅建士証（身分証）を提示する。",
+      C: "37条書面（契約書面）を先に交付する。",
+      D: "手付金を先に受領する。"
+    },
+    a: "B",
+    e: "重説は(宅建士証の提示)がセット。"
+  },
+  {
+    no: 11,
+    q: "クーリング・オフ（(一定条件で契約をやめられる)）ができる典型として正しいものはどれか。",
+    c: {
+      A: "事務所で契約した場合でも必ずできる。",
+      B: "書面を受け取る前ならいつでもできる。",
+      C: "事務所以外で契約し、書面受領日から8日以内ならできる。",
+      D: "売主が個人のときだけできる。"
+    },
+    a: "C",
+    e: "ポイントは(場所=事務所以外)+(書面)+(8日)。"
+  },
+  {
+    no: 12,
+    q: "いわゆる8種制限が適用される基本形として正しい組み合わせはどれか。",
+    c: {
+      A: "個人売主 × 個人買主",
+      B: "宅建業者売主 × 一般買主",
+      C: "一般売主 × 宅建業者買主",
+      D: "宅建業者同士"
+    },
+    a: "B",
+    e: "8種制限は(業者売主×一般買主)が基本。"
+  },
+  {
+    no: 13,
+    q: "8種制限が適用される場面での(手付金=契約時に預ける金)の上限として正しいものはどれか。",
+    c: {
+      A: "代金の10%まで",
+      B: "代金の20%まで",
+      C: "代金の30%まで",
+      D: "上限はない"
+    },
+    a: "B",
+    e: "手付金は(20%上限)。"
+  },
+  {
+    no: 14,
+    q: "未完成物件の売買で、手付金等について(保全措置=お金を守る仕組み)が必要になりやすい基準の説明として正しいものはどれか。",
+    c: {
+      A: "代金の3%を超えたら必要。",
+      B: "代金の5%を超えたら必要（または一定額超）。",
+      C: "代金の10%を超えたら必要。",
+      D: "未完成でも保全措置は不要。"
+    },
+    a: "B",
+    e: "未完成は(5%超)で必要側。完成は(10%超)が目安（または一定額超）。"
+  },
+  {
+    no: 15,
+    q: "居住用賃貸の媒介で、貸主・借主の双方から報酬（仲介手数料）を受ける場合の上限（特約なし）として正しいものはどれか。",
+    c: {
+      A: "双方合計で賃料2か月分まで",
+      B: "双方合計で賃料1.5か月分まで",
+      C: "双方合計で賃料1か月分まで（各0.5か月が基本）",
+      D: "上限なし"
+    },
+    a: "C",
+    e: "居住用賃貸は双方合計(1か月)。"
+  },
+  {
+    no: 16,
+    q: "広告で必ず明示すべき事項（取引の立場が分かる情報）として正しいものはどれか。",
+    c: {
+      A: "築年数",
+      B: "取引態様（売主/代理/媒介）",
+      C: "売主の住所",
+      D: "登記簿の全部事項"
+    },
+    a: "B",
+    e: "広告では(取引態様)の明示が必要。"
+  },
+  {
+    no: 17,
+    q: "誇大広告（(うそ・盛りすぎ広告)）として禁止されるものに当たりやすいのはどれか。",
+    c: {
+      A: "事実どおりの表示",
+      B: "事実と異なる・誤認させる表示（有利誤認など）",
+      C: "正確な数値の表示",
+      D: "条件を明示した限定表示"
+    },
+    a: "B",
+    e: "誤認させる表示は禁止。ネット広告も対象。"
+  },
+  {
+    no: 18,
+    q: "保証協会に入っていない宅建業者が供託する(営業保証金)の基本額（本店）として正しいものはどれか。",
+    c: {
+      A: "500万円",
+      B: "1,000万円",
+      C: "300万円",
+      D: "任意（定めなし）"
+    },
+    a: "B",
+    e: "営業保証金は(本店1,000万)。支店は(500万)。"
+  },
+  {
+    no: 19,
+    q: "保証協会に加入するときに納める(分担金=弁済業務保証金分担金)の基本額（本店）として正しいものはどれか。",
+    c: {
+      A: "30万円",
+      B: "60万円",
+      C: "100万円",
+      D: "不要"
+    },
+    a: "B",
+    e: "分担金は(本店60万)。支店は(30万)。"
+  },
+  {
+    no: 20,
+    q: "契約がまだ成立していない段階で受け取った(申込金=申込みの意思を強める金)の返還の整理として、最も適切なのはどれか。",
+    c: {
+      A: "一度払ったら必ず返さない（返還不可）。",
+      B: "契約不成立なら原則返還（申込金の整理）。",
+      C: "当然に没収できる（違約金扱い）。",
+      D: "常に手付金と同じ扱いになる。"
+    },
+    a: "B",
+    e: "成立前は申込金の整理になりやすく、不成立なら原則返還。"
+  }
+];
+
+const KEY = "takken_gyouhou_answers_midB_rephrase_harder_v1";
+const $qs = document.getElementById("qs");
+const $score = document.getElementById("score");
+const $restoreBox = document.getElementById("restoreBox");
+
+function esc(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+function loadAnswers(){
+  try{ const raw = localStorage.getItem(KEY); if(!raw) return {}; const obj = JSON.parse(raw); return (obj && typeof obj === "object") ? obj : {}; }
+  catch(e){ return {}; }
+}
+function saveAnswers(obj){
+  try{ localStorage.setItem(KEY, JSON.stringify(obj)); }
+  catch(e){ console.warn("save failed:", e); }
+}
+
+function build(){
+  const ans = loadAnswers();
+  const frag = document.createDocumentFragment();
+
+  DATA.forEach(item=>{
+    const div = document.createElement("div");
+    div.className = "q";
+    div.id = `q${item.no}`;
+    const picked = ans[item.no] || "";
+    const c = item.c;
+
+    div.innerHTML = `
+      <h3>Q${item.no}</h3>
+      <p>${esc(item.q)}</p>
+      <div>
+        ${["A","B","C","D"].map(k=>`
+          <label>
+            <input type="radio" name="q${item.no}" value="${k}" ${picked===k?"checked":""} />
+            <div><b>${k}</b>　${esc(c[k])}</div>
+          </label>
+        `).join("")}
+      </div>
+      <div class="tag">※1つだけ選択</div>
+      <div class="explain" id="ex${item.no}">
+        <b>正解：${esc(item.a)}</b>
+        <div>${esc(item.e)}</div>
+      </div>
+    `;
+    frag.appendChild(div);
+  });
+  $qs.appendChild(frag);
+
+  $qs.addEventListener("change", (ev)=>{
+    const t = ev.target;
+    if(!t || t.tagName !== "INPUT") return;
+    const no = Number(t.name.replace("q",""));
+    const obj = loadAnswers();
+    obj[no] = t.value;
+    saveAnswers(obj);
+  });
+}
+
+function grade(){
+  const obj = loadAnswers();
+  let ok = 0;
+  DATA.forEach(item=>{
+    const div = document.getElementById(`q${item.no}`);
+    div.classList.remove("correct","incorrect");
+    const picked = obj[item.no] || "";
+    if(!picked) return;
+    if(picked === item.a){ ok++; div.classList.add("correct"); }
+    else{ div.classList.add("incorrect"); }
+  });
+  $score.textContent = `合計：20問中 ${ok} 正解（採点済み）`;
+}
+
+function showExplain(){ DATA.forEach(item=>{ const ex=document.getElementById(`ex${item.no}`); if(ex) ex.style.display="block"; }); }
+function hideExplain(){ DATA.forEach(item=>{ const ex=document.getElementById(`ex${item.no}`); if(ex) ex.style.display="none"; }); }
+
+function exportAnswers(){
+  const obj = loadAnswers();
+  return DATA.map(item=>`${item.no}:${obj[item.no]||""}`).join(",");
+}
+function importAnswers(str){
+  const out = {};
+  const s = String(str||"").trim();
+  if(!s) return out;
+  s.split(",").forEach(p=>{
+    const m=p.split(":"); if(m.length!==2) return;
+    const no=Number(m[0]); const v=m[1];
+    if(!Number.isFinite(no)) return;
+    if(!["A","B","C","D",""].includes(v)) return;
+    out[no]=v;
+  });
+  return out;
+}
+function applyAnswers(obj){
+  DATA.forEach(item=>{
+    const v=obj[item.no]||"";
+    document.querySelectorAll(`input[name="q${item.no}"]`).forEach(r=>{ r.checked=(r.value===v); });
+  });
+  saveAnswers(obj);
+}
+
+document.getElementById("grade").addEventListener("click", ()=>grade());
+
+let explained=false;
+document.getElementById("show").addEventListener("click", ()=>{
+  explained=!explained;
+  if(explained){ showExplain(); document.getElementById("show").textContent="解説を隠す"; }
+  else{ hideExplain(); document.getElementById("show").textContent="解説を表示"; }
+});
+
+document.getElementById("copy").addEventListener("click", async ()=>{
+  const s=exportAnswers();
+  try{ await navigator.clipboard.writeText(s); alert("回答をコピーしました。"); }
+  catch(e){
+    $restoreBox.value=s; $restoreBox.focus(); $restoreBox.select();
+    alert("クリップボード権限がないため、復元欄に出しました。手動でコピーしてください。");
+  }
+});
+
+document.getElementById("save").addEventListener("click", ()=>{
+  saveAnswers(loadAnswers());
+  alert("端末内に保存しました。");
+});
+
+document.getElementById("restore").addEventListener("click", ()=>{
+  const obj=importAnswers($restoreBox.value);
+  applyAnswers(obj);
+  alert("復元しました。");
+});
+
+document.getElementById("reset").addEventListener("click", ()=>{
+  if(!confirm("回答を全削除します。よろしいですか？")) return;
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  DATA.forEach(item=>{
+    document.querySelectorAll(`input[name="q${item.no}"]`).forEach(r=>r.checked=false);
+    const div=document.getElementById(`q${item.no}`);
+    if(div) div.classList.remove("correct","incorrect");
+  });
+  hideExplain(); explained=false; document.getElementById("show").textContent="解説を表示";
+  $score.textContent="合計：20問中 0 正解（未採点）";
+  $restoreBox.value="";
+});
+
+build();
+hideExplain();
+</script>
+</body>
+</html>

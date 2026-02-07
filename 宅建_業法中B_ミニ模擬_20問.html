@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>宅建 業法ミニ模擬（中レベル20問）｜1ページ完結</title>
+<style>
+  :root{--bd:#d9d9d9;--ok:#e9f8ee;--ng:#fdeaea;--mut:#666;}
+  body{font-family:system-ui,-apple-system,"Segoe UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;margin:0;background:#f6f6f6;color:#111;}
+  header{background:#111;color:#fff;padding:14px 12px}
+  header h1{margin:0;font-size:18px}
+  header p{margin:6px 0 0;font-size:12px;opacity:.9}
+
+  .wrap{max-width:980px;margin:0 auto;padding:12px}
+  .panel{position:sticky;top:0;z-index:9;background:#fff;border:1px solid var(--bd);border-radius:12px;padding:10px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  button{border:1px solid #111;background:#111;color:#fff;padding:10px 12px;border-radius:10px;font-weight:800;cursor:pointer}
+  button.sec{background:#fff;color:#111;border:1px solid var(--bd)}
+  button.dng{background:#fff;color:#c00;border:1px solid #f1c0c0}
+  button:disabled{opacity:.5;cursor:not-allowed}
+
+  .score{margin-top:8px;font-weight:900}
+  .note{margin-top:6px;color:var(--mut);font-size:12px}
+  .grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+  @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
+
+  .q{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:12px}
+  .q.correct{background:var(--ok);border-color:#7bd38a}
+  .q.incorrect{background:var(--ng);border-color:#f2a6a6}
+  .q h3{margin:0 0 8px;font-size:15px}
+  .q p{margin:0 0 10px;line-height:1.65}
+  label{display:flex;gap:10px;align-items:flex-start;padding:7px 8px;border-radius:10px;border:1px solid transparent;cursor:pointer}
+  label:hover{background:#f2f2f2}
+  input{margin-top:2px}
+  .tag{font-size:12px;color:var(--mut);font-weight:700;margin-top:6px}
+  .explain{display:none;margin-top:10px;padding:10px;border:1px dashed var(--bd);border-radius:10px;background:#fff}
+  .explain b{display:block;margin-bottom:6px}
+  .mini{font-size:12px;color:var(--mut);margin-top:6px}
+
+  textarea{width:100%;min-height:92px;border:1px solid var(--bd);border-radius:10px;padding:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .foot{margin:14px 0 0;color:var(--mut);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>宅建 業法ミニ模擬（中レベル20問）</h1>
+  <p>1問1択。回答→採点→解説が同じページで完結。回答は端末内（localStorage＝端末内保存）に自動保存されます。</p>
+</header>
+
+<div class="wrap">
+  <div class="panel">
+    <div class="row">
+      <button id="grade">採点する</button>
+      <button id="show" class="sec">解説を表示</button>
+      <button id="copy" class="sec">回答をコピー</button>
+      <button id="save" class="sec">回答を保存</button>
+      <button id="restore" class="sec">回答を貼って復元</button>
+      <button id="reset" class="dng">リセット</button>
+    </div>
+    <div class="score" id="score">合計：20問中 0 正解（未採点）</div>
+    <div class="note">※端末内保存です。保険として「回答をコピー」をメモに残すと、消えても復元できます。</div>
+
+    <div style="margin-top:10px">
+      <div class="mini"><b>復元用（必要なときだけ）</b></div>
+      <textarea id="restoreBox" placeholder="ここに「回答をコピー」で出た文字列を貼ってから「回答を貼って復元」"></textarea>
+      <div class="mini">※この枠は普段は使いません。事故の保険です。</div>
+    </div>
+  </div>
+
+  <div class="grid" id="qs"></div>
+  <div class="foot">※このページはオフラインでも動きます（保存・復元は端末内）。</div>
+</div>
+
+<script>
+const DATA_JSON = `
+[
+  {
+    "no": 1,
+    "theme": "免許（許可）",
+    "tag": "免許換え（知事⇔大臣）",
+    "q": "A社は現在(知事免許=都道府県の免許)で、事務所（(拠点=仕事の場所)）は大阪府内に1つだけで営業している。今後、兵庫県にも事務所を新設して営業したい。この場合の手続として正しいものはどれか。",
+    "c": {
+      "A": "免許の更新（延長）だけで足りる。",
+      "B": "(免許換え=免許の種類を変える申請)をして(大臣免許=国の免許)を受ける必要がある。",
+      "C": "大阪府知事に変更届（(変更の報告)）を出せば足り、免許は変わらない。",
+      "D": "兵庫県に事務所を作ってから、あとで大臣免許を申請すればよい。"
+    },
+    "a": "B",
+    "e": "判断軸は(事務所=拠点)が2以上の都道府県にまたがるか。大阪＋兵庫で2県になるので(大臣免許)が必要。先に事務所を作って営業開始は不可なので、(免許換え申請)で先に切り替える。"
+  },
+  {
+    "no": 2,
+    "theme": "免許（許可）",
+    "tag": "免許の有効期間（5年）",
+    "q": "宅建業免許の有効期間（(いつまで有効か)）について正しいものはどれか。",
+    "c": {
+      "A": "免許の有効期間は3年である。",
+      "B": "免許の有効期間は5年である。",
+      "C": "免許の有効期間は10年である。",
+      "D": "有効期間は免許権者（(免許を出した役所)）が自由に決める。"
+    },
+    "a": "B",
+    "e": "宅建業免許の有効期間は(5年)。切れる前に(更新申請=延長の手続き)が必要。"
+  },
+  {
+    "no": 3,
+    "theme": "欠格事由（ダメな条件）",
+    "tag": "破産・復権",
+    "q": "欠格事由（(免許を受けられない条件)）に関する記述で正しいものはどれか。",
+    "c": {
+      "A": "(破産者=破産手続中の人)は、(復権=資格が戻ること)しても欠格のままである。",
+      "B": "(破産者)でも(復権)していれば欠格に当たらない。",
+      "C": "宅建士証（(取引士証=身分証)）がない者は必ず欠格に当たる。",
+      "D": "免許取消（(免許を取り上げ)）を受けた者は、取消日の翌日から直ちに免許申請できる。"
+    },
+    "a": "B",
+    "e": "(破産)でも(復権)すれば欠格ではない。一方、免許取消は一定期間は免許が取れない。宅建士証がないこと自体は欠格ではなく、別の設置義務などの問題になる。"
+  },
+  {
+    "no": 4,
+    "theme": "事務所",
+    "tag": "事務所の判断（継続性）",
+    "q": "(事務所=拠点)に当たるかどうかの判断として、正しいものはどれか。",
+    "c": {
+      "A": "机と椅子があれば、必ず事務所に当たる。",
+      "B": "看板が出ていなければ、事務所に当たらない。",
+      "C": "(継続性=ずっと使う性質)があり、宅建業の業務を行う場所は事務所に当たり得る。",
+      "D": "1回だけ使う予定でも、宅建業の説明をしたら必ず事務所に当たる。"
+    },
+    "a": "C",
+    "e": "事務所かは「形」より(継続性)と「宅建業の業務を行う拠点か」で判断する。机や看板の有無だけで決まらない。"
+  },
+  {
+    "no": 5,
+    "theme": "案内所等",
+    "tag": "案内所の届出",
+    "q": "新築分譲マンションのモデルルーム（(案内所=現地案内の拠点)）を設置して、(申込み=買いたい意思表示)を受け付ける。この場合の対応として正しいものはどれか。",
+    "c": {
+      "A": "案内所は事務所ではないので、何の手続も不要である。",
+      "B": "案内所は事務所ではないが、(届出=設置の報告)が必要になる場合がある。",
+      "C": "申込みを受けないなら届出が必要だが、申込みを受けるなら不要である。",
+      "D": "案内所を置く場合、必ず(免許換え=免許の種類変更)が必要である。"
+    },
+    "a": "B",
+    "e": "案内所は事務所と別枠だが、(申込み受付)や(重要事項説明)などをするなら、法令で(届出)が必要になる扱いがある。免許換えとは別の論点。"
+  },
+  {
+    "no": 6,
+    "theme": "宅建士の設置",
+    "tag": "5人に1人（端数切上げ）",
+    "q": "ある事務所の(従業者=働く人)が13人いる。この事務所で必要な宅建士（(取引士=資格者)）の人数として正しいものはどれか。",
+    "c": {
+      "A": "1人",
+      "B": "2人",
+      "C": "3人",
+      "D": "4人"
+    },
+    "a": "C",
+    "e": "(5人に1人)なので 13÷5=2.6。端数は(切上げ)で3人必要。"
+  },
+  {
+    "no": 7,
+    "theme": "35条",
+    "tag": "説明の時期・主体",
+    "q": "35条の(重要事項説明=契約前の大事な説明)について正しいものはどれか。",
+    "c": {
+      "A": "(契約締結後=契約した後)に行えば足りる。",
+      "B": "宅建士ではない一般の社員でも説明できる。",
+      "C": "原則として(契約締結前=契約する前)に、宅建士が説明する。",
+      "D": "口頭説明だけでよく、書面交付は不要である。"
+    },
+    "a": "C",
+    "e": "35条は(契約前)に、(宅建士)が、(35条書面=重要事項説明書)を交付して説明する。"
+  },
+  {
+    "no": 8,
+    "theme": "35条",
+    "tag": "宅建士証の提示",
+    "q": "35条の(重要事項説明)をする宅建士の(宅建士証=身分証)について正しいものはどれか。",
+    "c": {
+      "A": "提示（(見せること)）は不要である。",
+      "B": "求められた場合に限り提示すれば足りる。",
+      "C": "重要事項説明の際に提示する。",
+      "D": "事務所に備え付けてあれば、現場で提示しなくてよい。"
+    },
+    "a": "C",
+    "e": "35条説明は(宅建士が説明)+(宅建士証を提示)がセット。求められた時だけ、ではない。"
+  },
+  {
+    "no": 9,
+    "theme": "37条",
+    "tag": "交付の時期（35前/37後）",
+    "q": "37条書面（(契約書面=契約内容を書いた紙)）の交付時期として正しいものはどれか。",
+    "c": {
+      "A": "(契約締結前=契約する前)に交付しなければならない。",
+      "B": "(契約成立後=契約ができた後)に交付する。",
+      "C": "口頭で確認すれば書面は不要である。",
+      "D": "宅建業者には作成・交付義務がない。"
+    },
+    "a": "B",
+    "e": "覚え方は(35=前)(37=後)。37条は(契約後)に交付。"
+  },
+  {
+    "no": 10,
+    "theme": "媒介契約",
+    "tag": "専属専任（自己発見NG）",
+    "q": "専属専任媒介契約（(1社に任せる＋縛りが強い仲介契約)）について正しいものはどれか。",
+    "c": {
+      "A": "(自己発見取引=自分で買主を見つける)はできる。",
+      "B": "レインズ（(指定流通機構=物件登録先)）登録義務はない。",
+      "C": "(自己発見取引)はできない。",
+      "D": "報告義務はなく、依頼者に何も連絡しなくてよい。"
+    },
+    "a": "C",
+    "e": "専属専任は縛りが強く、(自己発見取引NG)。レインズ登録義務・報告義務もある。"
+  },
+  {
+    "no": 11,
+    "theme": "媒介契約",
+    "tag": "専任と専属専任（報告頻度）",
+    "q": "媒介契約の(業務処理状況の報告=進捗報告)について正しいものはどれか。",
+    "c": {
+      "A": "一般媒介でも、週1回以上の報告義務がある。",
+      "B": "専任媒介は(2週間に1回以上)、専属専任媒介は(1週間に1回以上)の報告が基本である。",
+      "C": "専属専任媒介の方が縛りが弱いので報告は少なくてよい。",
+      "D": "どの媒介契約でも報告義務は一切ない。"
+    },
+    "a": "B",
+    "e": "報告は(専任=2週1回以上)、(専属専任=週1回以上)が基本。一般媒介は契約内容しだいで一律の法定義務ではない。"
+  },
+  {
+    "no": 12,
+    "theme": "クーリング・オフ",
+    "tag": "場所・書面・期間（8日）",
+    "q": "クーリング・オフ（(一定条件なら契約をやめられる制度)）について正しいものはどれか。",
+    "c": {
+      "A": "宅建業者が売主なら、場所に関係なく必ず適用される。",
+      "B": "事務所で締結した契約でも、必ず適用される。",
+      "C": "(事務所以外の場所)での契約で、(書面受領=書面を受け取る)から(8日以内)なら行使できる。",
+      "D": "売主が個人の場合のみ適用される。"
+    },
+    "a": "C",
+    "e": "クーリング・オフは(場所)+(書面)+(期間=8日)が条件。「どこでも必ず」ではない。"
+  },
+  {
+    "no": 13,
+    "theme": "8種制限",
+    "tag": "手付金20%上限",
+    "q": "売主が宅建業者で、買主が一般人の場合の(手付金=契約時に預けるお金)について正しいものはどれか。",
+    "c": {
+      "A": "手付金は代金の30%まで受領できる。",
+      "B": "手付金は代金の20%を超えて受領してはならない。",
+      "C": "手付金の上限は賃貸借に限られる。",
+      "D": "手付金は性質上、返還されないのが原則なので上限はない。"
+    },
+    "a": "B",
+    "e": "(売主=業者)(買主=一般人)の8種制限で、手付金は(20%超NG)。"
+  },
+  {
+    "no": 14,
+    "theme": "8種制限",
+    "tag": "保全措置（未完成5%/完成10%）",
+    "q": "売主が宅建業者で買主が一般人の場合の(手付金等の保全措置=お金を守る仕組み)について正しいものはどれか。",
+    "c": {
+      "A": "いつでも必ず保全措置が必要である。",
+      "B": "未完成物件では(受領額が代金の5%超)または(1,000万円超)なら保全措置が必要になる。",
+      "C": "完成物件では(受領額が代金の5%超)なら必ず保全措置が必要になる。",
+      "D": "保全措置は口頭の約束で足り、書面等は不要である。"
+    },
+    "a": "B",
+    "e": "保全措置は「条件付き」。未完成は(5%超)または(1,000万円超)で必要。完成は基準が緩くなり(10%超)または(1,000万円超)が目安。"
+  },
+  {
+    "no": 15,
+    "theme": "報酬（仲介手数料）",
+    "tag": "上限（合意でも超えられない）",
+    "q": "宅建業者の報酬（(仲介手数料=仲介の代金)）について正しいものはどれか。",
+    "c": {
+      "A": "当事者間で合意すれば、上限を超える特約（(特別な約束)）も有効である。",
+      "B": "法令で上限が定められ、上限を超えて受領できない。",
+      "C": "上限規制は賃貸借に限られ、売買にはない。",
+      "D": "報酬は常に無償（無料）でなければならない。"
+    },
+    "a": "B",
+    "e": "(上限=これ以上取るな)が法令で決まっている。合意しても上限超えは不可。"
+  },
+  {
+    "no": 16,
+    "theme": "報酬（仲介手数料）",
+    "tag": "賃貸の上限（居住用）",
+    "q": "居住用の賃貸借の媒介（(仲介)）で、借主と貸主の双方から報酬を受ける場合の上限として正しいものはどれか（特約がない前提）。",
+    "c": {
+      "A": "双方から合計で賃料の2か月分まで受け取れる。",
+      "B": "双方から合計で賃料の1か月分までで、各当事者からは原則0.5か月分までである。",
+      "C": "借主からは賃料の1か月分、貸主からは賃料の1か月分まで受け取れる。",
+      "D": "賃貸借には上限がない。"
+    },
+    "a": "B",
+    "e": "居住用賃貸の基本は、双方からなら(合計1か月分)。各当事者からは原則(0.5か月分)。"
+  },
+  {
+    "no": 17,
+    "theme": "広告規制",
+    "tag": "誇大広告（うそ・盛りすぎ）",
+    "q": "誇大広告（(うそ・盛りすぎ広告)）について正しいものはどれか。",
+    "c": {
+      "A": "事実と異なる表示でも、契約前に訂正すれば処分はない。",
+      "B": "重要事項につき、事実と異なる表示や著しく誤認（(勘違い)）させる表示はしてはならない。",
+      "C": "インターネット広告は広告規制の対象外である。",
+      "D": "広告は売主が出すものなので宅建業者は責任を負わない。"
+    },
+    "a": "B",
+    "e": "(誇大広告)は禁止。ネット広告も対象。「あとで直すからOK」は通らない。"
+  },
+  {
+    "no": 18,
+    "theme": "広告規制",
+    "tag": "取引態様の明示",
+    "q": "宅建業者が広告をする際の(取引態様=自分の立場)について正しいものはどれか。",
+    "c": {
+      "A": "(売主/代理/媒介)の別は重要ではないので、広告に書かなくてよい。",
+      "B": "広告には(売主/代理/媒介)の別（取引態様）を明示する必要がある。",
+      "C": "取引態様は契約直前に口頭で言えば足り、広告には不要である。",
+      "D": "取引態様を間違えて表示しても、後で直せば問題ない。"
+    },
+    "a": "B",
+    "e": "広告では(取引態様=売主/代理/媒介)の明示が必要。誰の立場で関わっているかは重要事項。"
+  },
+  {
+    "no": 19,
+    "theme": "営業保証金",
+    "tag": "供託（本店1000万/支店500万）",
+    "q": "営業保証金（(トラブルの弁済=払うための原資)）の基本額として正しいものはどれか。",
+    "c": {
+      "A": "(主たる事務所=本店)は500万円、(従たる事務所=支店)は250万円である。",
+      "B": "(主たる事務所)は1,000万円、(従たる事務所)は500万円である。",
+      "C": "(主たる事務所)も(従たる事務所)も一律100万円である。",
+      "D": "営業保証金は保証協会に入っていれば不要だが、金額の決まりはない。"
+    },
+    "a": "B",
+    "e": "営業保証金は基本が(本店=1,000万円)(支店=500万円)。協会加入の場合は別制度（分担金）に置き換わる。"
+  },
+  {
+    "no": 20,
+    "theme": "保証協会",
+    "tag": "分担金（本店60万/支店30万）",
+    "q": "保証協会（(保証の団体)）に加入する場合の(弁済業務保証金分担金=協会に納めるお金)の基本額として正しいものはどれか。",
+    "c": {
+      "A": "(主たる事務所=本店)は60万円、(従たる事務所=支店)は30万円である。",
+      "B": "(主たる事務所)は30万円、(従たる事務所)は60万円である。",
+      "C": "(主たる事務所)も(従たる事務所)も一律300万円である。",
+      "D": "分担金は不要で、加入申込だけで足りる。"
+    },
+    "a": "A",
+    "e": "協会加入なら(分担金)を納める。基本は(本店=60万円)(支店=30万円)。"
+  }
+]
+`;
+
+let DATA;
+try{
+  DATA = JSON.parse(DATA_JSON);
+}catch(err){
+  alert("データ読み込みでエラー。Consoleの赤い行を確認してください。");
+  console.error("DATA parse error:", err);
+  DATA = [];
+}
+
+const KEY = "takken_gyouhou_answers_mid_v1";
+
+const $qs = document.getElementById("qs");
+const $score = document.getElementById("score");
+const $restoreBox = document.getElementById("restoreBox");
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function loadAnswers(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return {};
+    const obj = JSON.parse(raw);
+    return (obj && typeof obj === "object") ? obj : {};
+  }catch(e){
+    return {};
+  }
+}
+
+function saveAnswers(obj){
+  try{
+    localStorage.setItem(KEY, JSON.stringify(obj));
+  }catch(e){
+    console.warn("save failed:", e);
+  }
+}
+
+function build(){
+  const ans = loadAnswers();
+  const frag = document.createDocumentFragment();
+
+  if(!Array.isArray(DATA) || DATA.length === 0){
+    const div = document.createElement("div");
+    div.className = "q incorrect";
+    div.innerHTML = "<h3>エラー</h3><p>問題データが読み込めませんでした。Consoleの赤いエラーを貼ってください。</p>";
+    $qs.appendChild(div);
+    return;
+  }
+
+  DATA.forEach(item=>{
+    const div = document.createElement("div");
+    div.className = "q";
+    div.id = `q${item.no}`;
+
+    const picked = ans[item.no] || "";
+    const c = item.c;
+
+    div.innerHTML = `
+      <h3>Q${item.no}（${esc(item.theme)}・${esc(item.tag)}）</h3>
+      <p>${esc(item.q)}</p>
+      <div>
+        ${["A","B","C","D"].map(k=>`
+          <label>
+            <input type="radio" name="q${item.no}" value="${k}" ${picked===k?"checked":""} />
+            <div><b>${k}</b>　${esc(c[k])}</div>
+          </label>
+        `).join("")}
+      </div>
+      <div class="tag">※1つだけ選択</div>
+      <div class="explain" id="ex${item.no}">
+        <b>正解：${esc(item.a)}</b>
+        <div>${esc(item.e)}</div>
+      </div>
+    `;
+    frag.appendChild(div);
+  });
+
+  $qs.appendChild(frag);
+
+  $qs.addEventListener("change", (ev)=>{
+    const t = ev.target;
+    if(!t || t.tagName !== "INPUT") return;
+    const name = t.name;
+    const no = Number(name.replace("q",""));
+    const obj = loadAnswers();
+    obj[no] = t.value;
+    saveAnswers(obj);
+  });
+}
+
+function grade(){
+  const obj = loadAnswers();
+  let ok = 0;
+  DATA.forEach(item=>{
+    const div = document.getElementById(`q${item.no}`);
+    div.classList.remove("correct","incorrect");
+
+    const picked = obj[item.no] || "";
+    if(!picked) return;
+
+    if(picked === item.a){
+      ok++;
+      div.classList.add("correct");
+    }else{
+      div.classList.add("incorrect");
+    }
+  });
+  $score.textContent = `合計：20問中 ${ok} 正解（採点済み）`;
+}
+
+function showExplain(){
+  DATA.forEach(item=>{
+    const ex = document.getElementById(`ex${item.no}`);
+    if(ex) ex.style.display = "block";
+  });
+}
+function hideExplain(){
+  DATA.forEach(item=>{
+    const ex = document.getElementById(`ex${item.no}`);
+    if(ex) ex.style.display = "none";
+  });
+}
+
+function exportAnswers(){
+  const obj = loadAnswers();
+  const parts = DATA.map(item=>{
+    const v = obj[item.no] || "";
+    return `${item.no}:${v}`;
+  });
+  return parts.join(",");
+}
+
+function importAnswers(str){
+  const out = {};
+  const s = String(str || "").trim();
+  if(!s) return out;
+  s.split(",").forEach(p=>{
+    const m = p.split(":");
+    if(m.length !== 2) return;
+    const no = Number(m[0]);
+    const v = m[1];
+    if(!Number.isFinite(no)) return;
+    if(!["A","B","C","D",""].includes(v)) return;
+    out[no] = v;
+  });
+  return out;
+}
+
+function applyAnswers(obj){
+  DATA.forEach(item=>{
+    const v = obj[item.no] || "";
+    const radios = document.querySelectorAll(`input[name="q${item.no}"]`);
+    radios.forEach(r=>{ r.checked = (r.value === v); });
+  });
+  saveAnswers(obj);
+}
+
+document.getElementById("grade").addEventListener("click", ()=>{ grade(); });
+
+let explained = false;
+document.getElementById("show").addEventListener("click", ()=>{
+  explained = !explained;
+  if(explained){
+    showExplain();
+    document.getElementById("show").textContent = "解説を隠す";
+  }else{
+    hideExplain();
+    document.getElementById("show").textContent = "解説を表示";
+  }
+});
+
+document.getElementById("copy").addEventListener("click", async ()=>{
+  const s = exportAnswers();
+  try{
+    await navigator.clipboard.writeText(s);
+    alert("回答をコピーしました。");
+  }catch(e){
+    $restoreBox.value = s;
+    $restoreBox.focus();
+    $restoreBox.select();
+    alert("クリップボード権限がないため、復元欄に出しました。手動でコピーしてください。");
+  }
+});
+
+document.getElementById("save").addEventListener("click", ()=>{
+  const obj = loadAnswers();
+  saveAnswers(obj);
+  alert("端末内に保存しました。");
+});
+
+document.getElementById("restore").addEventListener("click", ()=>{
+  const obj = importAnswers($restoreBox.value);
+  applyAnswers(obj);
+  alert("復元しました。");
+});
+
+document.getElementById("reset").addEventListener("click", ()=>{
+  if(!confirm("回答を全削除します。よろしいですか？")) return;
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  DATA.forEach(item=>{
+    const radios = document.querySelectorAll(`input[name="q${item.no}"]`);
+    radios.forEach(r=>r.checked=false);
+    const div = document.getElementById(`q${item.no}`);
+    if(div) div.classList.remove("correct","incorrect");
+  });
+  hideExplain();
+  explained = false;
+  document.getElementById("show").textContent = "解説を表示";
+  $score.textContent = "合計：20問中 0 正解（未採点）";
+  $restoreBox.value = "";
+});
+
+build();
+hideExplain();
+</script>
+</body>
+</html>
