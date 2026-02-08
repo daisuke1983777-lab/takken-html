@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>03_業法_上B</title>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,Arial,sans-serif;background:#fff;color:#111;line-height:1.5;margin:0}
+    header{padding:16px 14px;border-bottom:1px solid #ddd;background:#fff;position:sticky;top:0;z-index:5}
+    h1{font-size:18px;margin:0 0 8px 0}
+    .sub{font-size:12px;color:#444;margin:0}
+    .wrap{max-width:980px;margin:0 auto;padding:14px}
+    .panel{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    button{border:1px solid #222;background:#fff;padding:10px 12px;border-radius:8px;font-size:14px;cursor:pointer}
+    button:hover{background:#f4f4f4}
+    .small{font-size:12px;color:#444}
+    .box{border:1px solid #ddd;border-radius:10px;padding:12px;margin:12px 0}
+    .qhead{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+    .qno{font-weight:700}
+    .tag{font-size:12px;border:1px solid #bbb;border-radius:999px;padding:2px 8px;color:#333;white-space:nowrap}
+    .qtext{margin:8px 0 6px 0}
+    details{margin:8px 0 0 0}
+    summary{cursor:pointer}
+    .choices{margin-top:8px;display:grid;gap:8px}
+    label{display:block;border:1px solid #ddd;border-radius:10px;padding:10px}
+    input[type="radio"]{transform:scale(1.1);margin-right:8px}
+    .result{margin-top:10px;padding:10px;border-radius:10px;border:1px solid #ddd;background:#fafafa}
+    .ok{border-color:#1a7f37;background:#f0fff4}
+    .ng{border-color:#b42318;background:#fff5f5}
+    .muted{color:#666}
+    .scorebar{margin-top:10px;border:1px solid #ddd;border-radius:10px;padding:10px;background:#fafafa}
+    textarea{width:100%;min-height:90px;border:1px solid #bbb;border-radius:10px;padding:10px;font-size:13px}
+    .foot{margin:18px 0 30px 0;color:#666;font-size:12px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap" style="padding:0 14px;">
+    <h1>03_業法_上B</h1>
+    <p class="sub">宅建業法（宅地建物取引業法）／上B（標準＋日常解釈あり）／20問・1問1択</p>
+    <div class="panel">
+      <button onclick="grade()">採点</button>
+      <button onclick="copyAnswers()">回答コピー</button>
+      <button onclick="restoreFromPaste()">回答貼って復元</button>
+      <button onclick="resetAll()">リセット</button>
+      <span class="small muted">※判定は「選択肢番号（1〜4）」と正解配列を照合するだけに固定</span>
+    </div>
+    <div class="scorebar" id="scorebar">
+      <div><b>スコア：</b><span id="score">未採点</span></div>
+      <div class="small muted">復元用テキスト（コピペ用）</div>
+      <textarea id="ansText" placeholder="「回答コピー」で出た文字列をここに貼って「回答貼って復元」"></textarea>
+      <div class="small muted">保存：自動（localStorage）／端末内のみ</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" id="questions"></div>
+
+<div class="wrap foot">
+  <div>ファイル名（ASCII推奨）：<span class="mono">03_gyouhou_jouB_20.html</span></div>
+  <div>GitHub Pages：<span class="mono">https://daisuke1983777-lab.github.io/takken-html/03_gyouhou_jouB_20.html</span></div>
+</div>
+
+<script>
+/*
+  判定ミス対策：
+  - 正解は「1〜4の数字」で固定
+  - 回答も「1〜4の数字」で保存
+  - 採点は「回答数字 === 正解数字」だけ
+  - 文字列/配列のズレやindexズレを起こさない構造
+*/
+
+const KEY = "tkn_03_gyouhou_jouB_20_v1";
+
+const data = [
+  {
+    q: "【問1】宅地建物取引士（たくちたてものとりひきし：重要事項説明をする資格者）が重要事項説明（じゅうようじこうせつめい：契約前に大事な内容を説明すること）を行うタイミングとして正しいのはどれか。",
+    daily: "契約する前に『ここ大事やで』を説明するのがルール。いつやる？",
+    choices: [
+      "売買契約（ばいばいけいやく：売る買うの契約）を締結（ていけつ：結ぶ）した後でよい。",
+      "買主（かいぬし：買う人）が申込み（もうしこみ：買いたい申請）をした時点で必ず行わなければならない。",
+      "契約成立（けいやくせいりつ：契約ができた状態）までに、書面（しょめん：紙）を交付（こうふ：渡す）して説明する。",
+      "物件引渡し（ひきわたし：渡すこと）までに行えばよい。"
+    ],
+    a: 3,
+    exp: "重要事項説明（35条書面（35じょうしょめん：重要事項をまとめた書面））は、原則として『契約成立までに』書面交付（渡す）＋説明が必要です。『契約後でOK』『引渡しまでOK』は×です。"
+  },
+  {
+    q: "【問2】重要事項説明で交付する35条書面（じゅうごじょうしょめん：重要事項の書面）について正しいのはどれか。",
+    daily: "『大事な説明の紙』って、誰が何をどうする？",
+    choices: [
+      "宅地建物取引士が記名押印（きめいおういん：名前を書いてハンコ）しなければならない。",
+      "宅地建物取引士でない従業者（じゅうぎょうしゃ：社員）が記名押印してもよい。",
+      "説明は口頭（こうとう：口で）だけでよく、書面交付は不要である。",
+      "取引の相手方（あいてがた：相手）に交付するのは契約後でよい。"
+    ],
+    a: 1,
+    exp: "35条書面は、宅地建物取引士が記名押印する必要があります。書面交付もタイミングも必須で、契約後でOKではありません。"
+  },
+  {
+    q: "【問3】37条書面（さんじゅうななじょうしょめん：契約内容をまとめた書面）について正しいのはどれか。",
+    daily: "契約した内容をまとめた紙は、いつ渡す？",
+    choices: [
+      "契約成立後、遅滞なく（ちたいなく：すぐ）交付する必要がある。",
+      "契約成立前に交付しなければならない。",
+      "口頭説明だけで足り、書面交付は不要である。",
+      "買主が希望した場合のみ交付すればよい。"
+    ],
+    a: 1,
+    exp: "37条書面は『契約成立後、遅滞なく交付』です。35条（重要事項）は契約前、37条（契約内容）は契約後、という時間軸がポイントです。"
+  },
+  {
+    q: "【問4】宅建業者（たっけんぎょうしゃ：不動産屋）が自ら売主（うりぬし：売る側）となる売買で、相手が買主のとき、手付金等（てつけきんとう：手付など）に関する8種制限（はっしゅせいげん：業者売主の保護規制）として正しいのはどれか。",
+    daily: "不動産屋が売主のとき、買主を守るルール（手付まわり）は？",
+    choices: [
+      "手付金の額に上限はない。",
+      "手付金は代金の2割（20%）を超えて受領（じゅりょう：受け取る）してはならない。",
+      "手付金は代金の3割を超えて受領してはならない。",
+      "手付金は必ず現金で受け取らなければならない。"
+    ],
+    a: 2,
+    exp: "業者が売主の場合、手付金等は『代金の2割超はNG』です（8種制限）。"
+  },
+  {
+    q: "【問5】クーリング・オフ（cooling-off：一定期間なら無条件で撤回できる制度）の適用について正しいのはどれか。",
+    daily: "買主が『やっぱやめる』を使える条件は？",
+    choices: [
+      "必ず全ての不動産取引で適用される。",
+      "業者の事務所（じむしょ：店）で申込み・契約をした場合でも必ず適用される。",
+      "買主が自ら指定した場所（していしたばしょ：自分から指定）で申込み等をした場合は、原則として適用されない。",
+      "買主が書面を受け取る前でも8日が経過すれば適用できない。"
+    ],
+    a: 3,
+    exp: "クーリング・オフは『事務所等以外』での申込み等が中心。買主が自分から指定した場所でやった場合は原則適用されません。"
+  },
+  {
+    q: "【問6】媒介契約（ばいかいけいやく：仲介の契約）に関する説明として正しいのはどれか。",
+    daily: "仲介をお願いする契約には種類がある。正しいのは？",
+    choices: [
+      "専任媒介契約（せんにんばいかい：専任の仲介）では、依頼者は自分で相手を見つけて直接取引してはならない。",
+      "専属専任媒介契約（せんぞくせんにんばいかい：さらに縛りが強い専任）では、依頼者は自分で見つけた相手とも直接取引できない。",
+      "一般媒介契約（いっぱんばいかい：複数に頼める）では、宅建業者はレインズ（REINS：指定流通機構）登録義務がある。",
+      "一般媒介契約では、依頼者は必ず1社にしか頼めない。"
+    ],
+    a: 2,
+    exp: "専属専任媒介は『自己発見取引（自分で見つけた相手との直取引）も不可』。専任媒介は自己発見取引は可。一般媒介は複数依頼可で、レインズ登録義務はありません。"
+  },
+  {
+    q: "【問7】専任媒介契約（せんにんばいかいけいやく）におけるレインズ（REINS）登録について正しいのはどれか。",
+    daily: "専任で頼まれたら、物件情報をどれくらいで登録する？",
+    choices: [
+      "契約締結日から3日以内（営業日換算）に登録しなければならない。",
+      "契約締結日から5日以内（営業日換算）に登録しなければならない。",
+      "契約締結日から7日以内（営業日換算）に登録しなければならない。",
+      "登録義務はない。"
+    ],
+    a: 2,
+    exp: "専任媒介は『5日以内（営業日）』。専属専任は『3日以内（営業日）』。ここは数字で落としやすいポイントです。"
+  },
+  {
+    q: "【問8】専属専任媒介契約（せんぞくせんにんばいかいけいやく）の業務報告（ぎょうむほうこく：状況報告）頻度として正しいのはどれか。",
+    daily: "専属専任で頼まれたら、どれくらいのペースで報告？",
+    choices: [
+      "少なくとも1週間に1回以上",
+      "少なくとも2週間に1回以上",
+      "少なくとも1か月に1回以上",
+      "報告義務はない"
+    ],
+    a: 1,
+    exp: "専属専任は『1週間に1回以上』の報告。専任媒介は『2週間に1回以上』です。"
+  },
+  {
+    q: "【問9】報酬（ほうしゅう：仲介手数料など）の受領について正しいのはどれか（売買の仲介）。",
+    daily: "仲介手数料は、勝手に上乗せできる？",
+    choices: [
+      "法定上限（ほうていじょうげん：法律の上限）を超えて受領しても当事者が同意すればよい。",
+      "法定上限を超えて受領してはならない。",
+      "法定上限は広告費を含めて計算するので、広告費を別でもらうのは常に違法である。",
+      "法定上限は賃貸だけに適用され、売買には適用されない。"
+    ],
+    a: 2,
+    exp: "報酬は法定上限を超えて受領できません。同意があっても超過はNGです。"
+  },
+  {
+    q: "【問10】広告（こうこく：募集・宣伝）に関する規制として正しいのはどれか。",
+    daily: "まだ取引できないのに、先に広告で集客していい？",
+    choices: [
+      "建築確認（けんちくかくにん：建ててよい確認）が不要な建物なら、未完成でも自由に広告できる。",
+      "開発許可（かいはつきょか：開発してよい許可）が必要な場合でも、許可前に広告してよい。",
+      "未完成物件でも、必要な許可等を得ていれば広告できる。",
+      "取引態様（とりひきたいよう：売主/代理/媒介などの立場）の表示は不要である。"
+    ],
+    a: 3,
+    exp: "未完成でも、必要な許可等が揃っていれば広告可。取引態様の表示は必要です。"
+  },
+  {
+    q: "【問11】標識（ひょうしき：看板）の掲示義務として正しいのはどれか。",
+    daily: "店に『宅建業者です』の看板、いる？",
+    choices: [
+      "事務所には標識を掲示する必要がある。",
+      "事務所には不要で、現地案内所にだけ必要である。",
+      "標識は掲示してもよいが義務ではない。",
+      "標識は免許番号（めんきょばんごう：許可番号）を記載してはならない。"
+    ],
+    a: 1,
+    exp: "事務所には標識掲示義務があります（内容も定めあり）。免許番号も記載対象です。"
+  },
+  {
+    q: "【問12】免許（めんきょ：宅建業の許可）について正しいのはどれか。",
+    daily: "営業する場所が1つか2つかで、どこが免許を出す？",
+    choices: [
+      "1つの都道府県内だけに事務所がある場合でも、必ず国土交通大臣免許である。",
+      "2つ以上の都道府県に事務所がある場合は、都道府県知事免許である。",
+      "1つの都道府県内だけなら都道府県知事免許、複数都道府県なら国土交通大臣免許。",
+      "免許は不要で、届出（とどけで：出すだけ）で足りる。"
+    ],
+    a: 3,
+    exp: "事務所が1都道府県＝知事免許、複数都道府県＝大臣免許です。"
+  },
+  {
+    q: "【問13】営業保証金（えいぎょうほしょうきん：トラブル時の弁済用の供託金）について正しいのはどれか。",
+    daily: "もしお客さんに損させた時の『弁済（べんさい：補償支払い）』のためのお金は？",
+    choices: [
+      "全ての宅建業者は必ず弁済業務保証金分担金（ぶんたんきん）を納付しなければならない。",
+      "保証協会（ほしょうきょうかい：協会）に加入しない業者は営業保証金を供託（きょうたく：預け入れ）する。",
+      "営業保証金は買主から預かる手付金をそのまま充当（じゅうとう：あてる）できる。",
+      "営業保証金は免許更新（めんきょこうしん：更新）ごとに全額返還（へんかん：返す）される。"
+    ],
+    a: 2,
+    exp: "保証協会に入らないなら営業保証金を供託します。協会に入るなら分担金です。"
+  },
+  {
+    q: "【問14】重要事項説明における『説明すべき相手』として正しいのはどれか。",
+    daily: "説明は誰にする？（買主本人だけ？）",
+    choices: [
+      "買主が法人（ほうじん：会社）の場合は説明不要である。",
+      "相手方（あいてがた：買主など）に対して説明する。",
+      "説明は売主に対してのみ行う。",
+      "相手方が説明不要と書面で言えば説明しなくてよい。"
+    ],
+    a: 2,
+    exp: "重要事項説明は取引の相手方に対して行います。法人でも不要にはなりません。"
+  },
+  {
+    q: "【問15】業者が『代理（だいり：代わりに契約する立場）』として取引する場合の表示として正しいのはどれか。",
+    daily: "自分が売主じゃなくて、代理や仲介なら、それを言わないとダメ？",
+    choices: [
+      "取引態様の表示義務はなく、聞かれたら答えればよい。",
+      "広告では取引態様を表示する必要がある。",
+      "取引態様は契約後にだけ伝えればよい。",
+      "取引態様の表示は賃貸にだけ必要で、売買は不要。"
+    ],
+    a: 2,
+    exp: "広告では取引態様（売主/代理/媒介）表示が必要です。"
+  },
+  {
+    q: "【問16】監督処分（かんとくしょぶん：行政の処分）について正しいのはどれか。",
+    daily: "ルール違反したら、行政からどんな処分がある？",
+    choices: [
+      "免許取消（めんきょとりけし）と業務停止（ぎょうむていし）などがある。",
+      "監督処分はなく、必ず刑罰（けいばつ：前科系）だけである。",
+      "監督処分は裁判所だけが出せる。",
+      "監督処分は買主の同意があれば避けられる。"
+    ],
+    a: 1,
+    exp: "行政処分として、指示処分・業務停止・免許取消などがあります。刑罰とは別枠です。"
+  },
+  {
+    q: "【問17】業者が自ら売主で、買主が宅建業者ではない場合の『契約不適合責任（けいやくふてきごうせきにん：契約内容と違う不具合の責任）』の特約（とくやく：特別ルール）について正しいのはどれか。",
+    daily: "業者売主の時、責任をゼロにする約束はできる？",
+    choices: [
+      "引渡しから2年未満で責任を免除する特約は無効となる。",
+      "引渡しから1か月で責任を免除する特約でも有効である。",
+      "期間の定めは不要で、免責（めんせき：責任なし）特約は常に有効である。",
+      "この規制は賃貸にだけ適用され、売買には適用されない。"
+    ],
+    a: 1,
+    exp: "業者売主の場合、買主保護として『引渡しから2年未満』に短縮する特約は無効となります。"
+  },
+  {
+    q: "【問18】宅地建物取引士証（たくちたてものとりひきししょう：取引士の身分証）提示（ていじ：見せる）について正しいのはどれか。",
+    daily: "取引士は、いつ『証明書』を見せる？",
+    choices: [
+      "重要事項説明をする取引士は、相手方から求められたら提示する。",
+      "重要事項説明をする取引士は、求められなくても提示する必要がある。",
+      "提示義務はなく、名刺があれば足りる。",
+      "提示義務は契約後のみ発生する。"
+    ],
+    a: 2,
+    exp: "重要事項説明時は、取引士証の提示が必要です（求められなくても）。"
+  },
+  {
+    q: "【問19】媒介報酬の受領時期について正しいのはどれか（売買の媒介）。",
+    daily: "仲介手数料って、いつでも好きな時にもらえる？",
+    choices: [
+      "契約が成立していなくても、業務に着手しただけで全額受領できる。",
+      "原則として、契約成立により報酬請求権（ほうしゅうせいきゅうけん：請求できる権利）が発生する。",
+      "引渡しが終わるまで、報酬を一切受領できない。",
+      "報酬は必ず売主からのみ受領する。"
+    ],
+    a: 2,
+    exp: "媒介報酬は原則として『契約成立』が基準で請求権が発生します。売主・買主双方から（上限内で）受領する形もあります。"
+  },
+  {
+    q: "【問20】重要事項説明における『説明方法』として正しいのはどれか。",
+    daily: "説明って、紙を渡して読ませるだけでいい？",
+    choices: [
+      "35条書面を交付すれば、説明は不要である。",
+      "口頭説明だけでよく、書面交付は不要である。",
+      "35条書面を交付し、取引士が説明する必要がある。",
+      "説明は宅建業者の代表者だけが行える。"
+    ],
+    a: 3,
+    exp: "書面交付＋取引士による説明が必要です。代表者限定ではありません（取引士が行う）。"
+  }
+];
+
+// ---------- UI生成 ----------
+const root = document.getElementById("questions");
+
+function render(){
+  root.innerHTML = "";
+  const saved = loadState();
+
+  data.forEach((item, idx) => {
+    const qn = idx + 1;
+    const box = document.createElement("div");
+    box.className = "box";
+    box.id = "q" + qn;
+
+    const head = document.createElement("div");
+    head.className = "qhead";
+    head.innerHTML = `<div><div class="qno">Q${qn}</div></div><div class="tag">上B</div>`;
+    box.appendChild(head);
+
+    const qtext = document.createElement("div");
+    qtext.className = "qtext";
+    qtext.innerHTML = `<div>${escapeHtml(item.q)}</div>
+      <details><summary>日常会話の言い換え</summary><div class="muted" style="margin-top:6px;">${escapeHtml(item.daily)}</div></details>`;
+    box.appendChild(qtext);
+
+    const choices = document.createElement("div");
+    choices.className = "choices";
+
+    for(let c=1;c<=4;c++){
+      const lab = document.createElement("label");
+      const checked = saved.answers[qn] === c ? "checked" : "";
+      lab.innerHTML = `<input type="radio" name="q${qn}" value="${c}" ${checked} onchange="savePick(${qn},${c})" />
+        <b>${c}.</b> ${escapeHtml(item.choices[c-1])}`;
+      choices.appendChild(lab);
+    }
+    box.appendChild(choices);
+
+    const res = document.createElement("div");
+    res.className = "result muted";
+    res.id = "res" + qn;
+    res.textContent = "未採点";
+    box.appendChild(res);
+
+    root.appendChild(box);
+  });
+
+  document.getElementById("ansText").value = saved.serial || "";
+}
+render();
+
+// ---------- 保存 ----------
+function loadState(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return {answers:{}, serial:""};
+    const obj = JSON.parse(raw);
+    if(!obj.answers) obj.answers = {};
+    if(!obj.serial) obj.serial = "";
+    return obj;
+  }catch(e){
+    return {answers:{}, serial:""};
+  }
+}
+function saveState(state){
+  localStorage.setItem(KEY, JSON.stringify(state));
+}
+function savePick(qn, choice){
+  const state = loadState();
+  state.answers[qn] = choice; // 1..4
+  state.serial = serializeAnswers(state.answers);
+  saveState(state);
+  document.getElementById("ansText").value = state.serial;
+}
+
+// ---------- 採点 ----------
+function grade(){
+  const state = loadState();
+  let correct = 0;
+  let answered = 0;
+
+  data.forEach((item, idx) => {
+    const qn = idx + 1;
+    const pick = state.answers[qn]; // 1..4 or undefined
+    const res = document.getElementById("res"+qn);
+
+    if(pick){
+      answered++;
+      if(pick === item.a){
+        correct++;
+        res.className = "result ok";
+        res.innerHTML = `<b>正解</b>（あなた：${pick}／正解：${item.a}）<div style="margin-top:6px;">${escapeHtml(item.exp)}</div>`;
+      }else{
+        res.className = "result ng";
+        res.innerHTML = `<b>不正解</b>（あなた：${pick}／正解：${item.a}）<div style="margin-top:6px;">${escapeHtml(item.exp)}</div>`;
+      }
+    }else{
+      res.className = "result muted";
+      res.textContent = "未回答";
+    }
+  });
+
+  document.getElementById("score").textContent = `${correct} / ${data.length}（回答 ${answered}問）`;
+}
+
+// ---------- コピー / 復元 ----------
+function serializeAnswers(ansObj){
+  // 20問固定：未回答は0。形式：Q1〜Q20を並べて "103402..." 的に扱う
+  let s = "";
+  for(let i=1;i<=data.length;i++){
+    const v = ansObj[i] ? ansObj[i] : 0;
+    s += String(v);
+  }
+  return s;
+}
+function parseAnswers(serial){
+  // serial: 20桁（0..4）
+  const out = {};
+  const s = (serial || "").trim();
+  for(let i=1;i<=data.length;i++){
+    const ch = s[i-1];
+    const n = Number(ch);
+    if(n>=1 && n<=4) out[i] = n;
+  }
+  return out;
+}
+function copyAnswers(){
+  const state = loadState();
+  const serial = state.serial || serializeAnswers(state.answers);
+  document.getElementById("ansText").value = serial;
+
+  navigator.clipboard?.writeText(serial).then(()=>{}).catch(()=>{});
+}
+function restoreFromPaste(){
+  const text = document.getElementById("ansText").value.trim();
+  if(!text) return;
+
+  const ans = parseAnswers(text);
+  const state = {answers: ans, serial: text};
+  saveState(state);
+
+  // 画面反映：再描画
+  render();
+}
+function resetAll(){
+  localStorage.removeItem(KEY);
+  render();
+  document.getElementById("score").textContent = "未採点";
+}
+
+// ---------- util ----------
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+</script>
+</body>
+</html>
