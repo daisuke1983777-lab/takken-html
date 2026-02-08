@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>業法｜上A（重要論点ハード）20問</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --card:#ffffff;
+      --text:#111111;
+      --muted:#555555;
+      --line:#d7d7d7;
+      --ok:#0f7b3a;
+      --ng:#c81e1e;
+      --btn:#f3f4f6;
+      --btn2:#e5e7eb;
+      --accent:#2563eb;
+      --warn:#b45309;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+      background: var(--bg);
+      color:var(--text);
+    }
+    header{
+      padding:24px 16px 12px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    h1{
+      margin:0 0 6px;
+      font-size:20px;
+      letter-spacing:.02em;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:12px 16px 36px;
+    }
+    .panel{
+      background:rgba(255,255,255,.92);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      position:sticky;
+      top:0;
+      backdrop-filter: blur(8px);
+      z-index:10;
+    }
+    button{
+      border:1px solid var(--line);
+      background:var(--btn);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:800;
+      font-size:13px;
+    }
+    button:hover{ border-color:#9aa3b2; }
+    button.primary{ background: #eef2ff; border-color:var(--accent); }
+    button.danger{ background:#fff1f2; border-color:#fb7185; color:#9f1239;}
+    button.ghost{ background:var(--btn); }
+    .stat{
+      margin-left:auto;
+      display:flex;
+      gap:12px;
+      align-items:baseline;
+      flex-wrap:wrap;
+    }
+    .stat b{font-size:14px}
+    .stat span{color:var(--muted); font-size:13px}
+    .note{
+      width:100%;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+      margin-top:4px;
+    }
+
+    .restore{
+      margin-top:12px;
+      background:#fafafa;
+      border:1px dashed #9aa3b2;
+      border-radius:14px;
+      padding:12px;
+    }
+    .restore label{
+      display:block;
+      font-weight:800;
+      font-size:13px;
+      margin-bottom:6px;
+    }
+    textarea{
+      width:100%;
+      min-height:90px;
+      resize:vertical;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#ffffff;
+      color:var(--text);
+      padding:10px;
+      font-size:13px;
+      line-height:1.5;
+      outline:none;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr; /* PC=画像①の2カラム */
+      gap:14px;
+      margin-top:14px;
+    }
+    @media (max-width:980px){
+      .grid{ grid-template-columns:1fr; } /* スマホ=画像③の1カラム */
+      .stat{ margin-left:0; width:100%;}
+    }
+    .qcard{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+    }
+    .qhead{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+    .qid{ font-weight:900; letter-spacing:.02em; }
+    .tag{
+      font-size:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background:#f9fafb;
+      white-space:nowrap;
+    }
+    .blocktitle{
+      margin:10px 0 6px;
+      font-size:12px;
+      color:var(--muted);
+      letter-spacing:.04em;
+      font-weight:800;
+    }
+    .box{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      background:#fbfbfb;
+      line-height:1.7;
+      font-size:13px;
+    }
+    .choices{
+      margin-top:10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .choice{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      background:#ffffff;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      cursor:pointer;
+    }
+    .choice:hover{ border-color:#9aa3b2; }
+    .choice input{ margin-top:3px; transform:scale(1.1); }
+    .choice .cbody{ flex:1; }
+    .choice .clabel{ font-weight:900; margin-right:8px; color:#1f2937; }
+    .result{
+      margin-top:10px;
+      border-radius:14px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      background:#fafafa;
+      display:none;
+    }
+    .result.ok{ border-color:rgba(15,123,58,.45); background:rgba(15,123,58,.07); }
+    .result.ng{ border-color:rgba(200,30,30,.45); background:rgba(200,30,30,.06); }
+    .result .line1{ font-weight:900; margin-bottom:6px; }
+    .result .small{ color:var(--muted); font-size:12px; line-height:1.7; }
+    .muted{ color:var(--muted); }
+    .pill{
+      display:inline-block;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      font-size:12px;
+      color:var(--muted);
+      margin-left:8px;
+      background:#fff;
+    }
+    .warn{ color:var(--warn); font-weight:900; }
+    .foot{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>業法｜上A（重要論点ハード）20問</h1>
+    <p class="sub">
+      表示順は固定：問題文（試験風）→ 日常の言い換え → 選択肢。<br/>
+      1問1択。採点後にだけ「正解＋ピンポイント解説」を表示。<br/>
+      「回答をコピー」→ 文字列をメモ → 消えても「回答を貼って復元」で戻せます。端末内保存（localStorage）対応。
+    </p>
+  </header>
+
+  <div class="wrap">
+    <div class="panel">
+      <button class="primary" id="btnScore">採点する</button>
+      <button class="ghost" id="btnShowExp">解説を表示</button>
+      <button class="ghost" id="btnCopy">回答をコピー</button>
+      <button class="ghost" id="btnSave">回答を保存</button>
+      <button class="ghost" id="btnRestore">回答を貼って復元</button>
+      <button class="danger" id="btnReset">リセット</button>
+
+      <div class="stat">
+        <b id="statText">合計：20問中 0 正解（未採点）</b>
+        <span id="statSub">未回答：20 / 20</span>
+      </div>
+
+      <div class="note">
+        ※解説は「採点」後にだけ表示されます。<br/>
+        ※「保存」はこの端末のブラウザ内です（ログイン不要・他端末には移りません）。
+      </div>
+    </div>
+
+    <div class="restore">
+      <label>復元用（必要なときだけ）</label>
+      <textarea id="restoreBox" placeholder="ここに『回答をコピー』で出た文字列を貼ってから『回答を貼って復元』"></textarea>
+      <div class="foot">※この欄は普段は使いません（事故の保険）。</div>
+    </div>
+
+    <div class="grid" id="qGrid"></div>
+
+    <div class="foot">
+      ※上Aは「文章長め・条件多め・ひっかけ」多め。<br/>
+      迷ったら、まず「誰が義務者か（業者か・売主か・媒介か）」「いつのタイミングか（契約前/後/引渡し前/後）」「書面か口頭か（書面が必要）」を先に見る。
+    </div>
+  </div>
+
+<script>
+(function(){
+  // ====== 問題データ（業法 上A）======
+  // ルール：専門語は直後に（日本語言い換え）
+  const questions = [
+    {
+      id: 1,
+      tag: "35条（重要事項説明）",
+      stem: "宅地建物取引業者A（媒介業者（間に入る業者））が、買主Bに対し重要事項説明（35条説明（契約前に重要点を説明））を行うにあたり、宅地建物取引士（宅建士（資格者））ではない従業者が説明を行い、宅建士は説明書面（35条書面（重要事項の書面））にのみ記名（名前を書く）した。Aの取扱いとして最も適切なものはどれか。",
+      daily: "契約前の大事な説明を、資格なしスタッフがしゃべって、宅建士は書面に名前だけ書いた。これ、許される？",
+      choices: [
+        "適切である。宅建士が書面に記名していれば、説明は資格なしでもよい。",
+        "不適切である。35条説明は、宅建士が説明（しゃべる）し、かつ書面に記名しなければならない。",
+        "適切である。35条説明は、買主が希望すれば資格なしでもよく、希望がなければ宅建士が行う。",
+        "不適切である。35条説明は書面交付が不要で、口頭だけでよい。"
+      ],
+      answer: 1,
+      exp: "35条説明（重要事項説明）は、宅建士が説明（実際に説明する）し、35条書面にも宅建士が記名するのが原則。資格なし従業者のみの説明はNG。"
+    },
+    {
+      id: 2,
+      tag: "37条（契約書面）",
+      stem: "宅建業者Aが媒介（仲介）した売買契約について、売主・買主が契約を締結した後、Aが37条書面（契約内容の書面）を作成し、宅建士の記名（名前を書く）を付したうえで、買主にのみ交付した。この取扱いとして最も適切なものはどれか。",
+      daily: "契約後の『約束内容まとめの紙』を、買主にだけ渡した。売主には渡してない。これOK？",
+      choices: [
+        "適切である。媒介業者の37条書面は買主に交付すれば足りる。",
+        "不適切である。媒介業者は、売主・買主の双方に37条書面を交付する必要がある。",
+        "適切である。売主が宅建業者なら売主への交付は不要である。",
+        "不適切である。37条書面は宅建士の記名が不要である。"
+      ],
+      answer: 1,
+      exp: "媒介（仲介）の場合、宅建業者は売主・買主の双方に37条書面を交付する必要がある（双方に交付）。"
+    },
+    {
+      id: 3,
+      tag: "クーリング・オフ（8日）",
+      stem: "宅建業者A（売主（業者が売る側））が、自社事務所ではない場所（例：買主宅（家））で買主Bと売買契約を締結した。AはBに対しクーリング・オフ（一定期間の無条件解除）について書面で告げたが、Bは契約締結の日から10日目に解除の意思表示（解除します）をした。最も適切なものはどれか。",
+      daily: "家で契約して、紙でクーリングオフ説明もされた。でも10日目にやっぱやめるって言った。通る？",
+      choices: [
+        "解除できる。契約場所が事務所以外なら、期間に関係なく解除できる。",
+        "解除できない。書面で告げられた日から8日を経過しているため。",
+        "解除できる。買主宅で契約した場合は14日間であるため。",
+        "解除できない。売買契約はクーリング・オフの対象外である。"
+      ],
+      answer: 1,
+      exp: "クーリング・オフは、原則「書面で告げられた日から8日以内」。10日目は期間経過で不可。"
+    },
+    {
+      id: 4,
+      tag: "媒介契約（専任の報告義務）",
+      stem: "専任媒介契約（1社に任せる媒介）を締結した宅建業者Aは、依頼者に対し業務処理状況の報告（どこまで進んだか報告）を行う義務がある。報告頻度として最も適切なものはどれか（原則）。",
+      daily: "専任で任せたら、業者は『今どうなってるか』を定期的に報告せなあかん。どれくらい？",
+      choices: [
+        "少なくとも週1回以上",
+        "少なくとも2週間に1回以上",
+        "少なくとも1か月に1回以上",
+        "報告義務はなく、求められた時だけでよい"
+      ],
+      answer: 1,
+      exp: "専任媒介は「2週間に1回以上」報告義務。専属専任は「1週間に1回以上」。"
+    },
+    {
+      id: 5,
+      tag: "媒介契約（専属専任の自己発見取引）",
+      stem: "専属専任媒介契約（最も縛りが強い媒介）を締結した依頼者（売主）が、自ら買主を見つけ（自己発見（自分で見つける））、宅建業者を介さずに売買契約を締結した。この取扱いとして最も適切なものはどれか（原則）。",
+      daily: "専属専任で頼んだのに、自分で買主見つけて直接売った。これは許される？",
+      choices: [
+        "許される。専属専任でも自己発見取引（自分で見つけた相手に売る）は常に自由。",
+        "許されない。専属専任では自己発見取引が禁止される。",
+        "許されるが、媒介業者への通知義務（知らせる義務）はない。",
+        "許されないが、違反しても媒介業者は報酬請求できない。"
+      ],
+      answer: 1,
+      exp: "専属専任媒介は、依頼者が自分で見つけた相手と直接契約すること（自己発見取引）が原則できない（縛りが強い）。"
+    },
+    {
+      id: 6,
+      tag: "報酬（媒介の上限）",
+      stem: "宅建業者Aが媒介（仲介）で売買（代金4,000万円）の契約を成立させた場合、Aが受け取れる報酬（仲介手数料）の上限（法定上限（法律上の上限））として最も適切なものはどれか（消費税等は考慮しない）。",
+      daily: "仲介で4,000万の売買を成立させた。上限いくら？（税抜き）",
+      choices: [
+        "120万円",
+        "126万円",
+        "132万円",
+        "138万円"
+      ],
+      answer: 2,
+      exp: "売買価格4,000万円は「400万円超」の計算：価格×3%＋6万円。4,000万×0.03=120万、＋6万＝126万…ではなく、ここは“税抜”で126万が一見正解に見えるが、設問は『媒介』で“片手”か“両手”かを聞いていない。上限の基本は1当事者からの上限＝126万。選択肢に126万があるので本来それが正解になりやすい。だが本問は“消費税等考慮しない”とだけ書き、上限計算の基本を問う。よって正解は126万が自然…に見えるが、ここは上Aとして「税込みで132万」を混ぜる罠を排除するため、税抜の126万を正解にするべき。――のところを、あえて“上Aのひっかけ”として、選択肢の126万が『税込みなし』で正解に見える一方、問題文に『消費税等は考慮しない』が明示されているため、正解は126万。"
+    }
+  ];
+
+  // Q6の解説が長くなりすぎるため、上Aでも“最小”に修正（テンプレ改変なし：データのみ差し替え）
+  questions[5].answer = 1;
+  questions[5].exp = "400万円超は「価格×3%＋6万円」（税抜）。4,000万円→120万円＋6万円＝126万円。";
+
+  // 残りの問題（7〜20）
+  questions.push(
+    {
+      id: 7,
+      tag: "8種制限（自己取引・手付等）",
+      stem: "宅建業者A（売主）が自ら売主となる宅地売買で、買主Bから受領できる手付金等（手付と同じ扱いの金）の上限（法定上限）として最も適切なものはどれか（原則）。",
+      daily: "業者が売主のとき、手付は取りすぎ禁止。上限は？",
+      choices: [
+        "売買代金の10%以内",
+        "売買代金の20%以内",
+        "売買代金の30%以内",
+        "当事者の合意で自由"
+      ],
+      answer: 1,
+      exp: "業者売主の手付金等は原則「代金の2割（20%）以内」。"
+    },
+    {
+      id: 8,
+      tag: "手付金等の保全（完成/未完成）",
+      stem: "宅建業者A（売主）が未完成物件（まだ完成していない物件）を自ら売主として販売する場合、手付金等の保全措置（買主の金を守る仕組み）が必要となる基準として最も適切なものはどれか（原則）。",
+      daily: "未完成のときは危ない。どこを超えると“保全しろ”になる？",
+      choices: [
+        "受領額が売買代金の5%または1,000万円を超えるとき",
+        "受領額が売買代金の10%または1,000万円を超えるとき",
+        "受領額が売買代金の20%を超えるとき",
+        "未完成は金額に関係なく常に保全が必要"
+      ],
+      answer: 0,
+      exp: "未完成は「5%または1,000万円超」で保全義務が発生。"
+    },
+    {
+      id: 9,
+      tag: "手付金等の保全（完成）",
+      stem: "宅建業者A（売主）が完成物件（すでに完成している物件）を自ら売主として販売する場合、手付金等の保全措置が必要となる基準として最も適切なものはどれか（原則）。",
+      daily: "完成してる場合は条件が少し違う。どこを超えると保全？",
+      choices: [
+        "受領額が売買代金の5%または1,000万円を超えるとき",
+        "受領額が売買代金の10%または1,000万円を超えるとき",
+        "受領額が売買代金の20%を超えるとき",
+        "完成物件は常に保全不要"
+      ],
+      answer: 1,
+      exp: "完成は「10%または1,000万円超」で保全義務が発生。"
+    },
+    {
+      id: 10,
+      tag: "広告規制（取引態様の明示）",
+      stem: "宅建業者Aが広告（チラシ・ネット等）を行う場合に明示すべき事項（取引態様（自分が売主/媒介などの立場））に関する説明として最も適切なものはどれか。",
+      daily: "広告で『自社が何の立場か』を隠すのはダメ。どれが正しい？",
+      choices: [
+        "広告では取引態様の表示は任意で、問い合わせがあった場合にだけ説明すればよい。",
+        "広告では取引態様を明示する必要があり、売主・代理・媒介などを表示する。",
+        "取引態様の表示が必要なのは、契約締結後のみである。",
+        "取引態様は35条説明で言えば足り、広告には不要である。"
+      ],
+      answer: 1,
+      exp: "広告には取引態様（売主・代理・媒介等）の明示が必要。"
+    },
+    {
+      id: 11,
+      tag: "誇大広告等の禁止",
+      stem: "宅建業者Aの広告について、誇大広告（大げさで誤解させる広告）等の規制として最も適切なものはどれか。",
+      daily: "『絶対に儲かる』『確実』みたいな誤解させる広告はNG。どれが正しい？",
+      choices: [
+        "将来の値上がりを断定（絶対上がると言い切る）する広告は、誇大広告として禁止される。",
+        "広告は契約前の段階なので、誇大広告の規制は適用されない。",
+        "誇大広告は宅建業者が売主のときだけ禁止され、媒介では許される。",
+        "誇大広告は禁止ではなく、注意書きを小さく入れれば常に許される。"
+      ],
+      answer: 0,
+      exp: "断定的判断（絶対・確実など）をさせる広告は誇大広告等として禁止。"
+    },
+    {
+      id: 12,
+      tag: "従業者証明書",
+      stem: "宅建業者Aの従業者Bが、宅地建物取引業に関し取引の相手方（客）と面談（会って話す）をする場合、従業者証明書（従業者である証明）の携帯・提示について最も適切なものはどれか。",
+      daily: "店で客と話すとき、従業者証明書ってどうする？",
+      choices: [
+        "携帯義務はなく、求められたら口頭で名乗れば足りる。",
+        "携帯し、相手方から求められたときは提示しなければならない。",
+        "携帯・提示義務があるのは宅建士だけで、一般従業者は不要。",
+        "提示は必要だが携帯は不要である（会社に置いておけばよい）。"
+      ],
+      answer: 1,
+      exp: "従業者証明書は携帯が必要。求められたら提示義務。"
+    },
+    {
+      id: 13,
+      tag: "免許（更新・換え）",
+      stem: "宅建業者Aが、事務所（営業所）を別の都道府県へ移転し、免許権者（免許を出す役所）が変わる場合の手続として最も適切なものはどれか。",
+      daily: "店を県またぐ移転した。免許はどうなる？",
+      choices: [
+        "免許はそのまま有効で、手続は不要である。",
+        "免許換え（免許権者が変わるので取り直し）の申請が必要である。",
+        "更新（5年ごとの更新）だけすればよい。",
+        "変更届（住所変更の届け）だけで足りる。"
+      ],
+      answer: 1,
+      exp: "免許権者が変わる移転は「免許換え」が必要。"
+    },
+    {
+      id: 14,
+      tag: "名義貸し（禁止）",
+      stem: "宅建業の免許を持つAが、免許のないBに対し、自己の名義（免許名義）を貸して宅建業を営ませた（名義貸し（名義を貸す））。この取扱いとして最も適切なものはどれか。",
+      daily: "免許持ってる人が、免許ない人に『名前だけ使っていいよ』ってやつ。どうなる？",
+      choices: [
+        "許される。実際の取引が適正なら名義貸しは問題にならない。",
+        "許されない。名義貸しは禁止であり、監督処分等の対象となる。",
+        "許される。名義貸しは親族間なら例外として許される。",
+        "許されないが、罰則はなく行政指導だけである。"
+      ],
+      answer: 1,
+      exp: "名義貸しは禁止。監督処分や罰則の対象。"
+    },
+    {
+      id: 15,
+      tag: "保証協会（弁済業務保証金）",
+      stem: "宅建業者Aが保証協会（保証をする団体）に加入している場合、取引相手方が損害の弁済（お金で埋め合わせ）を受ける仕組みとして最も適切なものはどれか。",
+      daily: "保証協会に入ってる業者でトラブルになったとき、客はどこから金を受け取る仕組み？",
+      choices: [
+        "営業保証金（国に積む金）から直接弁済を受ける。",
+        "弁済業務保証金（保証協会が積む金）から弁済を受ける。",
+        "保証協会加入の有無に関係なく、国が全額立替する。",
+        "宅建士が個人で賠償する制度である。"
+      ],
+      answer: 1,
+      exp: "保証協会加入業者は、原則として「弁済業務保証金」制度で相手方保護が図られる。"
+    },
+    {
+      id: 16,
+      tag: "37条（記載事項）",
+      stem: "37条書面（契約内容の書面）に記載すべき事項として、最も適切なものはどれか。",
+      daily: "契約後の『約束まとめ紙』に何を書く？",
+      choices: [
+        "当事者の氏名・目的物・代金・支払時期など契約の重要内容を記載する。",
+        "重要事項説明の全項目（35条の内容）をそのまま転記しなければならない。",
+        "広告のキャッチコピー（宣伝文句）を記載しなければならない。",
+        "媒介報酬の上限計算式を必ず記載しなければならない。"
+      ],
+      answer: 0,
+      exp: "37条書面は契約内容（目的物・代金・支払時期・引渡時期など）を明確化するための書面。"
+    },
+    {
+      id: 17,
+      tag: "自ら売主（8種制限：損害賠償予定）",
+      stem: "宅建業者A（売主）が自ら売主となる宅地売買において、損害賠償の予定（違反したらいくら払うと先に決める）および違約金（約束違反のペナルティ）の合計額の上限として最も適切なものはどれか（原則）。",
+      daily: "業者売主で、違反したら『違約金○円』みたいな取り決め。取りすぎ上限は？",
+      choices: [
+        "売買代金の10%以内",
+        "売買代金の20%以内",
+        "売買代金の30%以内",
+        "上限なし（当事者の合意で自由）"
+      ],
+      answer: 1,
+      exp: "8種制限：損害賠償予定・違約金の合計は「代金の2割（20%）以内」。"
+    },
+    {
+      id: 18,
+      tag: "媒介契約（一般媒介の明示）",
+      stem: "一般媒介契約（複数社に頼める媒介）について、明示（書面で示す）しなければならない事項として最も適切なものはどれか（原則）。",
+      daily: "一般媒介って、複数社に頼めるやつ。何をはっきり書面で決める必要がある？",
+      choices: [
+        "専属専任媒介である旨",
+        "指定流通機構（レインズ（物件情報の機構））への登録義務",
+        "明示型（他にも依頼してる業者名を知らせる型）か非明示型か",
+        "報告頻度（1週間に1回以上）"
+      ],
+      answer: 2,
+      exp: "一般媒介は「明示型/非明示型」を明示する（他業者名を知らせるかどうか）。"
+    },
+    {
+      id: 19,
+      tag: "監督処分（指示・業務停止等）",
+      stem: "宅建業者Aが法令違反をした場合の監督処分（行政処分）について、最も適切なものはどれか。",
+      daily: "違反した業者に対して、役所ができる処分の話。どれが正しい？",
+      choices: [
+        "監督処分は必ず免許取消のみで、業務停止などはない。",
+        "監督処分には指示処分（こうしろ）や業務停止処分（一定期間止める）などがある。",
+        "監督処分は刑事罰と同じで、裁判所が決める。",
+        "監督処分は買主の同意がなければ出せない。"
+      ],
+      answer: 1,
+      exp: "監督処分には指示・業務停止・免許取消などがある。行政処分。"
+    },
+    {
+      id: 20,
+      tag: "取引士証（提示）",
+      stem: "宅建士が重要事項説明（35条説明）を行う際の、宅地建物取引士証（取引士の身分証）の提示について、最も適切なものはどれか。",
+      daily: "宅建士が35条説明するとき、身分証はどうする？",
+      choices: [
+        "提示は不要で、名刺を渡せば足りる。",
+        "相手方から求められたときだけ提示すればよい。",
+        "相手方の請求がなくても、必ず提示しなければならない。",
+        "提示は契約締結後に一度だけ行えばよい。"
+      ],
+      answer: 2,
+      exp: "宅建士が35条説明をするときは、相手方の請求がなくても取引士証の提示が必要。"
+    }
+  );
+
+  // ====== DOM生成 ======
+  const qGrid = document.getElementById("qGrid");
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  function makeCard(q){
+    const card = document.createElement("div");
+    card.className = "qcard";
+    card.id = `q${q.id}`;
+
+    const head = document.createElement("div");
+    head.className = "qhead";
+    head.innerHTML = `<div class="qid">Q${q.id}</div><div class="tag">${esc(q.tag)}</div>`;
+    card.appendChild(head);
+
+    const bt1 = document.createElement("div");
+    bt1.className = "blocktitle";
+    bt1.textContent = "【問題文（試験風）】";
+    card.appendChild(bt1);
+
+    const b1 = document.createElement("div");
+    b1.className = "box";
+    b1.textContent = q.stem;
+    card.appendChild(b1);
+
+    const bt2 = document.createElement("div");
+    bt2.className = "blocktitle";
+    bt2.textContent = "【日常の言い換え】";
+    card.appendChild(bt2);
+
+    const b2 = document.createElement("div");
+    b2.className = "box";
+    b2.textContent = q.daily;
+    card.appendChild(b2);
+
+    const bt3 = document.createElement("div");
+    bt3.className = "blocktitle";
+    bt3.textContent = "【選択肢】（1つ選ぶ）";
+    card.appendChild(bt3);
+
+    const choices = document.createElement("div");
+    choices.className = "choices";
+
+    q.choices.forEach((c, idx) => {
+      const label = String.fromCharCode(65 + idx); // A,B,C,D
+      const row = document.createElement("label");
+      row.className = "choice";
+      row.innerHTML = `
+        <input type="radio" name="q_${q.id}" value="${idx}" />
+        <div class="cbody">
+          <span class="clabel">${label}</span>
+          <span>${esc(c)}</span>
+        </div>
+      `;
+      choices.appendChild(row);
+    });
+    card.appendChild(choices);
+
+    const res = document.createElement("div");
+    res.className = "result";
+    res.id = `res_${q.id}`;
+    res.innerHTML = `
+      <div class="line1"></div>
+      <div class="small"></div>
+    `;
+    card.appendChild(res);
+
+    return card;
+  }
+
+  questions.forEach(q => qGrid.appendChild(makeCard(q)));
+
+  // ====== 状態管理 ======
+  const KEY_SAVE = "takkenset_gyoho_joA_20_v1";
+  let scored = false;
+
+  function getSelected(qid){
+    const el = document.querySelector(`input[name="q_${qid}"]:checked`);
+    return el ? Number(el.value) : null;
+  }
+  function setSelected(qid, val){
+    const el = document.querySelector(`input[name="q_${qid}"][value="${val}"]`);
+    if(el) el.checked = true;
+  }
+  function clearSelected(qid){
+    const els = document.querySelectorAll(`input[name="q_${qid}"]`);
+    els.forEach(e => e.checked = false);
+  }
+
+  function countUnanswered(){
+    let n = 0;
+    questions.forEach(q => { if(getSelected(q.id) === null) n++; });
+    return n;
+  }
+
+  function updateStats(){
+    const unanswered = countUnanswered();
+    document.getElementById("statSub").textContent = `未回答：${unanswered} / ${questions.length}`;
+    if(!scored){
+      document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+    }
+  }
+
+  function score(){
+    let correct = 0;
+    questions.forEach(q => {
+      const sel = getSelected(q.id);
+      const res = document.getElementById(`res_${q.id}`);
+      const line1 = res.querySelector(".line1");
+      const small = res.querySelector(".small");
+
+      res.style.display = "block";
+
+      if(sel === null){
+        res.classList.remove("ok","ng");
+        res.classList.add("ng");
+        line1.innerHTML = `未回答 <span class="pill">正解：${String.fromCharCode(65+q.answer)}</span>`;
+        small.textContent = "採点後に解説を表示できます。まずはどれか1つ選んでください。";
+        return;
+      }
+
+      if(sel === q.answer){
+        correct++;
+        res.classList.remove("ng");
+        res.classList.add("ok");
+        line1.innerHTML = `正解 <span class="pill">あなた：${String.fromCharCode(65+sel)}</span>`;
+      }else{
+        res.classList.remove("ok");
+        res.classList.add("ng");
+        line1.innerHTML = `不正解 <span class="pill">あなた：${String.fromCharCode(65+sel)}</span> <span class="pill">正解：${String.fromCharCode(65+q.answer)}</span>`;
+      }
+      small.textContent = "（解説は『解説を表示』で表示）";
+    });
+
+    scored = true;
+    document.getElementById("statText").textContent = `合計：${questions.length}問中 ${correct} 正解（採点済）`;
+    updateStats();
+    return correct;
+  }
+
+  function showExplanations(){
+    if(!scored){
+      alert("先に『採点する』を押してください。");
+      return;
+    }
+    questions.forEach(q => {
+      const res = document.getElementById(`res_${q.id}`);
+      const sel = getSelected(q.id);
+      const small = res.querySelector(".small");
+      const ansLabel = String.fromCharCode(65+q.answer);
+      const yourLabel = (sel===null) ? "未回答" : String.fromCharCode(65+sel);
+      small.innerHTML =
+        `<div class="muted">正解：<b>${ansLabel}</b> ／ あなた：<b>${esc(yourLabel)}</b></div>` +
+        `<div style="margin-top:6px;line-height:1.7">${esc(q.exp)}</div>`;
+    });
+  }
+
+  function buildAnswerString(){
+    const parts = questions.map(q => {
+      const sel = getSelected(q.id);
+      return `${q.id}=${sel===null ? "x" : sel}`;
+    });
+    return `v1|${parts.join(",")}`;
+  }
+
+  function applyAnswerString(str){
+    const s = (str||"").trim();
+    if(!s.startsWith("v1|")) throw new Error("形式が違います（v1|...）");
+    const body = s.slice(3);
+    const kvs = body.split(",").map(x => x.trim()).filter(Boolean);
+
+    questions.forEach(q => clearSelected(q.id));
+
+    kvs.forEach(kv => {
+      const [k,v] = kv.split("=");
+      const qid = Number(k);
+      if(!Number.isFinite(qid)) return;
+      const q = questions.find(x => x.id === qid);
+      if(!q) return;
+      if(v === "x") return;
+      const val = Number(v);
+      if(Number.isFinite(val) && val >= 0 && val < 4){
+        setSelected(qid, val);
+      }
+    });
+
+    scored = false;
+    questions.forEach(q => {
+      const res = document.getElementById(`res_${q.id}`);
+      res.style.display = "none";
+      res.classList.remove("ok","ng");
+      res.querySelector(".line1").textContent = "";
+      res.querySelector(".small").textContent = "";
+    });
+    updateStats();
+    document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+  }
+
+  function saveLocal(){
+    const payload = { v: 1, ts: Date.now(), ans: buildAnswerString() };
+    localStorage.setItem(KEY_SAVE, JSON.stringify(payload));
+  }
+  function loadLocal(){
+    const raw = localStorage.getItem(KEY_SAVE);
+    if(!raw) return null;
+    try{
+      const obj = JSON.parse(raw);
+      if(!obj || !obj.ans) return null;
+      return obj.ans;
+    }catch(e){ return null; }
+  }
+
+  function resetAll(){
+    if(!confirm("全回答をリセットします。よろしいですか？")) return;
+    questions.forEach(q => clearSelected(q.id));
+    scored = false;
+    questions.forEach(q => {
+      const res = document.getElementById(`res_${q.id}`);
+      res.style.display = "none";
+      res.classList.remove("ok","ng");
+      res.querySelector(".line1").textContent = "";
+      res.querySelector(".small").textContent = "";
+    });
+    localStorage.removeItem(KEY_SAVE);
+    document.getElementById("restoreBox").value = "";
+    updateStats();
+    document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+  }
+
+  // ====== イベント ======
+  document.getElementById("btnScore").addEventListener("click", () => {
+    const unanswered = countUnanswered();
+    if(unanswered === questions.length){
+      if(!confirm("まだ1問も選ばれていません。採点すると未回答が多く出ますが続けますか？")) return;
+    }
+    score();
+  });
+
+  document.getElementById("btnShowExp").addEventListener("click", () => {
+    showExplanations();
+  });
+
+  document.getElementById("btnCopy").addEventListener("click", async () => {
+    const s = buildAnswerString();
+    try{
+      await navigator.clipboard.writeText(s);
+      alert("回答をコピーしました。メモに貼って保存できます。");
+    }catch(e){
+      document.getElementById("restoreBox").value = s;
+      alert("クリップボードにコピーできなかったため、復元欄に入れました。手動でコピーしてください。");
+    }
+  });
+
+  document.getElementById("btnSave").addEventListener("click", () => {
+    saveLocal();
+    alert("端末内に保存しました。");
+  });
+
+  document.getElementById("btnRestore").addEventListener("click", () => {
+    const s = document.getElementById("restoreBox").value;
+    try{
+      applyAnswerString(s);
+      alert("復元しました（未採点状態に戻しました）。");
+    }catch(e){
+      alert("復元に失敗しました： " + e.message);
+    }
+  });
+
+  document.getElementById("btnReset").addEventListener("click", () => {
+    resetAll();
+  });
+
+  document.addEventListener("change", (ev) => {
+    if(ev.target && ev.target.matches('input[type="radio"]')){
+      updateStats();
+      if(scored){
+        scored = false;
+        document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+        questions.forEach(q => {
+          const res = document.getElementById(`res_${q.id}`);
+          if(res.style.display === "block"){
+            res.querySelector(".small").innerHTML = `<span class="warn">※回答が変更されたため、再度『採点する』が必要です。</span>`;
+          }
+        });
+      }
+    }
+  });
+
+  const saved = loadLocal();
+  if(saved){
+    document.getElementById("restoreBox").value = saved;
+  }
+
+  updateStats();
+})();
+</script>
+</body>
+</html>
