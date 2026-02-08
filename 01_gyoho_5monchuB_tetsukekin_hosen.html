@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>業法_中B｜手付金等の保全（理解確認）</title>
+<style>
+body{
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  background:#ffffff;
+  color:#000;
+  margin:0;
+  padding:20px;
+}
+h1{font-size:20px;margin-bottom:5px}
+.sub{font-size:13px;color:#555;margin-bottom:15px}
+.panel button{
+  margin-right:6px;
+  padding:6px 10px;
+}
+.q{
+  border:1px solid #ccc;
+  padding:15px;
+  margin-bottom:20px;
+}
+.q h2{font-size:16px;margin:0 0 8px}
+.box{
+  background:#f7f7f7;
+  padding:10px;
+  margin:6px 0;
+}
+.choice label{
+  display:block;
+  margin:5px 0;
+}
+.result{
+  display:none;
+  margin-top:8px;
+  padding:8px;
+  border-top:1px dashed #aaa;
+}
+.correct{color:green}
+.wrong{color:red}
+</style>
+</head>
+<body>
+
+<h1>業法_中B｜手付金等の保全</h1>
+<p class="sub">
+①問題文 → ②日常解釈 → ③選択肢。<br>
+採点後にのみ解説が表示されます。
+</p>
+
+<button onclick="score()">採点</button>
+<button onclick="save()">回答を保存</button>
+<button onclick="restore()">回答を復元</button>
+
+<hr>
+
+<div id="questions"></div>
+
+<script>
+const data = [
+{
+q:"【問題文】宅建業者が自ら売主となる宅地の売買において、未完成物件で買主から手付金等を受領する場合、保全措置が必要となる基準として正しいものはどれか。",
+d:"建物がまだ出来てない状態で、先にお金をもらうとき。どこを超えたら“保全せなアカン”んやった？",
+c:[
+"売買代金の10％または1,000万円を超えた場合",
+"売買代金の5％または1,000万円を超えた場合",
+"売買代金の20％を超えた場合",
+"金額にかかわらず常に必要"
+],
+a:1,
+e:"未完成物件はリスクが高いため、売買代金の5％または1,000万円を超えると保全義務が生じる。"
+},
+{
+q:"【問題文】完成物件の売買において、宅建業者が自ら売主となる場合、手付金等の保全措置について正しいものはどれか。",
+d:"建物がもう完成してる場合。全部自己責任になるんか？",
+c:[
+"完成物件では常に保全措置が不要である",
+"売買代金の10％以下かつ1,000万円以下であれば保全は不要である",
+"売買代金の5％以下であれば保全は不要である",
+"完成物件でも必ず保全が必要である"
+],
+a:1,
+e:"完成物件では、10％以下かつ1,000万円以下であれば業法上の保全義務はない。"
+},
+{
+q:"【問題文】手付金等の保全措置を講じる義務を負う者は誰か。",
+d:"保証会社とか出てくるけど、実際“誰の義務”なん？",
+c:[
+"買主",
+"保証会社",
+"宅建業者である売主",
+"宅地建物取引士"
+],
+a:2,
+e:"保全措置を講じる義務があるのは、宅建業者である売主であり、買主ではない。"
+},
+{
+q:"【問題文】保全措置が講じられているかについて、買主が確認する方法として最も適切なものはどれか。",
+d:"『保全してます』って口で言われたら信じてええんか？",
+c:[
+"売主の口頭説明のみで足りる",
+"買主が保証会社と直接契約する",
+"売主から保全措置の内容が記載された書面の交付を受ける",
+"登記完了後に確認すればよい"
+],
+a:2,
+e:"保全措置は書面で確認する必要があり、口頭説明のみでは足りない。"
+},
+{
+q:"【問題文】完成物件で手付金等が10％以下かつ1,000万円以下の場合、業者倒産時の買主のリスクについて正しいものはどれか。",
+d:"このゾーン、完全に安全なん？",
+c:[
+"買主の金は必ず全額返還される",
+"業法により買主は常に保護される",
+"保全義務はなく、倒産時に買主が一般債権者となる可能性がある",
+"民法上、契約は自動的に無効になる"
+],
+a:2,
+e:"この範囲では保全義務がなく、倒産した場合は買主が一般債権者となる可能性がある。"
+}
+];
+
+const box=document.getElementById("questions");
+
+data.forEach((q,i)=>{
+let html=`<div class="q">
+<h2>Q${i+1}</h2>
+<div class="box">${q.q}</div>
+<div class="box">${q.d}</div>`;
+q.c.forEach((c,j)=>{
+html+=`<div class="choice">
+<label><input type="radio" name="q${i}" value="${j}"> ${c}</label>
+</div>`;
+});
+html+=`<div class="result" id="r${i}"></div></div>`;
+box.insertAdjacentHTML("beforeend",html);
+});
+
+function score(){
+data.forEach((q,i)=>{
+const r=document.getElementById("r"+i);
+const sel=document.querySelector(`input[name="q${i}"]:checked`);
+r.style.display="block";
+if(!sel){
+r.innerHTML="未回答";
+return;
+}
+if(Number(sel.value)===q.a){
+r.innerHTML=`<div class="correct">正解</div><div>${q.e}</div>`;
+}else{
+r.innerHTML=`<div class="wrong">不正解（正解：${q.c[q.a]}）</div><div>${q.e}</div>`;
+}
+});
+}
+
+function save(){
+let ans=[];
+data.forEach((q,i)=>{
+const sel=document.querySelector(`input[name="q${i}"]:checked`);
+ans.push(sel?sel.value:"x");
+});
+localStorage.setItem("gyoho_chuB",ans.join(","));
+alert("保存しました");
+}
+
+function restore(){
+const s=localStorage.getItem("gyoho_chuB");
+if(!s){alert("保存なし");return;}
+s.split(",").forEach((v,i)=>{
+if(v!=="x"){
+document.querySelector(`input[name="q${i}"][value="${v}"]`).checked=true;
+}
+});
+alert("復元しました");
+}
+</script>
+
+</body>
+</html>
