@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>業法｜上B 20問（標準＋日常訳）#04</title>
+<style>
+body{font-family:sans-serif;margin:24px;line-height:1.6;color:#111}
+.panel{border:1px solid #ddd;border-radius:10px;padding:14px;margin:14px 0}
+.label{font-weight:bold;margin-bottom:6px}
+.box{background:#fafafa;border:1px solid #eee;padding:10px;border-radius:8px}
+.choices label{display:block;margin:6px 0;padding:6px;border:1px solid #eee;border-radius:6px}
+.ok{color:#0a6}
+.ng{color:#c00}
+.explain{display:none;margin-top:10px}
+button{padding:10px 14px;border-radius:8px;border:1px solid #ccc;background:#fff}
+</style>
+</head>
+
+<body>
+
+<h1>業法｜上B 20問（標準＋日常訳）#04</h1>
+
+<button onclick="grade()">採点</button>
+<span id="score">未採点</span>
+
+<div id="quiz"></div>
+
+<script>
+const STORAGE_KEY = "takken_g_youhou_joB_04_20";
+
+const questions = [
+{
+id:7,
+q:"【問7】専任媒介契約における指定流通機構（REINS）への登録について、正しいものはどれか。",
+d:"専任媒介のとき、レインズ登録はいつまでに必要？",
+choices:[
+"契約締結日から3日以内（営業日）",
+"契約締結日から5日以内（営業日）",
+"契約締結日から7日以内（営業日）",
+"登録義務はない"
+],
+a:2,
+exp:"専任媒介は『7日以内（営業日）』。専属専任は5日以内。語呂は「属5・7任」。"
+}
+];
+
+function render(){
+const qz=document.getElementById("quiz");
+qz.innerHTML="";
+const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
+
+questions.forEach((x,i)=>{
+const div=document.createElement("div");
+div.className="panel";
+div.innerHTML=`
+<div class="label">問題文</div>
+<div class="box">${x.q}</div>
+
+<div class="label">日常訳</div>
+<div class="box">${x.d}</div>
+
+<div class="choices">
+${x.choices.map((c,j)=>`
+<label>
+<input type="radio" name="q${x.id}" value="${j}" ${saved[x.id]==j?"checked":""}
+onchange="save(${x.id},${j})">
+${j+1}. ${c}
+</label>`).join("")}
+</div>
+
+<div id="res${x.id}"></div>
+<div class="box explain" id="exp${x.id}">${x.exp}</div>
+`;
+qz.appendChild(div);
+});
+}
+
+function save(id,val){
+const s=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
+s[id]=val;
+localStorage.setItem(STORAGE_KEY,JSON.stringify(s));
+}
+
+function grade(){
+const s=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
+let ok=0;
+questions.forEach(x=>{
+const r=document.getElementById("res"+x.id);
+const e=document.getElementById("exp"+x.id);
+if(s[x.id]===x.a){
+ok++;r.innerHTML="<span class='ok'>正解</span>";
+}else{
+r.innerHTML=`<span class='ng'>不正解（正解：${x.a+1}）</span>`;
+}
+e.style.display="block";
+});
+document.getElementById("score").textContent=`${ok}/${questions.length}`;
+}
+
+render();
+</script>
+
+</body>
+</html>
