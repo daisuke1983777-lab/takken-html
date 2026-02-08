@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>宅建 手付×手付解除（業法×民法ミックス） 難しめ 20問</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#0f1621;
+      --card2:#0f1b2a;
+      --text:#e8eef6;
+      --muted:#a9b6c7;
+      --line:#223149;
+      --ok:#36d399;
+      --ng:#fb7185;
+      --btn:#1f2937;
+      --btn2:#111827;
+      --accent:#60a5fa;
+      --warn:#fbbf24;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+      background: linear-gradient(180deg, #05070a, var(--bg) 30%, #05070a);
+      color:var(--text);
+    }
+    header{
+      padding:24px 16px 12px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    h1{
+      margin:0 0 6px;
+      font-size:20px;
+      letter-spacing:.02em;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:12px 16px 36px;
+    }
+    .panel{
+      background:rgba(15,22,33,.85);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      position:sticky;
+      top:0;
+      backdrop-filter: blur(10px);
+      z-index:10;
+    }
+    button{
+      border:1px solid var(--line);
+      background:var(--btn);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:13px;
+    }
+    button:hover{ border-color:#35507a; }
+    button.primary{ background: #0b1220; border-color:#3b82f6; }
+    button.danger{ background:#201018; border-color:#fb7185; color:#ffd6de;}
+    button.ghost{ background:transparent; }
+    .stat{
+      margin-left:auto;
+      display:flex;
+      gap:12px;
+      align-items:baseline;
+      flex-wrap:wrap;
+    }
+    .stat b{font-size:14px}
+    .stat span{color:var(--muted); font-size:13px}
+    .note{
+      width:100%;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+      margin-top:4px;
+    }
+
+    .restore{
+      margin-top:12px;
+      background:rgba(15,22,33,.75);
+      border:1px dashed #35507a;
+      border-radius:14px;
+      padding:12px;
+    }
+    .restore label{
+      display:block;
+      font-weight:700;
+      font-size:13px;
+      margin-bottom:6px;
+    }
+    textarea{
+      width:100%;
+      min-height:90px;
+      resize:vertical;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#0a1220;
+      color:var(--text);
+      padding:10px;
+      font-size:13px;
+      line-height:1.5;
+      outline:none;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    @media (max-width:980px){
+      .grid{ grid-template-columns:1fr; }
+      .stat{ margin-left:0; width:100%;}
+    }
+    .qcard{
+      background:rgba(15,22,33,.85);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+    }
+    .qhead{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+    .qid{
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+    .tag{
+      font-size:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background:rgba(0,0,0,.2);
+      white-space:nowrap;
+    }
+    .blocktitle{
+      margin:10px 0 6px;
+      font-size:12px;
+      color:var(--muted);
+      letter-spacing:.04em;
+    }
+    .box{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      background:rgba(8,12,18,.55);
+      line-height:1.65;
+      font-size:13px;
+    }
+    .choices{
+      margin-top:10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .choice{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      background:rgba(8,12,18,.35);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      cursor:pointer;
+    }
+    .choice:hover{ border-color:#35507a; }
+    .choice input{ margin-top:3px; transform:scale(1.1); }
+    .choice .cbody{ flex:1; }
+    .choice .clabel{ font-weight:900; margin-right:8px; color:#cfe3ff; }
+    .result{
+      margin-top:10px;
+      border-radius:14px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      background:rgba(8,12,18,.35);
+      display:none;
+    }
+    .result.ok{ border-color:rgba(54,211,153,.55); background:rgba(54,211,153,.08); }
+    .result.ng{ border-color:rgba(251,113,133,.55); background:rgba(251,113,133,.08); }
+    .result .line1{ font-weight:900; margin-bottom:6px; }
+    .result .small{ color:var(--muted); font-size:12px; line-height:1.6; }
+    .muted{ color:var(--muted); }
+    .pill{
+      display:inline-block;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      font-size:12px;
+      color:var(--muted);
+      margin-left:8px;
+    }
+    .warn{
+      color:var(--warn);
+      font-weight:800;
+    }
+    .foot{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>宅建 手付×手付解除（業法×民法ミックス） 20問（難しめ・中〜上）</h1>
+    <p class="sub">
+      表示順は固定：問題文（試験風）→ 日常の言い換え → 選択肢。<br/>
+      1問1択。採点後にだけ「正解＋ピンポイント解説」を表示。<br/>
+      「回答をコピー」→ 文字列をメモ → 消えても「回答を貼って復元」で戻せます。端末内保存（localStorage）対応。
+    </p>
+  </header>
+
+  <div class="wrap">
+    <div class="panel">
+      <button class="primary" id="btnScore">採点する</button>
+      <button class="ghost" id="btnShowExp">解説を表示</button>
+      <button class="ghost" id="btnCopy">回答をコピー</button>
+      <button class="ghost" id="btnSave">回答を保存</button>
+      <button class="ghost" id="btnRestore">回答を貼って復元</button>
+      <button class="danger" id="btnReset">リセット</button>
+
+      <div class="stat">
+        <b id="statText">合計：20問中 0 正解（未採点）</b>
+        <span id="statSub">未回答：20 / 20</span>
+      </div>
+
+      <div class="note">
+        ※解説は「採点」後にだけ表示されます。<br/>
+        ※「保存」はこの端末のブラウザ内です（ログイン不要・他端末には移りません）。
+      </div>
+    </div>
+
+    <div class="restore">
+      <label>復元用（必要なときだけ）</label>
+      <textarea id="restoreBox" placeholder="ここに『回答をコピー』で出た文字列を貼ってから『回答を貼って復元』"></textarea>
+      <div class="foot">※この欄は普段は使いません（事故の保険）。</div>
+    </div>
+
+    <div class="grid" id="qGrid"></div>
+
+    <div class="foot">
+      注意：このセットは「手付（民法の手付＝解約手付中心）」と「手付（業法の手付＝額・保全）」をミックスしています。<br/>
+      迷ったら、まず「民法＝解除できる条件（履行の着手前）」「業法＝額（20%）と保全」のどっちを聞かれてるかを見る。
+    </div>
+  </div>
+
+<script>
+(function(){
+  // ====== 問題データ ======
+  // ルール：専門語は直後に（日本語言い換え）
+  // 出題：手付（業法・民法）／手付解除（民法）／保全（業法）／履行の着手（民法）
+  const questions = [
+    {
+      id: 1,
+      tag: "民法（手付解除）",
+      stem: "A（買主）はB（売主）と土地売買契約を結び、解約手付（解約のための手付）として代金の一部を交付した。その後、Bが売買代金の残代金請求のために弁護士へ依頼し、内容証明郵便（証拠が残る郵便）で支払催告（払ってと請求）を発送した段階で、Aは手付解除（手付で解除）を主張できるか。",
+      daily: "買主が「手付放棄でやめる」を言えるのは、売主が“もう本気で動き出した後”だとムリです。売主が弁護士に頼んで内容証明を出した時点はどう扱う？",
+      choices: [
+        "主張できる。内容証明は単なる通知であり、履行の着手（現実に動き出す）に当たらない。",
+        "主張できない。弁護士への依頼と内容証明発送は履行の着手（現実に動き出す）に当たる。",
+        "主張できない。手付解除は常に契約成立後すぐだけ可能で、時間が経つと不可になる。",
+        "主張できる。履行の着手は代金全額の受領後でないと成立しない。"
+      ],
+      answer: 0,
+      exp: "手付解除は「履行の着手（現実に動き出す）」前まで。一般に、催告（払ってと請求）や内容証明送付は“準備・督促”で、履行の着手とは言いにくい。よって手付解除は可能。"
+    },
+    {
+      id: 2,
+      tag: "民法（手付解除）",
+      stem: "A（買主）が手付金を交付した後、B（売主）は引渡し準備として、第三者Cとの賃貸借契約（貸し借り契約）を解除し、現実に明渡し（出て行ってもらう）を完了させた。この時点でAは手付解除（手付放棄で解除）を主張できるか。",
+      daily: "売主が、引渡しのために入居者を出して、実際に空き家にしてしまった。ここで買主は“手付放棄でやめる”できる？",
+      choices: [
+        "主張できる。明渡し完了は売主側の内部事情で、履行の着手ではない。",
+        "主張できない。明渡し完了は引渡し実現へ向けた現実の行為で、履行の着手に当たる。",
+        "主張できる。売主が登記（名義変更）をした場合だけ履行の着手となる。",
+        "主張できない。手付解除は買主だけ可能で売主は不可だから、買主も不可となる。"
+      ],
+      answer: 1,
+      exp: "履行の着手は、引渡しや登記など“契約の本体実行に向けた現実の行為”。明渡し完了は引渡しのための実行行為として扱われやすく、手付解除は不可（履行の着手後）。"
+    },
+    {
+      id: 3,
+      tag: "民法（手付解除）",
+      stem: "A（買主）が手付を交付後、B（売主）は引渡し日に向けて、境界確定（境界をはっきりさせる）測量（測って確定）を依頼し、測量会社が現地で測量作業を開始した。この時点でAは手付解除を主張できるか。",
+      daily: "売主が測量会社を呼んで、現地で測り始めた。買主はまだ“手付放棄でやめる”できる？",
+      choices: [
+        "主張できる。測量は準備行為で、履行の着手には当たらない。",
+        "主張できない。測量開始は履行の着手に当たる。",
+        "主張できる。履行の着手は、買主がローン審査（借入の審査）に通った時点で成立する。",
+        "主張できない。手付解除は常に売主の同意が必要である。"
+      ],
+      answer: 0,
+      exp: "測量依頼・測量開始は引渡し準備の色が強く、一般に“履行の着手”までは言いにくい（ケースで争い得るが、宅建の定番は「準備＝着手ではない」寄り）。"
+    },
+    {
+      id: 4,
+      tag: "民法（手付解除）",
+      stem: "手付解除における「履行の着手（現実に動き出す）」の判断として、最も適切なものはどれか。",
+      daily: "『履行の着手』って、結局どう判断するのが正解？",
+      choices: [
+        "契約後、当事者が心の中で「やる」と決めた時点。",
+        "相手方に対し、契約の本体実行に向けた行為を現実に開始したと評価できる時点。",
+        "契約書に着手日が書かれた時点（書いてあれば必ず着手）。",
+        "手付金を受け取った時点で必ず履行の着手となる。"
+      ],
+      answer: 1,
+      exp: "履行の着手は“心の中”や“書面の記載”ではなく、引渡し・登記・代金支払など本体実行に向けた現実行為が始まったかで判断する。"
+    },
+    {
+      id: 5,
+      tag: "業法（手付の額）",
+      stem: "宅地建物取引業者（宅建業者）が自ら売主（自分が売る側）となる宅地の売買で、買主から受領できる手付金（手付）の上限として正しいものはどれか（宅建業法の原則）。",
+      daily: "業者が売主のとき、買主から“手付”を取りすぎたらダメ。上限は？",
+      choices: [
+        "売買代金の10%以内",
+        "売買代金の20%以内",
+        "売買代金の30%以内",
+        "上限はなく、当事者合意で自由"
+      ],
+      answer: 1,
+      exp: "業者売主のときの手付等（手付金等）は原則「代金の2割（20%）以内」。暗記でOK。"
+    },
+    {
+      id: 6,
+      tag: "業法（手付の名目）",
+      stem: "宅建業者が自ら売主の場合、買主から「申込金（申込みのときのお金）」という名目で金銭を受領する場合でも、一定の場合には手付金等（手付と同じ扱い）として規制される。最も適切なものはどれか。",
+      daily: "名前を『申込金』にしても、実質が手付なら“手付扱い”で制限される。どれが正しい？",
+      choices: [
+        "名目が申込金なら常に手付ではないので規制されない。",
+        "名目に関係なく、売買代金の一部に充当（代金の一部として扱う）される性質があるなら手付金等として扱われうる。",
+        "名目に関係なく、1円でも受け取ったら必ず保全措置（守る仕組み）が必要となる。",
+        "申込金は必ず契約成立前に返還（返す）しなければならないため、規制は不要である。"
+      ],
+      answer: 1,
+      exp: "名目（申込金・内金など）ではなく実質。代金の一部に充当される性質などがあれば「手付金等」として上限・保全の対象になり得る。"
+    },
+    {
+      id: 7,
+      tag: "業法（保全）",
+      stem: "宅建業者が自ら売主の場合の手付金等の保全措置（買主保護）について、原則として正しいものはどれか。",
+      daily: "業者売主で、買主が先にお金を入れると危ない。一定額を超えると“保全”が必要。考え方はどれ？",
+      choices: [
+        "手付金等が少額でも、必ず保全措置が必要である。",
+        "一定の要件（例：未完成物件で一定額超など）に当たると保全措置が必要になる。",
+        "完成・未完成に関係なく、常に売買代金の半額を超えると保全が必要になる。",
+        "保全措置は買主が望むときだけでよく、売主の義務ではない。"
+      ],
+      answer: 1,
+      exp: "保全は“常に”ではなく、完成/未完成や受領額など一定要件で義務が発生する。ここは細かい数字もあるが、まずは「要件に当たると必要」と押さえる。"
+    },
+    {
+      id: 8,
+      tag: "民法（手付の推定）",
+      stem: "当事者が交付した手付（手付金）について、民法上の原則（推定）として最も適切なものはどれか。",
+      daily: "手付って種類があるけど、特に決めてなかったら“基本どれ扱い”になる？",
+      choices: [
+        "証約手付（契約した証拠の手付）と推定される。",
+        "解約手付（解除のための手付）と推定される。",
+        "違約手付（違反したときの制裁の手付）と推定される。",
+        "手付は種類の推定がなく、常に裁判所が自由に決める。"
+      ],
+      answer: 1,
+      exp: "民法の手付は、特段の合意がなければ「解約手付」と推定される。→ 手付解除の話につながる。"
+    },
+    {
+      id: 9,
+      tag: "民法（手付解除の効果）",
+      stem: "解約手付（解約のための手付）の場合、買主が契約を解除するには手付放棄（手付をあきらめる）で足りる。売主が解除するには手付倍返し（倍にして返す）が必要である。この説明として最も適切なものはどれか。",
+      daily: "手付解除の“やめ方”のルール。どれが正しい？",
+      choices: [
+        "買主も売主も、解除するには必ず相手の同意が必要である。",
+        "買主は手付放棄、売主は手付倍返しで解除できる（ただし履行の着手前まで）。",
+        "買主は手付倍返し、売主は手付放棄で解除できる（ただし履行の着手前まで）。",
+        "買主は現金で返す必要があり、売主は現金以外でもよい。"
+      ],
+      answer: 1,
+      exp: "定番：買主＝手付放棄、売主＝倍返し。さらに大前提として「履行の着手前まで」。"
+    },
+    {
+      id: 10,
+      tag: "業法×民法（混合）",
+      stem: "宅建業者が自ら売主の宅地売買で、買主から受領した金銭が手付金等（手付と同じ扱い）に当たる場合、業法上の上限（20%）に違反して受領したときの効果として最も適切なものはどれか。",
+      daily: "業者が手付を取りすぎた（20%超）。このとき、民法の契約自体はどうなる？",
+      choices: [
+        "売買契約は当然に無効（最初からなかった）となる。",
+        "手付部分だけが当然に無効となり、残りは有効となる。",
+        "業法違反は行政上の問題（処分など）が中心で、直ちに契約全体が当然無効になるとは限らない。",
+        "買主は必ず契約を解除でき、解除の要件は不要となる。"
+      ],
+      answer: 2,
+      exp: "業法違反＝行政処分（免許・業務停止など）につながる話が中心。違反があるからといって機械的に契約が当然無効とは限らない。"
+    },
+
+    // ===== ここから難しめ（混合のひっかけ） =====
+    {
+      id: 11,
+      tag: "民法（履行の着手）",
+      stem: "A（買主）が手付交付後、B（売主）は引渡し日に向け、所有権移転登記（名義変更の登記）の申請書類を作成し、司法書士（登記の専門家）に提出したが、まだ法務局（登記所）への申請はしていない。この時点でAは手付解除できるか。",
+      daily: "売主が司法書士に書類を渡した。まだ法務局には出してない。買主は“手付放棄でやめる”できる？",
+      choices: [
+        "できる。司法書士に渡しただけなら準備で、履行の着手ではない。",
+        "できない。司法書士へ提出した時点で履行の着手に当たる。",
+        "できない。登記が完了した後でないと手付解除はできない。",
+        "できる。履行の着手は買主側の行為だけで判断し、売主の行為は関係ない。"
+      ],
+      answer: 0,
+      exp: "“登記申請”や“引渡し”など本体実行が始まったか。書類作成や事前提出は準備行為に寄りやすく、履行の着手までは言いにくい。"
+    },
+    {
+      id: 12,
+      tag: "民法（履行の着手）",
+      stem: "A（買主）が手付交付後、B（売主）は引渡し当日に向け、現地で鍵（かぎ）を買主へ渡す準備として、鍵の引渡し場所・時刻を決め、Aへ連絡した。この時点でAは手付解除できるか。",
+      daily: "売主が『鍵渡しは◯日◯時にここで』と連絡しただけ。買主はまだやめれる？",
+      choices: [
+        "できる。連絡・段取りは準備で、履行の着手とはいえない。",
+        "できない。鍵の引渡し予定を決めた時点で履行の着手。",
+        "できない。手付解除は契約後24時間以内に限られる。",
+        "できる。履行の着手は買主が代金を全額払った時点のみ。"
+      ],
+      answer: 0,
+      exp: "連絡や段取りは“準備”。鍵を実際に渡す、代金支払、登記申請など本体実行が始まってから着手になりやすい。"
+    },
+    {
+      id: 13,
+      tag: "業法（手付の上限の計算）",
+      stem: "売買代金が3,600万円のとき、宅建業者が自ら売主の場合に受領できる手付金等の上限はいくらか。",
+      daily: "業者売主。代金3,600万。手付の上限（20%）はいくら？",
+      choices: [
+        "360万円",
+        "540万円",
+        "720万円",
+        "900万円"
+      ],
+      answer: 2,
+      exp: "3,600万円 × 20% ＝ 720万円。数字は機械的に。"
+    },
+    {
+      id: 14,
+      tag: "民法（手付解除と違約解除の切替）",
+      stem: "A（買主）が手付交付後、B（売主）は履行期（支払日）を過ぎても代金が払われないため、債務不履行解除（約束違反で解除）を主張した。この場合、Aはなお手付解除を主張できるか。",
+      daily: "買主が支払日に払わなかった。売主が『約束違反だから解除』と言い出した。買主は今さら『手付放棄でやめる』に戻れる？",
+      choices: [
+        "常にできる。手付解除はいつでも優先する。",
+        "履行の着手前ならできるが、支払期を過ぎて解除問題になっている時点では通常は手付解除に戻れない扱いになりやすい。",
+        "常にできない。手付解除は買主だけでは一切できない。",
+        "常にできる。ただし手付は倍返ししなければならない。"
+      ],
+      answer: 1,
+      exp: "実戦的には“手付解除のタイミング”が重要。支払期徒過（払う日を過ぎた）で債務不履行解除の場面に入ると、手付解除で逃げるのは難しくなりやすい（少なくとも宅建の感覚は「手付解除の段階を過ぎた」寄り）。"
+    },
+    {
+      id: 15,
+      tag: "業法×民法（名目ひっかけ）",
+      stem: "宅建業者が自ら売主の売買で、買主から「内金（代金の前払い）」として受領した金銭について、最も適切なものはどれか。",
+      daily: "『手付』じゃなくて『内金』って言われたお金。業法ではどう扱う？",
+      choices: [
+        "内金は手付金等に当たらないので、20%制限の対象外である。",
+        "内金は手付金等に当たりうるため、受領額が20%を超えるなら業法違反になり得る。",
+        "内金は必ず返還不要なので、民法上も解除できない。",
+        "内金は買主が自由に取り消せるので、常にクーリングオフ（一定期間取消し）対象である。"
+      ],
+      answer: 1,
+      exp: "名目で逃げられない。内金でも実質が代金の一部に充当されるなら「手付金等」になり得て、上限・保全の対象になる。"
+    },
+    {
+      id: 16,
+      tag: "民法（手付の充当）",
+      stem: "解約手付（解除のための手付）が解除されずに履行（約束どおり実行）された場合、手付は原則としてどのように扱われるか。",
+      daily: "結局やめずにちゃんと売買した。最初に渡した手付はどうなる？",
+      choices: [
+        "当然に没収（取り上げ）され、代金とは別に売主の利益となる。",
+        "原則として売買代金の一部に充当（代金の一部として相殺）される。",
+        "当然に倍返しされる。",
+        "必ず現金で全額返還され、代金は別途支払う。"
+      ],
+      answer: 1,
+      exp: "手付は解除しないで履行されるなら、通常は代金の一部に充当される（前払い扱い）。"
+    },
+    {
+      id: 17,
+      tag: "民法（売主の手付解除）",
+      stem: "A（買主）が手付交付後、B（売主）が手付倍返し（倍にして返す）により解除したいと考えた。Bが手付解除できる要件として最も適切なものはどれか。",
+      daily: "売主側が『倍返しでやめる』をしたい。いつでもできる？",
+      choices: [
+        "常にできる。売主は自由に倍返し解除できる。",
+        "相手方（買主）が履行の着手（現実に動き出す）をする前であることが必要。",
+        "買主がローン審査に落ちた場合に限る。",
+        "手付解除は買主だけの権利で、売主はできない。"
+      ],
+      answer: 1,
+      exp: "売主も手付倍返しで解除できるが、原則は同じで「履行の着手前まで」。"
+    },
+    {
+      id: 18,
+      tag: "業法（手付の保全：完成/未完成の考え方）",
+      stem: "宅建業者が自ら売主で、未完成物件（まだ完成していない物件）の売買において買主から手付金等を受領する場合、買主保護（保全）を厚くする趣旨として最も適切なものはどれか。",
+      daily: "まだ完成してない物件で先にお金取ると、何が怖いから“保全”が必要になる？",
+      choices: [
+        "未完成でも完成でも、危険は同じなので趣旨はない。",
+        "未完成だと、売主が倒産（つぶれる）などしたときに買主が払ったお金を回収しにくくなるため。",
+        "未完成だと、必ず売買が無効になるため。",
+        "未完成だと、買主が必ず解除できるため。"
+      ],
+      answer: 1,
+      exp: "保全は“買主が先に払った金銭が戻らないリスク”に備えるため。未完成は完成より危険が大きいので保護が厚い。"
+    },
+    {
+      id: 19,
+      tag: "民法×業法（同じ手付でも論点が違う）",
+      stem: "「手付」に関する次の記述のうち、最も適切なものはどれか。",
+      daily: "同じ『手付』でも、民法と業法で“見てるポイント”が違う。正しいのは？",
+      choices: [
+        "民法の手付は主に『上限（20%）』を定め、業法の手付は主に『解除（履行の着手前）』を定める。",
+        "民法の手付は主に『解除できる条件（履行の着手前）』を扱い、業法の手付は主に『額（20%）や保全』を扱う。",
+        "民法も業法も、手付はすべて同じルールで完全に一致している。",
+        "業法の手付は当事者の合意があれば上限はなく、民法だけが上限を定める。"
+      ],
+      answer: 1,
+      exp: "整理の軸：民法＝手付解除（履行の着手前）、業法＝額（20%）・保全。"
+    },
+    {
+      id: 20,
+      tag: "民法（履行の着手：典型）",
+      stem: "手付解除の可否を判断するための「履行の着手」に当たりやすい行為として、最も適切なものはどれか。",
+      daily: "これが出たら『もう着手してる』って判断しやすい典型はどれ？",
+      choices: [
+        "売主が引渡しに備えて掃除をした。",
+        "売主が引越し業者に見積りを依頼した。",
+        "買主が残代金を支払った。",
+        "売主が広告を取り下げた。"
+      ],
+      answer: 2,
+      exp: "残代金の支払は契約の本体実行そのもの。掃除・見積り・広告停止は準備・周辺行為で着手とまでは言いにくい。"
+    },
+  ];
+
+  // ====== DOM生成 ======
+  const qGrid = document.getElementById("qGrid");
+
+  function esc(s){
+    return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  function makeCard(q){
+    const card = document.createElement("div");
+    card.className = "qcard";
+    card.id = `q${q.id}`;
+
+    const head = document.createElement("div");
+    head.className = "qhead";
+    head.innerHTML = `<div class="qid">Q${q.id}</div><div class="tag">${esc(q.tag)}</div>`;
+    card.appendChild(head);
+
+    const bt1 = document.createElement("div");
+    bt1.className = "blocktitle";
+    bt1.textContent = "【問題文（試験風）】";
+    card.appendChild(bt1);
+
+    const b1 = document.createElement("div");
+    b1.className = "box";
+    b1.textContent = q.stem;
+    card.appendChild(b1);
+
+    const bt2 = document.createElement("div");
+    bt2.className = "blocktitle";
+    bt2.textContent = "【日常の言い換え】";
+    card.appendChild(bt2);
+
+    const b2 = document.createElement("div");
+    b2.className = "box";
+    b2.textContent = q.daily;
+    card.appendChild(b2);
+
+    const bt3 = document.createElement("div");
+    bt3.className = "blocktitle";
+    bt3.textContent = "【選択肢】（1つ選ぶ）";
+    card.appendChild(bt3);
+
+    const choices = document.createElement("div");
+    choices.className = "choices";
+
+    q.choices.forEach((c, idx) => {
+      const label = String.fromCharCode(65 + idx); // A,B,C,D
+      const row = document.createElement("label");
+      row.className = "choice";
+      row.innerHTML = `
+        <input type="radio" name="q_${q.id}" value="${idx}" />
+        <div class="cbody">
+          <span class="clabel">${label}</span>
+          <span>${esc(c)}</span>
+        </div>
+      `;
+      choices.appendChild(row);
+    });
+    card.appendChild(choices);
+
+    const res = document.createElement("div");
+    res.className = "result";
+    res.id = `res_${q.id}`;
+    res.innerHTML = `
+      <div class="line1"></div>
+      <div class="small"></div>
+    `;
+    card.appendChild(res);
+
+    return card;
+  }
+
+  questions.forEach(q => qGrid.appendChild(makeCard(q)));
+
+  // ====== 状態管理 ======
+  const KEY_SAVE = "takkenset_te-tsuke_mix_v1";
+  let scored = false;
+
+  function getSelected(qid){
+    const el = document.querySelector(`input[name="q_${qid}"]:checked`);
+    return el ? Number(el.value) : null;
+  }
+  function setSelected(qid, val){
+    const el = document.querySelector(`input[name="q_${qid}"][value="${val}"]`);
+    if(el) el.checked = true;
+  }
+  function clearSelected(qid){
+    const els = document.querySelectorAll(`input[name="q_${qid}"]`);
+    els.forEach(e => e.checked = false);
+  }
+
+  function countUnanswered(){
+    let n = 0;
+    questions.forEach(q => { if(getSelected(q.id) === null) n++; });
+    return n;
+  }
+
+  function updateStats(){
+    const unanswered = countUnanswered();
+    document.getElementById("statSub").textContent = `未回答：${unanswered} / ${questions.length}`;
+    if(!scored){
+      document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+    }
+  }
+
+  function score(){
+    let correct = 0;
+    questions.forEach(q => {
+      const sel = getSelected(q.id);
+      const res = document.getElementById(`res_${q.id}`);
+      const line1 = res.querySelector(".line1");
+      const small = res.querySelector(".small");
+
+      res.style.display = "block";
+
+      if(sel === null){
+        res.classList.remove("ok","ng");
+        res.classList.add("ng");
+        line1.innerHTML = `未回答 <span class="pill">正解：${String.fromCharCode(65+q.answer)}</span>`;
+        small.textContent = "採点後に解説を表示できます。まずはどれか1つ選んでください。";
+        return;
+      }
+
+      if(sel === q.answer){
+        correct++;
+        res.classList.remove("ng");
+        res.classList.add("ok");
+        line1.innerHTML = `正解 <span class="pill">あなた：${String.fromCharCode(65+sel)}</span>`;
+      }else{
+        res.classList.remove("ok");
+        res.classList.add("ng");
+        line1.innerHTML = `不正解 <span class="pill">あなた：${String.fromCharCode(65+sel)}</span> <span class="pill">正解：${String.fromCharCode(65+q.answer)}</span>`;
+      }
+      small.textContent = "（解説は『解説を表示』で表示）";
+    });
+
+    scored = true;
+    document.getElementById("statText").textContent = `合計：${questions.length}問中 ${correct} 正解（採点済）`;
+    updateStats();
+    return correct;
+  }
+
+  function showExplanations(){
+    if(!scored){
+      alert("先に『採点する』を押してください。");
+      return;
+    }
+    questions.forEach(q => {
+      const res = document.getElementById(`res_${q.id}`);
+      const sel = getSelected(q.id);
+      const small = res.querySelector(".small");
+      // 解説を表示（未回答でも出す）
+      const ansLabel = String.fromCharCode(65+q.answer);
+      const yourLabel = (sel===null) ? "未回答" : String.fromCharCode(65+sel);
+      small.innerHTML =
+        `<div class="muted">正解：<b>${ansLabel}</b> ／ あなた：<b>${esc(yourLabel)}</b></div>` +
+        `<div style="margin-top:6px;line-height:1.65">${esc(q.exp)}</div>`;
+    });
+  }
+
+  function buildAnswerString(){
+    // 形式：v1|qid=val,qid=val...（未回答はx）
+    const parts = questions.map(q => {
+      const sel = getSelected(q.id);
+      return `${q.id}=${sel===null ? "x" : sel}`;
+    });
+    return `v1|${parts.join(",")}`;
+  }
+
+  function applyAnswerString(str){
+    // 期待：v1|1=0,2=1,...  未回答はx
+    const s = (str||"").trim();
+    if(!s.startsWith("v1|")) throw new Error("形式が違います（v1|...）");
+    const body = s.slice(3);
+    const kvs = body.split(",").map(x => x.trim()).filter(Boolean);
+
+    // いったんクリア
+    questions.forEach(q => clearSelected(q.id));
+
+    kvs.forEach(kv => {
+      const [k,v] = kv.split("=");
+      const qid = Number(k);
+      if(!Number.isFinite(qid)) return;
+      const q = questions.find(x => x.id === qid);
+      if(!q) return;
+      if(v === "x") return;
+      const val = Number(v);
+      if(Number.isFinite(val) && val >= 0 && val < 4){
+        setSelected(qid, val);
+      }
+    });
+
+    // 採点状態はリセット（復元後に採点し直し）
+    scored = false;
+    // 結果欄を隠す
+    questions.forEach(q => {
+      const res = document.getElementById(`res_${q.id}`);
+      res.style.display = "none";
+      res.classList.remove("ok","ng");
+      res.querySelector(".line1").textContent = "";
+      res.querySelector(".small").textContent = "";
+    });
+    updateStats();
+    document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+  }
+
+  function saveLocal(){
+    const payload = {
+      v: 1,
+      ts: Date.now(),
+      ans: buildAnswerString()
+    };
+    localStorage.setItem(KEY_SAVE, JSON.stringify(payload));
+  }
+
+  function loadLocal(){
+    const raw = localStorage.getItem(KEY_SAVE);
+    if(!raw) return null;
+    try{
+      const obj = JSON.parse(raw);
+      if(!obj || !obj.ans) return null;
+      return obj.ans;
+    }catch(e){
+      return null;
+    }
+  }
+
+  function resetAll(){
+    if(!confirm("全回答をリセットします。よろしいですか？")) return;
+    questions.forEach(q => clearSelected(q.id));
+    scored = false;
+    questions.forEach(q => {
+      const res = document.getElementById(`res_${q.id}`);
+      res.style.display = "none";
+      res.classList.remove("ok","ng");
+      res.querySelector(".line1").textContent = "";
+      res.querySelector(".small").textContent = "";
+    });
+    localStorage.removeItem(KEY_SAVE);
+    document.getElementById("restoreBox").value = "";
+    updateStats();
+    document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+  }
+
+  // ====== イベント ======
+  document.getElementById("btnScore").addEventListener("click", () => {
+    const unanswered = countUnanswered();
+    if(unanswered === questions.length){
+      if(!confirm("まだ1問も選ばれていません。採点すると未回答が多く出ますが続けますか？")) return;
+    }
+    score();
+  });
+
+  document.getElementById("btnShowExp").addEventListener("click", () => {
+    showExplanations();
+  });
+
+  document.getElementById("btnCopy").addEventListener("click", async () => {
+    const s = buildAnswerString();
+    try{
+      await navigator.clipboard.writeText(s);
+      alert("回答をコピーしました。メモに貼って保存できます。");
+    }catch(e){
+      // クリップボード不可なら復元欄へ入れる
+      document.getElementById("restoreBox").value = s;
+      alert("クリップボードにコピーできなかったため、復元欄に入れました。手動でコピーしてください。");
+    }
+  });
+
+  document.getElementById("btnSave").addEventListener("click", () => {
+    saveLocal();
+    alert("端末内に保存しました。");
+  });
+
+  document.getElementById("btnRestore").addEventListener("click", () => {
+    const s = document.getElementById("restoreBox").value;
+    try{
+      applyAnswerString(s);
+      alert("復元しました（未採点状態に戻しました）。");
+    }catch(e){
+      alert("復元に失敗しました： " + e.message);
+    }
+  });
+
+  document.getElementById("btnReset").addEventListener("click", () => {
+    resetAll();
+  });
+
+  // 回答変更で未回答カウント更新
+  document.addEventListener("change", (ev) => {
+    if(ev.target && ev.target.matches('input[type="radio"]')){
+      updateStats();
+      // 採点後に回答変えたら“採点済”は無効化（結果の正確性が崩れるため）
+      if(scored){
+        scored = false;
+        document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+        // 結果欄は残すが、解説は見えるとズレるので注意表示に切替
+        questions.forEach(q => {
+          const res = document.getElementById(`res_${q.id}`);
+          if(res.style.display === "block"){
+            res.querySelector(".small").innerHTML = `<span class="warn">※回答が変更されたため、再度『採点する』が必要です。</span>`;
+          }
+        });
+      }
+    }
+  });
+
+  // 起動時：保存があれば読み込み（自動適用はせず、復元欄に入れる）
+  const saved = loadLocal();
+  if(saved){
+    document.getElementById("restoreBox").value = saved;
+    // ユーザーが意図せず上書きされないよう自動適用はしない
+  }
+
+  updateStats();
+})();
+</script>
+</body>
+</html>
