@@ -5,217 +5,251 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>業法_中B（20問）</title>
   <style>
-    /* ===== 白背景固定（採点等フォーマットは維持、色だけ白統一） ===== */
-    html, body { background:#fff !important; color:#000; margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif; }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 14px; }
-    .panel {
-      position: sticky; top: 0; z-index: 50;
-      background:#fff !important;
-      border: 1px solid #ddd; border-radius: 12px;
-      padding: 10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+    /* ===== 要望：背景は白で統一（他のフォーマットは維持） ===== */
+    html, body{
+      margin:0;
+      background:#fff !important;   /* ←ここが白固定 */
+      color:#111;
+      font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
     }
-    button { border:1px solid #bbb; background:#fff; padding:8px 10px; border-radius:10px; cursor:pointer; }
-    button:active { transform: translateY(1px); }
-    .stat { margin-left:auto; font-weight:700; }
-    h1 { font-size: 20px; margin: 12px 0 6px; }
-    .sub { font-size: 12px; color:#444; margin: 0 0 12px; }
-    .card { border:1px solid #ddd; border-radius:14px; padding: 12px; margin: 12px 0; box-shadow: 0 2px 10px rgba(0,0,0,.05); background:#fff !important; }
-    .qtitle { font-weight:800; margin-bottom: 6px; }
-    .box { background:#f7f7f7; border-radius:10px; padding:10px; margin: 6px 0; }
-    .choice { display:block; border:1px solid #ddd; border-radius:10px; padding:10px; margin: 8px 0; cursor:pointer; background:#fff !important; }
-    .choice input { margin-right: 8px; }
-    .result { display:none; border:1px solid #ddd; border-radius:10px; padding:10px; margin-top: 10px; background:#fff !important; }
-    .ok { border-color:#5bc78a; background:#eefaf3 !important; }
-    .ng { border-color:#f0a0a8; background:#fff0f1 !important; }
-    .small { font-size: 12px; color:#333; margin-top: 6px; }
-    textarea { width:100%; min-height: 80px; margin-top: 10px; border:1px solid #ddd; border-radius:12px; padding:10px; }
-    .hint { font-size: 12px; color:#555; margin-top: 8px; }
+    .wrap{ max-width: 980px; margin:0 auto; padding:14px; }
+
+    h1{ margin:12px 0 6px; font-size:22px; }
+    .sub{ margin:0 0 14px; font-size:12px; color:#333; line-height:1.6; }
+
+    /* いつもの操作バーっぽい「横長パネル」（※背景は白でもOKだが、見やすさで薄グレー） */
+    .toolbar{
+      border:1px solid #d7d7d7;
+      border-radius:14px;
+      padding:12px;
+      background:#fafafa;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .btn{
+      border:1px solid #c8c8c8;
+      background:#fff;
+      border-radius:14px;
+      padding:10px 14px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn.danger{
+      border-color:#d27b86;
+      background:#fff5f6;
+    }
+    .right{
+      margin-left:auto;
+      font-weight:800;
+      color:#111;
+      white-space:nowrap;
+    }
+    .notes{
+      margin-top:10px;
+      font-size:12px;
+      color:#444;
+      line-height:1.6;
+    }
+
+    .restoreArea{
+      margin-top:14px;
+      border:1px dashed #cfcfcf;
+      border-radius:14px;
+      padding:12px;
+      background:#fff;
+    }
+    .restoreTitle{ font-weight:800; margin-bottom:8px; }
+    textarea{
+      width:100%;
+      min-height:90px;
+      border:1px solid #d7d7d7;
+      border-radius:12px;
+      padding:10px;
+      font-size:13px;
+      box-sizing:border-box;
+    }
+    .hint{ margin-top:8px; font-size:12px; color:#555; }
+
+    .card{
+      margin-top:14px;
+      border:1px solid #e0e0e0;
+      border-radius:14px;
+      padding:12px;
+      background:#fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    }
+    .qno{ font-size:18px; font-weight:900; margin:0 0 8px; }
+    .box{
+      background:#f3f3f3;
+      border-radius:12px;
+      padding:12px;
+      margin:8px 0;
+      line-height:1.7;
+    }
+    .choice{
+      display:block;
+      border:1px solid #e0e0e0;
+      border-radius:12px;
+      padding:12px;
+      margin:10px 0;
+      cursor:pointer;
+      background:#fff;
+    }
+    .choice input{ margin-right:10px; transform: scale(1.05); }
+
+    .result{
+      display:none;
+      margin-top:10px;
+      border-radius:12px;
+      padding:12px;
+      border:1px solid #e0e0e0;
+      background:#fff;
+      line-height:1.7;
+    }
+    .ok{ border-color:#58b981; background:#eefaf3; }
+    .ng{ border-color:#d27b86; background:#fff0f1; }
+    .small{ font-size:12px; color:#333; margin-top:6px; }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="panel">
-      <button id="btnScore">採点</button>
-      <button id="btnCopy">回答コピー</button>
-      <button id="btnRestore">回答貼って復元</button>
-      <button id="btnReset">リセット</button>
-      <div class="stat" id="stat">未採点</div>
+    <h1>業法_中B（20問）</h1>
+    <div class="sub">
+      形式B：日常会話への言い換えあり／文章量・選択肢は標準。正解位置は固定しません。解説は採点後にのみ表示。
     </div>
 
-    <h1>業法_中B（20問）</h1>
-    <p class="sub">形式B：日常会話への言い換えあり／文章量・選択肢は標準。正解位置は固定しません。解説は採点後にのみ表示。</p>
+    <div class="toolbar">
+      <button class="btn" id="btnScore">採点する</button>
+      <button class="btn" id="btnExplain">解説を表示</button>
+      <button class="btn" id="btnCopy">回答をコピー</button>
+      <button class="btn" id="btnSave">回答を保存</button>
+      <button class="btn" id="btnRestore">回答を貼って復元</button>
+      <button class="btn danger" id="btnReset">リセット</button>
+
+      <div class="right" id="stat">合計：20問中 0 正解（未採点）　未回答：20/20</div>
+
+      <div class="notes">
+        ※解説は「採点」後にだけ表示されます。<br>
+        ※「保存」はこの端末のブラウザ内です（ログイン不要・他端末には移りません）。
+      </div>
+    </div>
+
+    <div class="restoreArea">
+      <div class="restoreTitle">復元用（必要なときだけ）</div>
+      <textarea id="restoreBox" placeholder="ここに「回答をコピー」で出た文字列を貼ってから「回答を貼って復元」"></textarea>
+      <div class="hint">※この欄は普段は使いません（事故の保険）。</div>
+    </div>
 
     <div id="qs"></div>
-
-    <div class="hint">復元用：ここに「回答コピー」した文字列を貼ってから「回答貼って復元」</div>
-    <textarea id="restoreBox" placeholder="例：0=2,1=x,2=0 ...（xは未回答）"></textarea>
   </div>
 
 <script>
-/* ======================
-   業法_中B（20問）
-   - 日常言い換えあり
-   - 正解位置は固定しない
-   - 解説は採点後だけ表示
-====================== */
-
-const Q = [
-  {
-    q: "【Q1 35条（重要事項説明）】重要事項説明は、原則としていつ行う必要があるか。",
-    d: "契約の「あと」で説明されたら遅いので、いつが基本？",
-    c: ["契約締結後に行う", "契約締結前に行う", "引渡し時に行う", "登記完了後に行う"],
-    a: 1,
-    e: "35条の重要事項説明は、契約締結「前」。契約するかどうか判断する材料だから。"
+/* ===== 業法_中B 20問（正解位置バラバラ） ===== */
+const QUESTIONS = [
+  { q:"【Q1 35条（重要事項説明）】重要事項説明は、原則としていつ行う必要があるか。", d:"契約の『あと』で説明されたら遅い。いつが基本？",
+    c:["契約締結後に行う","契約締結前に行う","引渡し時に行う","登記完了後に行う"], a:1,
+    e:"35条の重要事項説明は『契約締結前』。契約するかの判断材料だから。"
   },
-  {
-    q: "【Q2 35条（説明する人）】重要事項説明を行う者として正しいものはどれか。",
-    d: "『説明する資格がある人』の話です。",
-    c: ["宅建業者の代表者なら誰でもよい", "営業担当者なら誰でもよい", "宅地建物取引士（取引士）", "買主が読むだけで足りる"],
-    a: 2,
-    e: "35条の説明は原則「取引士」が行う（取引士証の提示・記名もセット）。"
+  { q:"【Q2 35条（説明する人）】重要事項説明を行う者として正しいものはどれか。", d:"『説明する資格がある人』の話。",
+    c:["代表者なら誰でもよい","営業担当なら誰でもよい","宅地建物取引士（取引士）","買主が読むだけで足りる"], a:2,
+    e:"35条の説明は原則『取引士』。取引士証の提示もセット。"
   },
-  {
-    q: "【Q3 35条（取引士証）】取引士は重要事項説明の際、取引士証の提示をする必要があるか。",
-    d: "『私は取引士です』をその場で示す必要がある？",
-    c: ["必要ない", "必要がある", "買主が求めたときだけ必要", "広告に書いてあれば不要"],
-    a: 1,
-    e: "重要事項説明のときは取引士証の提示が必要。"
+  { q:"【Q3 35条（取引士証）】重要事項説明の際、取引士証の提示は必要か。", d:"『私は取引士です』をその場で見せる必要がある？",
+    c:["必要ない","必要がある","求められたときだけ","広告に書いてあれば不要"], a:1,
+    e:"重要事項説明のときは取引士証の提示が必要。"
   },
-  {
-    q: "【Q4 37条（契約書面）】37条書面（契約内容を書いた書面）の交付義務が生じる時期はいつか。",
-    d: "『契約したあとに渡す紙』は、いつ渡す？",
-    c: ["契約の前に交付する", "契約成立後、遅滞なく交付する", "引渡し時に交付する", "登記後に交付する"],
-    a: 1,
-    e: "37条書面は契約成立後「遅滞なく」交付。"
+  { q:"【Q4 37条（契約書面）】37条書面（契約内容を書いた書面）の交付義務が生じる時期はいつか。", d:"『契約したあとに渡す紙』は、いつ渡す？",
+    c:["契約の前に交付","契約成立後、遅滞なく交付","引渡し時に交付","登記後に交付"], a:1,
+    e:"37条書面は契約成立後『遅滞なく』交付。"
   },
-  {
-    q: "【Q5 37条（記名）】37条書面に記名すべき者として正しいものはどれか。",
-    d: "『契約書面に名前を書かなあかんのは誰？』",
-    c: ["買主だけが記名する", "売主だけが記名する", "宅地建物取引士（取引士）が記名する", "近隣住民が記名する"],
-    a: 2,
-    e: "37条書面は取引士の記名（記名押印）が求められる（実務でもここが基本線）。"
+  { q:"【Q5 免許（期間）】宅建業の免許の有効期間は何年か。", d:"更新が必要。何年ごと？",
+    c:["3年","5年","7年","10年"], a:1, e:"免許の有効期間は5年。"
   },
-  {
-    q: "【Q6 免許（期間）】宅建業の免許の有効期間は何年か。",
-    d: "更新が必要。何年ごと？",
-    c: ["3年", "5年", "7年", "10年"],
-    a: 1,
-    e: "免許の有効期間は5年。"
+  { q:"【Q6 免許（免許換え）】免許換えが必要となるのはどれか。", d:"事務所が県をまたいで移ると？",
+    c:["同一都道府県内で移転","同一市区町村内で移転","他の都道府県へ移転","部屋番号だけ変更"], a:2,
+    e:"他都道府県へ事務所を移すと免許換えが必要。"
   },
-  {
-    q: "【Q7 免許（免許換え）】免許換えが必要となるのは、次のうちどれか。",
-    d: "事務所の場所が変わったとき、県をまたぐとどうなる？",
-    c: ["同一都道府県内での移転", "同一市区町村内での移転", "他の都道府県への移転", "事務所の部屋番号だけ変更"],
-    a: 2,
-    e: "他都道府県へ事務所を移すと免許換えが必要。"
+  { q:"【Q7 取引士（専任設置）】専任の取引士の割合として正しいものはどれか。", d:"従業者が増えるほど取引士も必要。",
+    c:["10人に1人以上","5人に1人以上","20人に1人以上","割合の決まりなし"], a:1,
+    e:"事務所ごとに『従業者5人に1人以上』。"
   },
-  {
-    q: "【Q8 取引士（設置）】事務所に置くべき専任の取引士の割合として正しいものはどれか。",
-    d: "従業者が増えるほど、取引士も必要になるルール。",
-    c: ["従業者10人に1人以上", "従業者5人に1人以上", "従業者20人に1人以上", "割合の決まりはない"],
-    a: 1,
-    e: "事務所ごとに従業者5人に1人以上（専任の取引士）。"
+  { q:"【Q8 標識（掲示）】標識（宅建業者票）を掲示すべき場所として正しいものはどれか。", d:"お客さんが来る場所で見えるように。",
+    c:["本店のみ","各事務所のみ","事務所と案内所等（一定の場合）","掲示義務なし"], a:2,
+    e:"事務所は必須。案内所等も条件により掲示義務あり。"
   },
-  {
-    q: "【Q9 標識（掲示）】宅建業者が標識（宅建業者票）を掲示すべき場所として正しいものはどれか。",
-    d: "お客さんが来る場所で『免許持ってる業者』って分かるようにする。",
-    c: ["本店のみ", "各事務所", "事務所と案内所等（一定の場合）", "掲示義務はない"],
-    a: 2,
-    e: "事務所は必須。案内所等も条件により掲示義務がある。"
+  { q:"【Q9 帳簿（保存）】帳簿を保存すべき期間は原則何年か。", d:"取引の記録、何年残す？",
+    c:["3年","5年","7年","10年"], a:1,
+    e:"帳簿の保存期間は原則5年。"
   },
-  {
-    q: "【Q10 帳簿（保存）】宅建業者が帳簿を保存すべき期間は原則何年か。",
-    d: "取引の記録、何年残す？",
-    c: ["3年", "5年", "7年", "10年"],
-    a: 1,
-    e: "帳簿の保存期間は原則5年。"
+  { q:"【Q10 報酬（上限）】報酬額の上限を定めるのは誰か。", d:"取りすぎ防止の上限ルールは誰が決める？",
+    c:["当事者の自由","都道府県知事","国土交通大臣","社内規定"], a:2,
+    e:"報酬の上限は国土交通大臣の告示。"
   },
-  {
-    q: "【Q11 報酬（上限）】宅建業者の受け取れる報酬額の上限を定めるのは誰か。",
-    d: "『取りすぎ防止』の上限ルールは誰が決める？",
-    c: ["当事者の自由", "都道府県知事", "国土交通大臣", "不動産会社の社内規定"],
-    a: 2,
-    e: "報酬の上限は国土交通大臣の告示で定める。"
+  { q:"【Q11 媒介（専属専任：レインズ）】専属専任媒介でレインズ登録期限はいつか。", d:"専属専任は一番きつい契約。登録も早い。",
+    c:["3日以内","5日以内","7日以内","10日以内"], a:1,
+    e:"専属専任媒介は5日以内にレインズ登録。"
   },
-  {
-    q: "【Q12 媒介（専属専任：レインズ）】専属専任媒介契約で、レインズ登録が必要な期限はいつか。",
-    d: "専属専任は一番キツい契約。登録も早い。",
-    c: ["3日以内", "5日以内", "7日以内", "10日以内"],
-    a: 1,
-    e: "専属専任媒介は5日以内にレインズ登録。"
+  { q:"【Q12 媒介（専任：レインズ）】専任媒介でレインズ登録期限はいつか。", d:"専任は専属専任より少しゆるい。",
+    c:["3日以内","5日以内","7日以内","10日以内"], a:2,
+    e:"専任媒介は7日以内にレインズ登録。"
   },
-  {
-    q: "【Q13 媒介（専任：レインズ）】専任媒介契約で、レインズ登録が必要な期限はいつか。",
-    d: "専任は専属専任より少しゆるい。",
-    c: ["3日以内", "5日以内", "7日以内", "10日以内"],
-    a: 2,
-    e: "専任媒介は7日以内にレインズ登録。"
+  { q:"【Q13 媒介（報告：専属専任）】専属専任媒介の報告頻度はどれか。", d:"『今どうなってる？』をどれくらいで報告？",
+    c:["2週間に1回以上","1週間に1回以上","月1回以上","報告義務なし"], a:1,
+    e:"専属専任は1週間に1回以上報告。"
   },
-  {
-    q: "【Q14 媒介（業務報告：専属専任）】専属専任媒介契約の業務処理状況の報告頻度はどれか。",
-    d: "『今どんな動きしてる？』をどれくらいのペースで報告？",
-    c: ["2週間に1回以上", "1週間に1回以上", "月1回以上", "報告義務なし"],
-    a: 1,
-    e: "専属専任は1週間に1回以上報告。"
+  { q:"【Q14 媒介（自己発見取引）】専属専任媒介で、依頼者が自己発見取引（自分で見つけた相手と直接契約）できるか。", d:"『自分で買主見つけたから直接やる』が通る？",
+    c:["できる","できない","取引士がいればできる","レインズ登録後ならできる"], a:1,
+    e:"専属専任は自己発見取引はできない（専任はできる）。"
   },
-  {
-    q: "【Q15 媒介（自己発見取引）】専属専任媒介契約において、依頼者（売主）が自己発見取引（自分で見つけた相手と直接契約）をすることはできるか。",
-    d: "『自分で買主見つけたから直接やる』が通る？",
-    c: ["できる", "できない", "取引士がいればできる", "レインズ登録が済んでいればできる"],
-    a: 1,
-    e: "専属専任は自己発見取引ができない（専任はできる）。"
+  { q:"【Q15 クーリングオフ（場所）】クーリングオフになりやすい契約場所はどれか（業者売主の想定）。", d:"店（事務所）で契約なら基本できない。どこなら？",
+    c:["宅建業者の事務所","買主の勤務先","常設モデルルーム","常設案内所"], a:1,
+    e:"事務所以外（例：買主の勤務先など）での申込み・契約は対象になり得る。"
   },
-  {
-    q: "【Q16 クーリングオフ（場所）】宅建業者が売主の取引で、クーリングオフが認められやすい契約場所はどれか。",
-    d: "店（事務所）で契約したら基本はできない。どこなら？",
-    c: ["宅建業者の事務所", "買主の勤務先（会社）", "宅建業者のモデルルーム内", "宅建業者の常設案内所"],
-    a: 1,
-    e: "事務所以外（例：買主の勤務先など）での申込み・契約はクーリングオフ対象になり得る。"
+  { q:"【Q16 クーリングオフ（期間）】クーリングオフできる期間として正しいものはどれか。", d:"書面を受け取った日から数えて何日？",
+    c:["5日","8日","10日","14日"], a:1,
+    e:"原則8日以内（書面交付日から起算）。"
   },
-  {
-    q: "【Q17 クーリングオフ（期間）】クーリングオフできる期間として正しいものはどれか。",
-    d: "『書面を受け取った日から数えて』何日？",
-    c: ["5日", "8日", "10日", "14日"],
-    a: 1,
-    e: "クーリングオフは原則8日以内（書面交付日から起算）。"
+  { q:"【Q17 8種制限（手付金上限）】業者売主の売買で、手付金等の上限は代金の何％か。", d:"業者売主だと『手付取りすぎ』が制限される。",
+    c:["10%","15%","20%","制限なし"], a:2,
+    e:"手付金等の上限は代金の20%。"
   },
-  {
-    q: "【Q18 8種制限（手付金の上限）】宅建業者が売主の売買で、手付金（等）の上限は売買代金の何％か。",
-    d: "業者売主だと『手付を取りすぎる』のが制限される。",
-    c: ["10％", "15％", "20％", "制限なし"],
-    a: 2,
-    e: "業者売主の手付金等の上限は代金の20％。"
+  { q:"【Q18 8種制限（違約金上限）】損害賠償予定額・違約金の合計上限は代金の何％か。", d:"キャンセル料（違約金）を取りすぎる制限。",
+    c:["10%","15%","20%","30%"], a:2,
+    e:"合計で20%が上限。"
   },
-  {
-    q: "【Q19 8種制限（違約金等の上限）】業者売主の売買で、損害賠償予定額・違約金の合計上限は売買代金の何％か。",
-    d: "『キャンセル料（違約金）』を取りすぎる制限。",
-    c: ["10％", "15％", "20％", "30％"],
-    a: 2,
-    e: "損害賠償予定額・違約金の合計は20％が上限。"
+  { q:"【Q19 37条（記名）】37条書面に記名すべき者として正しいものはどれか。", d:"契約書面に『取引士の名前』が要る？",
+    c:["買主だけ","売主だけ","取引士が記名する","近隣住民"], a:2,
+    e:"37条書面は取引士の記名が必要（実務でも基本）。"
   },
-  {
-    q: "【Q20 手付等保全措置（未完成）】業者売主で未完成物件の場合、手付等保全措置が必要になり得る基準として正しいものはどれか。",
-    d: "完成前に大金を受け取ると危ないから『保全（守る仕組み）』が必要になる。",
-    c: ["手付等が代金の10％超 または 1000万円超", "手付等が代金の5％超 または 1000万円超", "手付等が代金の20％超 または 2000万円超", "未完成でも保全措置は不要"],
-    a: 1,
-    e: "未完成物件は基準が厳しめ：手付等が代金の5％超 または 1000万円超で保全措置が必要になり得る。"
-  }
+  { q:"【Q20 手付等保全措置（未完成）】未完成物件で手付等保全措置が必要になり得る基準として正しいものはどれか。", d:"完成前に大金を受け取ると危ないから『保全（守る仕組み）』が必要。",
+    c:["代金の10%超 または1000万円超","代金の5%超 または1000万円超","代金の20%超 または2000万円超","未完成でも不要"], a:1,
+    e:"未完成は基準が厳しめ：代金の5%超 または1000万円超で保全措置が必要になり得る。"
+  },
 ];
+
+const KEY = location.pathname + "::answers_v1"; // ページ別に保存
 
 const qs = document.getElementById("qs");
 
-Q.forEach((o,i)=>{
+function esc(s){
+  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+QUESTIONS.forEach((o,i)=>{
   const card = document.createElement("div");
   card.className = "card";
   card.innerHTML = `
-    <div class="qtitle">Q${i+1}</div>
-    <div class="box">${escapeHTML(o.q)}</div>
-    <div class="box">${escapeHTML("【日常解釈】" + o.d)}</div>
+    <div class="qno">Q${i+1}</div>
+    <div class="box">${esc(o.q)}</div>
+    <div class="box">${esc("【日常解釈】" + o.d)}</div>
     ${o.c.map((t,j)=>`
       <label class="choice">
         <input type="radio" name="q${i}" value="${j}">
-        ${escapeHTML((j+1) + ". " + t)}
+        ${esc((j+1) + ". " + t)}
       </label>
     `).join("")}
     <div class="result" id="r${i}"></div>
@@ -223,66 +257,129 @@ Q.forEach((o,i)=>{
   qs.appendChild(card);
 });
 
-function escapeHTML(s){
-  return String(s)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+let scored = false; // 採点済みか
+let showExplain = false; // 解説表示トグル（採点後のみ意味がある）
+
+function countUnanswered(){
+  let n = 0;
+  for(let i=0;i<QUESTIONS.length;i++){
+    const sel = document.querySelector(`input[name="q${i}"]:checked`);
+    if(!sel) n++;
+  }
+  return n;
 }
 
-function score(){
+function updateStat(ok=null){
+  const un = countUnanswered();
+  const base = `合計：20問中 ${ok===null?0:ok} 正解（${scored?"採点済":"未採点"}）　未回答：${un}/20`;
+  document.getElementById("stat").textContent = base;
+}
+
+function renderResults(){
   let ok = 0;
-  Q.forEach((o,i)=>{
+  for(let i=0;i<QUESTIONS.length;i++){
+    const o = QUESTIONS[i];
     const r = document.getElementById("r"+i);
     const sel = document.querySelector(`input[name="q${i}"]:checked`);
     const isOk = sel && Number(sel.value) === o.a;
 
-    r.style.display = "block";
-    if(isOk){
-      ok++;
-      r.className = "result ok";
-      r.innerHTML = `<b>正解</b><div class="small">${escapeHTML("【解説】" + o.e)}</div>`;
-    }else{
-      r.className = "result ng";
-      const ansNo = o.a + 1;
-      r.innerHTML = `<b>不正解</b>（正解：${ansNo}）<div class="small">${escapeHTML("【解説】" + o.e)}</div>`;
+    r.style.display = scored ? "block" : "none";
+    r.className = "result " + (isOk ? "ok" : "ng");
+
+    if(!scored){
+      r.innerHTML = "";
+      continue;
     }
-  });
-  document.getElementById("stat").textContent = `${ok}/${Q.length}`;
+
+    const ansNo = o.a + 1;
+    const head = isOk ? "<b>正解</b>" : `<b>不正解</b>（正解：${ansNo}）`;
+    const exp = showExplain ? `<div class="small">${esc("【解説】" + o.e)}</div>` : "";
+    r.innerHTML = head + exp;
+
+    if(isOk) ok++;
+  }
+  updateStat(ok);
 }
 
-document.getElementById("btnScore").addEventListener("click", score);
+function score(){
+  scored = true;
+  renderResults();
+}
 
-document.getElementById("btnCopy").addEventListener("click", async ()=>{
+function toggleExplain(){
+  // 解説は採点後だけ
+  if(!scored) return;
+  showExplain = !showExplain;
+  renderResults();
+}
+
+function serializeAnswers(){
   // 例：0=2,1=x,2=0...（xは未回答）
-  const s = Q.map((_,i)=>{
+  return QUESTIONS.map((_,i)=>{
     const sel = document.querySelector(`input[name="q${i}"]:checked`);
     return `${i}=${sel ? sel.value : "x"}`;
   }).join(",");
-  try { await navigator.clipboard.writeText(s); } catch(e){ /* clipboard不可でも無視 */ }
-});
+}
 
-document.getElementById("btnRestore").addEventListener("click", ()=>{
-  const text = document.getElementById("restoreBox").value.trim();
-  if(!text) return;
+function applySerialized(text){
   const parts = text.split(",");
-  parts.forEach(p=>{
+  for(const p of parts){
     const [idx, val] = p.split("=");
-    if(idx === undefined || val === undefined) return;
-    if(val === "x") return;
+    if(idx===undefined || val===undefined) continue;
+    if(val==="x") continue;
     const i = Number(idx);
     const v = Number(val);
     const el = document.querySelector(`input[name="q${i}"][value="${v}"]`);
     if(el) el.checked = true;
-  });
+  }
+}
+
+function save(){
+  const s = serializeAnswers();
+  localStorage.setItem(KEY, s);
+}
+
+function load(){
+  const s = localStorage.getItem(KEY);
+  if(s) applySerialized(s);
+}
+
+document.getElementById("btnScore").addEventListener("click", score);
+document.getElementById("btnExplain").addEventListener("click", toggleExplain);
+
+document.getElementById("btnCopy").addEventListener("click", async ()=>{
+  const s = serializeAnswers();
+  try { await navigator.clipboard.writeText(s); } catch(e){ /* 無視 */ }
+});
+
+document.getElementById("btnSave").addEventListener("click", ()=>{
+  save();
+});
+
+document.getElementById("btnRestore").addEventListener("click", ()=>{
+  const t = document.getElementById("restoreBox").value.trim();
+  if(!t) return;
+  applySerialized(t);
+  // 復元したら未採点に戻す（採点結果の整合のため）
+  scored = false;
+  showExplain = false;
+  renderResults();
 });
 
 document.getElementById("btnReset").addEventListener("click", ()=>{
-  // 既存挙動を壊さないため、リロードで初期化
+  // 保存も消す（いつものリセット想定）
+  localStorage.removeItem(KEY);
   location.reload();
 });
+
+// 選択が変わるたび未回答カウント更新（フォーマットは維持、表示だけ更新）
+document.addEventListener("change", (e)=>{
+  if(e.target && e.target.matches('input[type="radio"]')) updateStat(scored?undefined:null);
+});
+
+// 初期：保存読込 → ステータス
+load();
+updateStat(null);
 </script>
 </body>
 </html>
