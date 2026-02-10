@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>業法（宅地建物取引業法） 上B：06（20問）</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --panel:#f6f7fb;
+      --card:#ffffff;
+      --border:#d9dbe3;
+      --text:#111827;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --ok:#16a34a;
+      --ng:#dc2626;
+      --warn:#b45309;
+      --shadow: 0 6px 18px rgba(17,24,39,.08);
+      --radius: 14px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:18px 14px 60px}
+    .top{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .title h1{margin:0;font-size:18px;letter-spacing:.2px}
+    .title .sub{margin:4px 0 0 0;color:var(--muted);font-size:12px;line-height:1.4}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    button{
+      appearance:none;
+      border:1px solid var(--border);
+      background:linear-gradient(#fff,#f2f3f7);
+      color:var(--text);
+      padding:9px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:13px;
+      box-shadow: 0 2px 0 rgba(17,24,39,.04);
+    }
+    button:hover{border-color:#bfc3d3}
+    button.primary{
+      border-color:rgba(37,99,235,.45);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.10);
+    }
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:14px;
+      box-shadow:var(--shadow);
+    }
+    .summary{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .scorebox{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .scorebig{
+      font-weight:900;
+      font-size:16px;
+      padding:8px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#fff;
+    }
+    .status{
+      font-size:12px;color:var(--muted);
+      padding:8px 12px;border-radius:12px;border:1px solid var(--border);background:#fff;
+    }
+    .note{font-size:12px;color:var(--muted);line-height:1.6}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:10px}
+    .q{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:14px;
+      box-shadow: 0 4px 12px rgba(17,24,39,.06);
+    }
+    .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+    .qno{font-weight:900;color:rgba(37,99,235,1);letter-spacing:.3px}
+    .badge{
+      font-size:12px;color:var(--muted);
+      border:1px solid var(--border);
+      background:#fff;
+      padding:6px 10px;border-radius:999px;white-space:nowrap;
+    }
+    .block{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:12px;
+      margin-top:10px;
+    }
+    .block h3{margin:0 0 8px 0;font-size:12px;color:#374151;letter-spacing:.2px}
+    .block p{margin:0;line-height:1.65;font-size:14px;color:#111827}
+    .choices{margin-top:10px;display:grid;gap:8px}
+    label.choice{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 12px;border-radius:14px;border:1px solid var(--border);
+      background:linear-gradient(#fff,#fafbff);
+      cursor:pointer;
+    }
+    label.choice:hover{border-color:#bfc3d3}
+    input[type="radio"]{width:18px;height:18px;accent-color:var(--accent)}
+    .result{
+      margin-top:12px;padding:10px 12px;border-radius:14px;border:1px solid var(--border);
+      background:#fff;display:none;
+    }
+    .result.good{border-color:rgba(22,163,74,.35)}
+    .result.bad{border-color:rgba(220,38,38,.35)}
+    .line{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px;color:#111827}
+    .pill{
+      padding:4px 10px;border-radius:999px;border:1px solid var(--border);background:#fff;
+      color:#111827;font-weight:800;
+    }
+    .pill.good{border-color:rgba(22,163,74,.35);color:rgba(22,163,74,1)}
+    .pill.bad{border-color:rgba(220,38,38,.35);color:rgba(220,38,38,1)}
+    .pill.neu{border-color:rgba(37,99,235,.25);color:#111827;font-weight:700}
+    .hint{margin-top:8px;font-size:12px;color:rgba(180,83,9,1);display:none}
+    textarea{
+      width:100%;
+      min-height:110px;
+      resize:vertical;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--text);
+      padding:12px;
+      outline:none;
+      line-height:1.5;
+      font-size:13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="title">
+        <h1>業法（宅地建物取引業法） 上B：06（20問）</h1>
+        <p class="sub">形式：1問1択／採点・回答コピー・回答貼って復元・リセット（保存：localStorage（端末内保存））</p>
+      </div>
+      <div class="actions">
+        <button class="primary" id="gradeBtn">採点する</button>
+        <button id="copyBtn">回答コピー</button>
+        <button id="restoreBtn">回答貼って復元</button>
+        <button id="resetBtn">リセット</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="summary">
+        <div class="scorebox">
+          <span class="scorebig" id="scoreView">未採点</span>
+          <span class="status" id="statusView">※回答が変更された場合は、再度「採点する」が必要です。</span>
+        </div>
+        <div class="note">
+          ※上B：問題はほぼ本試験＋「日常の言い換え」＋必要なら（用語補足）。<br/>
+          ※期限の暗記：属5（専属専任＝5日以内）／7任（専任＝7日以内）。
+        </div>
+      </div>
+
+      <div class="grid" id="qArea"></div>
+
+      <div class="block" style="margin-top:12px;">
+        <h3>【回答貼り付け欄】</h3>
+        <p style="margin:0 0 10px 0;color:var(--muted);font-size:12px;">形式：Q01=B のように行で並びます。例：Q01=B</p>
+        <textarea id="pasteArea" placeholder="ここに貼り付け（例：Q01=B）"></textarea>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const KEY = "takken_g_gyoho_ueB_06_20_answers_v1";
+
+  // ===== ここだけ差し替え対象（questions配列） =====
+  const questions = [
+    {
+      no: 1,
+      tag: "媒介／REINS",
+      q: "専属専任媒介契約（せんぞくせんにんばいかいけいやく：1社だけ＋自己発見取引（じこはっけんとりひき：自分で相手を見つけて直契約）も不可）を締結した宅地建物取引業者は、指定流通機構（していりゅうつうきこう：REINS）への登録を、原則としていつまでに行わなければならないか。",
+      daily: "専属専任で預かったら、レインズ登録は何日以内？（属5）",
+      choices: [
+        "契約締結日から7日以内",
+        "契約締結日から3日以内",
+        "契約締結日から5日以内",
+        "契約締結日から14日以内"
+      ],
+      ans: "C",
+      exp: "専属専任のREINS登録期限は「契約締結日から5日以内」（属5）。"
+    },
+    {
+      no: 2,
+      tag: "媒介／REINS",
+      q: "専任媒介契約（せんにんばいかいけいやく：1社だけに任せる媒介）を締結した宅地建物取引業者は、指定流通機構（REINS）への登録を、原則としていつまでに行わなければならないか。",
+      daily: "専任で預かったら、レインズ登録は何日以内？（7任）",
+      choices: [
+        "契約締結日から5日以内",
+        "契約締結日から7日以内",
+        "契約締結日から3日以内",
+        "契約締結日から14日以内"
+      ],
+      ans: "B",
+      exp: "専任のREINS登録期限は「契約締結日から7日以内」（7任）。"
+    },
+    {
+      no: 3,
+      tag: "媒介／報告",
+      q: "専属専任媒介契約を締結した宅地建物取引業者は、依頼者に対し、業務処理状況（ぎょうむしょりじょうきょう：活動の報告）を少なくとも何週間に1回以上報告しなければならないか。",
+      daily: "専属専任の活動報告って、何週間に1回？",
+      choices: [
+        "1週間に1回以上",
+        "2週間に1回以上",
+        "3週間に1回以上",
+        "4週間に1回以上"
+      ],
+      ans: "A",
+      exp: "専属専任は「1週間に1回以上」報告。"
+    },
+    {
+      no: 4,
+      tag: "媒介／報告",
+      q: "専任媒介契約を締結した宅地建物取引業者は、依頼者に対し、業務処理状況（活動の報告）を少なくとも何週間に1回以上報告しなければならないか。",
+      daily: "専任の活動報告って、何週間に1回？",
+      choices: [
+        "1週間に1回以上",
+        "2週間に1回以上",
+        "3週間に1回以上",
+        "4週間に1回以上"
+      ],
+      ans: "B",
+      exp: "専任は「2週間に1回以上」報告。"
+    },
+    {
+      no: 5,
+      tag: "媒介／自己発見",
+      q: "専任媒介契約において、依頼者は自己発見取引（自分で相手を見つけて直契約）をすることができるか。",
+      daily: "専任でも、自分で相手見つけて直契約できる？",
+      choices: [
+        "できない",
+        "できる",
+        "相手が宅建業者（たっけんぎょうしゃ：不動産屋）ならできる",
+        "宅地建物取引士（たっけんし：資格者）が同席ならできる"
+      ],
+      ans: "B",
+      exp: "専任は自己発見取引「できる」。できないのは専属専任。"
+    },
+    {
+      no: 6,
+      tag: "媒介／自己発見",
+      q: "専属専任媒介契約において、依頼者は自己発見取引（自分で相手を見つけて直契約）をすることができるか。",
+      daily: "専属専任でも、自分で相手見つけて直契約できる？",
+      choices: [
+        "できる",
+        "できない",
+        "売主（うりぬし）のときだけできる",
+        "買主（かいぬし）のときだけできる"
+      ],
+      ans: "B",
+      exp: "専属専任は自己発見取引「できない」。"
+    },
+    {
+      no: 7,
+      tag: "35条",
+      q: "重要事項説明（じゅうようじこうせつめい：35条説明）は、原則としていつまでに行わなければならないか。",
+      daily: "35条の説明って、いつまでにやる？",
+      choices: [
+        "契約締結前までに",
+        "契約締結後、遅滞なく（ちたいなく：すぐに）",
+        "引渡し（ひきわたし：物を渡す）までに",
+        "登記（とうき：名義の登録）までに"
+      ],
+      ans: "A",
+      exp: "35条（重要事項説明）は「契約締結前までに」。"
+    },
+    {
+      no: 8,
+      tag: "37条",
+      q: "37条書面（さんじゅうななじょうしょめん：契約内容を書いた書面）の交付（こうふ：渡す）は、原則としていつ行わなければならないか。",
+      daily: "37条の書面って、いつ渡す？",
+      choices: [
+        "契約締結前までに",
+        "契約締結後、遅滞なく（すぐに）",
+        "引渡しまでに",
+        "代金全額支払い後"
+      ],
+      ans: "B",
+      exp: "37条書面は「契約締結後、遅滞なく交付」。35条（契約前）と混ぜない。"
+    },
+    {
+      no: 9,
+      tag: "取引士",
+      q: "重要事項説明（35条説明）を行う者として正しいものはどれか。",
+      daily: "35条説明は、誰ができる？",
+      choices: [
+        "宅地建物取引士（たっけんし）が行う",
+        "宅建業者の従業者（じゅうぎょうしゃ）なら誰でもよい",
+        "買主が希望すれば誰でもよい",
+        "売主が一般人でもよい"
+      ],
+      ans: "A",
+      exp: "35条説明は宅地建物取引士が行う（取引士証（しょう：資格証）を提示（ていじ：見せる）して説明）。"
+    },
+    {
+      no: 10,
+      tag: "従業者証明書",
+      q: "宅建業者の従業者証明書（じゅうぎょうしゃしょうめいしょ：身分証）について、提示（ていじ：見せる）を求められた場合の取扱いとして正しいものはどれか。",
+      daily: "従業者証明書、求められたらどうする？",
+      choices: [
+        "後日郵送でもよい",
+        "その場で提示しなければならない",
+        "会社に戻ってからでよい",
+        "提示義務はない"
+      ],
+      ans: "B",
+      exp: "求められたら原則その場で提示。携帯（けいたい：持ち歩き）も必要。"
+    },
+    {
+      no: 11,
+      tag: "広告／誇大",
+      q: "宅建業者の広告（こうこく：募集表示）について、誇大広告（こだいこうこく：盛りすぎ広告）として禁止されるものに該当するのはどれか。",
+      daily: "広告で「盛りすぎ」はどれ？",
+      choices: [
+        "実際より著しく有利（ゆうり：得）または優良（ゆうりょう：質が良い）と誤認（ごにん：勘違い）させる表示をする",
+        "物件の所在地（しょざいち）を正確に表示する",
+        "取引態様（とりひきたいよう：売主/代理/媒介）を表示する",
+        "価格を実際の金額で表示する"
+      ],
+      ans: "A",
+      exp: "誇大広告は「著しく有利・優良と誤認させる」表示が禁止。"
+    },
+    {
+      no: 12,
+      tag: "報酬",
+      q: "宅建業者が受け取ることができる媒介報酬（ばいかいほうしゅう：仲介手数料）の上限について正しいものはどれか。",
+      daily: "仲介手数料の上限って、どう決まる？",
+      choices: [
+        "当事者の合意だけで自由に決まる",
+        "国土交通大臣（こくどこうつうだいじん）の定める額の範囲内で定まる",
+        "都道府県知事（とどうふけんちじ）の許可があれば無制限にできる",
+        "宅建業者の社内規定だけで決まる"
+      ],
+      ans: "B",
+      exp: "媒介報酬の上限は「国土交通大臣が定める額の範囲内」。"
+    },
+    {
+      no: 13,
+      tag: "クーリング・オフ",
+      q: "宅建業者が売主（うりぬし）となる宅地建物の売買で、買主がクーリング・オフ（一定期間の無条件解約）を主張できるのは原則としてどれか。",
+      daily: "業者売主のクーリングオフ、どんな時に使える？",
+      choices: [
+        "常に無条件で使える",
+        "宅建業者の事務所等（じむしょとう）以外で申込み等をした場合など、要件（ようけん：条件）を満たすとき",
+        "登記が終わるまでならいつでも使える",
+        "引渡し後でも必ず使える"
+      ],
+      ans: "B",
+      exp: "クーリング・オフは要件を満たす場合のみ（場所や手続の状況が軸）。"
+    },
+    {
+      no: 14,
+      tag: "8種制限／手付",
+      q: "宅建業者が売主となる売買で、買主から受け取ることができる手付金（てつけきん）の額として、原則として正しいものはどれか。",
+      daily: "業者売主の手付金、上限は？",
+      choices: [
+        "売買代金の2割を超えて受け取ってはならない",
+        "売買代金の3割を超えて受け取ってはならない",
+        "上限はない",
+        "買主が同意すれば上限はない"
+      ],
+      ans: "A",
+      exp: "業者売主の手付金は原則「2割まで」。"
+    },
+    {
+      no: 15,
+      tag: "8種制限／違約金",
+      q: "宅建業者が売主となる売買で、損害賠償額の予定（そんがいばいしょうがくのよてい：違反時の賠償を先に決める）および違約金（いやくきん）の上限は、原則として売買代金の何割か。",
+      daily: "違約金とか賠償予定、上限は何割？",
+      choices: [
+        "1割",
+        "2割",
+        "3割",
+        "4割"
+      ],
+      ans: "B",
+      exp: "損害賠償予定・違約金の上限は「2割」。"
+    },
+    {
+      no: 16,
+      tag: "手付解除",
+      q: "手付解除（てつけかいじょ：手付を放棄（ほうき：あきらめる）または返還（へんかん：返す）して解除）について、買主が解除できる時期として正しいものはどれか。",
+      daily: "手付解除はいつまでできる？（日数じゃなく基準）",
+      choices: [
+        "引渡しまでいつでもできる",
+        "相手方が履行（りこう：実行）に着手（ちゃくしゅ：取りかかる）するまでできる",
+        "契約後1週間だけできる",
+        "登記が終わるまでできる"
+      ],
+      ans: "B",
+      exp: "手付解除は「相手方が履行に着手するまで」。日数ではなく“着手”で切れる。"
+    },
+    {
+      no: 17,
+      tag: "免許",
+      q: "宅地建物取引業の免許（めんきょ：営業許可）の有効期間として正しいものはどれか。",
+      daily: "宅建業免許って、何年？",
+      choices: [
+        "3年",
+        "5年",
+        "7年",
+        "10年"
+      ],
+      ans: "B",
+      exp: "宅建業免許の有効期間は「5年」。"
+    },
+    {
+      no: 18,
+      tag: "帳簿",
+      q: "宅建業者が備え付ける帳簿（ちょうぼ：取引記録）について、保存期間として原則正しいものはどれか。",
+      daily: "取引の帳簿、何年保存？",
+      choices: [
+        "1年",
+        "3年",
+        "5年",
+        "10年"
+      ],
+      ans: "C",
+      exp: "帳簿保存は原則「5年」。"
+    },
+    {
+      no: 19,
+      tag: "取引士設置",
+      q: "宅建業者は、事務所（じむしょ）ごとに一定数の専任の宅地建物取引士（せんにん：その事務所で専属）を置かなければならないが、その割合として原則正しいものはどれか。",
+      daily: "取引士は、事務所に何人割合で必要？",
+      choices: [
+        "従業者の10人に1人以上",
+        "従業者の5人に1人以上",
+        "従業者の3人に1人以上",
+        "従業者の2人に1人以上"
+      ],
+      ans: "B",
+      exp: "専任の取引士は「5人に1人以上」（5分の1）。"
+    },
+    {
+      no: 20,
+      tag: "37条／交付先",
+      q: "37条書面（契約内容を書いた書面）の交付先（こうふさき：渡す相手）として、原則として正しいものはどれか。",
+      daily: "37条の書面、誰に渡す？",
+      choices: [
+        "売主・買主など当事者（とうじしゃ）に交付する",
+        "媒介業者（ばいかいぎょうしゃ：仲介）にだけ交付すれば足りる",
+        "金融機関（きんゆうきかん：銀行）に交付する",
+        "登記所（とうきしょ）に交付する"
+      ],
+      ans: "A",
+      exp: "37条書面は当事者（売主・買主など）に交付。"
+    }
+  ];
+  // ===== ここだけ差し替え対象（questions配列） =====
+
+  const qArea = document.getElementById("qArea");
+  const scoreView = document.getElementById("scoreView");
+  const statusView = document.getElementById("statusView");
+  const pasteArea = document.getElementById("pasteArea");
+
+  const pad2 = (n)=>String(n).padStart(2,"0");
+  const qKey = (no)=>`Q${pad2(no)}`;
+
+  const escapeHtml = (s)=>String(s)
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#39;");
+
+  const loadAnswers = ()=>{
+    try{ return JSON.parse(localStorage.getItem(KEY) || "{}") || {}; }catch(e){ return {}; }
+  };
+  const saveAnswers = (obj)=> localStorage.setItem(KEY, JSON.stringify(obj));
+
+  let answers = loadAnswers();
+  let graded = false;
+
+  const markNeedRegrade = ()=>{
+    graded = false;
+    scoreView.textContent = "未採点";
+    statusView.textContent = "※回答が変更された場合は、再度「採点する」が必要です。";
+    document.querySelectorAll(".result").forEach(el=>el.style.display="none");
+    document.querySelectorAll(".hint").forEach(el=>el.style.display="none");
+  };
+
+  const render = ()=>{
+    qArea.innerHTML = "";
+    questions.forEach(q=>{
+      const div = document.createElement("div");
+      div.className = "q";
+      div.innerHTML = `
+        <div class="qhead">
+          <div class="qno">${qKey(q.no)}</div>
+          <div class="badge">${escapeHtml(q.tag)}</div>
+        </div>
+
+        <div class="block">
+          <h3>【問題文（試験風）】</h3>
+          <p>${escapeHtml(q.q)}</p>
+        </div>
+
+        <div class="block">
+          <h3>【日常の言い換え】</h3>
+          <p>${escapeHtml(q.daily)}</p>
+        </div>
+
+        <div class="block">
+          <h3>【選択肢】（1つ選ぶ）</h3>
+          <div class="choices" id="choices_${q.no}"></div>
+        </div>
+
+        <div class="result" id="result_${q.no}">
+          <div class="line" id="line_${q.no}"></div>
+          <div class="hint" id="hint_${q.no}">※回答が変更されたため、再度「採点する」が必要です。</div>
+        </div>
+      `;
+      qArea.appendChild(div);
+
+      const cWrap = div.querySelector(`#choices_${q.no}`);
+      const letters = ["A","B","C","D"];
+      q.choices.forEach((txt, i)=>{
+        const letter = letters[i];
+        const label = document.createElement("label");
+        label.className = "choice";
+        label.innerHTML = `
+          <input type="radio" name="q_${q.no}" value="${letter}">
+          <div><b style="display:inline-block;width:22px">${letter}</b> ${escapeHtml(txt)}</div>
+        `;
+        cWrap.appendChild(label);
+
+        const input = label.querySelector("input");
+        if(answers[qKey(q.no)] === letter) input.checked = true;
+
+        input.addEventListener("change", ()=>{
+          answers[qKey(q.no)] = letter;
+          saveAnswers(answers);
+          if(graded) document.getElementById(`hint_${q.no}`).style.display = "block";
+          markNeedRegrade();
+        });
+      });
+    });
+  };
+
+  const grade = ()=>{
+    let correct = 0;
+    questions.forEach(q=>{
+      const picked = answers[qKey(q.no)] || "";
+      const ok = picked === q.ans;
+      if(ok) correct++;
+
+      const res = document.getElementById(`result_${q.no}`);
+      const line = document.getElementById(`line_${q.no}`);
+      const hint = document.getElementById(`hint_${q.no}`);
+      hint.style.display = "none";
+
+      res.classList.remove("good","bad");
+      res.classList.add(ok ? "good" : "bad");
+      res.style.display = "block";
+
+      const yourPill = picked
+        ? `<span class="pill ${ok ? "good":"bad"}">あなた：${picked}</span>`
+        : `<span class="pill bad">あなた：未選択</span>`;
+      const ansPill  = `<span class="pill good">正解：${q.ans}</span>`;
+      const expP     = `<span class="pill neu">解説：${escapeHtml(q.exp)}</span>`;
+
+      line.innerHTML = `
+        <span class="pill ${ok ? "good":"bad"}">${ok ? "正解" : "不正解"}</span>
+        ${yourPill}
+        ${ansPill}
+        ${expP}
+      `;
+    });
+
+    graded = true;
+    scoreView.textContent = `${correct} / ${questions.length}`;
+    statusView.textContent = "採点済み（回答を変更した場合は未採点に戻ります）";
+  };
+
+  const buildCopyText = ()=>{
+    return questions.map(q=>{
+      const k = qKey(q.no);
+      const v = answers[k] || "";
+      return `${k}=${v}`;
+    }).join("\n");
+  };
+
+  const restoreFromText = (text)=>{
+    const map = {};
+    (text||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean).forEach(line=>{
+      const m = line.match(/^(Q\d{2})\s*=\s*([ABCD])\s*$/i);
+      if(m) map[m[1].toUpperCase()] = m[2].toUpperCase();
+    });
+    let changed = false;
+    Object.keys(map).forEach(k=>{
+      if(answers[k] !== map[k]){ answers[k] = map[k]; changed = true; }
+    });
+    if(changed){
+      saveAnswers(answers);
+      render();
+      markNeedRegrade();
+    }
+  };
+
+  const resetAll = ()=>{
+    answers = {};
+    saveAnswers(answers);
+    pasteArea.value = "";
+    render();
+    markNeedRegrade();
+  };
+
+  document.getElementById("gradeBtn").addEventListener("click", grade);
+  document.getElementById("copyBtn").addEventListener("click", async ()=>{
+    const txt = buildCopyText();
+    pasteArea.value = txt;
+    try{
+      await navigator.clipboard.writeText(txt);
+      statusView.textContent = "回答をコピーしました（貼り付け欄にも出しています）";
+    }catch(e){
+      statusView.textContent = "回答を貼り付け欄に出しました（端末設定でコピー不可の場合があります）";
+    }
+  });
+  document.getElementById("restoreBtn").addEventListener("click", ()=>{
+    restoreFromText(pasteArea.value);
+    statusView.textContent = "貼り付け内容から復元しました（形式：Q01=B）";
+  });
+  document.getElementById("resetBtn").addEventListener("click", ()=>{
+    resetAll();
+    statusView.textContent = "リセットしました";
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
