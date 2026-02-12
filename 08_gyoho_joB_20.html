@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>宅建：業法 上B 08（20問）</title>
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#111; --muted:#666; --line:#e5e5e5;
+      --card:#ffffff; --ok:#0a7a2f; --ng:#b00020;
+      --btn:#111; --btnfg:#fff; --btn2:#f3f3f3;
+    }
+    html,body{background:var(--bg); color:var(--fg); margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP","Segoe UI",Roboto,Arial;}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px;}
+    h1{font-size:18px;margin:0 0 10px;}
+    .topbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+      padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card);margin-bottom:12px;}
+    .topbar .status{margin-left:auto;color:var(--muted);font-size:13px;}
+    button{border:0;border-radius:10px;padding:10px 12px;cursor:pointer;
+      background:var(--btn);color:var(--btnfg);font-weight:700;}
+    button.secondary{background:var(--btn2);color:var(--fg);border:1px solid var(--line);}
+    textarea{width:100%;min-height:86px;resize:vertical;padding:10px;border-radius:10px;
+      border:1px solid var(--line);font-family:ui-monospace,monospace;font-size:12px;}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;}
+    @media (min-width:920px){.grid{grid-template-columns:1fr 1fr;}}
+    .qcard{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:12px;}
+    .qhead{display:flex;gap:10px;align-items:baseline;margin-bottom:6px;}
+    .qno{font-weight:900;}
+    .tag{font-size:12px;color:var(--muted);}
+    .block{margin:10px 0;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fafafa;}
+    .label{font-size:12px;color:var(--muted);margin-bottom:6px;}
+    .choices{display:grid;gap:8px;}
+    .choice{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff;}
+    .choice input{margin-top:3px;}
+    .result{margin-top:10px;padding:10px;border-radius:10px;display:none;border:1px solid var(--line);}
+    .result.ok{display:block;border-color:rgba(10,122,47,.35);background:rgba(10,122,47,.06);}
+    .result.ng{display:block;border-color:rgba(176,0,32,.35);background:rgba(176,0,32,.06);}
+    .result .rline{font-weight:900;}
+    .hr{height:1px;background:var(--line);margin:10px 0;}
+    .muted{color:var(--muted);font-size:12px;}
+  </style>
+</head>
+<body>
+<div class="wrap">
+<h1>宅建：業法 上B 08（20問）</h1>
+
+<div class="topbar">
+  <button id="btnGrade">採点</button>
+  <button id="btnSave" class="secondary">Save（保存）</button>
+  <button id="btnRestore" class="secondary">Restore（復元）</button>
+  <button id="btnCopy" class="secondary">Copy Answers（回答コピー）</button>
+  <button id="btnApply" class="secondary">Paste & Restore（回答貼って復元）</button>
+  <button id="btnReset" class="secondary">Reset（リセット）</button>
+  <div class="status" id="status">未採点</div>
+</div>
+
+<textarea id="io" placeholder="v1|1=0,2=1,3=2 ..."></textarea>
+
+<div class="grid" id="grid"></div>
+</div>
+
+<script>
+const questions=[
+{ id:1,label:"業法 上B 08",
+exam:"宅建業者は、宅地又は建物の取引に関して、相手方を誤認させるような表示をしてはならない。",
+everyday:"相手を勘違いさせるような表示はダメ、という話。",
+choices:["A：正しい","B：誤り（表示は自由）","C：誤り（口頭説明なら可）","D：誤り（書面だけ禁止）"],
+answer:0,
+explain:"誇大広告・不当表示は禁止されています。誤認させる表示自体がアウトです。"},
+{ id:2,label:"業法 上B 08",
+exam:"宅建業者は、宅地又は建物の取引について、将来の環境や価格の上昇を断定的に説明してはならない。",
+everyday:"将来こうなると決めつけた説明はダメ、という話。",
+choices:["A：正しい","B：誤り（希望的観測なら可）","C：誤り（売買のみ禁止）","D：誤り（賃貸のみ禁止）"],
+answer:0,
+explain:"断定的判断の提供は禁止です。将来予測を断言するのはアウトです。"},
+{ id:3,label:"業法 上B 08",
+exam:"宅建業者は、広告を行う場合、取引態様を明示しなければならない。",
+everyday:"自分が売主か仲介かは、ちゃんと書け、という話。",
+choices:["A：正しい","B：誤り（書かなくてよい）","C：誤り（売買だけ必要）","D：誤り（契約後でよい）"],
+answer:0,
+explain:"広告では取引態様の明示が義務です。"},
+{ id:4,label:"業法 上B 08",
+exam:"宅建業者は、媒介契約を締結したときは、遅滞なく書面を交付しなければならない。",
+everyday:"媒介を頼まれたら、その内容を書いた紙をすぐ渡せ、という話。",
+choices:["A：正しい","B：誤り（口頭で足りる）","C：誤り（売主のみ必要）","D：誤り（請求があった場合のみ）"],
+answer:0,
+explain:"媒介契約締結時の書面交付義務があります。"},
+{ id:5,label:"業法 上B 08",
+exam:"一般媒介契約では、依頼者は複数の宅建業者に同時に依頼することができる。",
+everyday:"一般なら何社にも頼める、という話。",
+choices:["A：正しい","B：誤り（1社限定）","C：誤り（2社まで）","D：誤り（条件付きで不可）"],
+answer:0,
+explain:"一般媒介は複数依頼が可能です。"},
+{ id:6,label:"業法 上B 08",
+exam:"専任媒介契約では、依頼者は自分で買主を見つけて直接契約することができる。",
+everyday:"専任なら、自分で見つけて直接売ってもOK、という話。",
+choices:["A：正しい","B：誤り（禁止される）","C：誤り（専属専任のみ可）","D：誤り（一般のみ可）"],
+answer:0,
+explain:"専任媒介は自己発見取引が可能です。"},
+{ id:7,label:"業法 上B 08",
+exam:"専属専任媒介契約では、依頼者は自己発見取引をすることができない。",
+everyday:"専属専任は、自分で見つけて直接やるのは禁止、という話。",
+choices:["A：正しい","B：誤り（可能）","C：誤り（条件付き）","D：誤り（一般のみ禁止）"],
+answer:0,
+explain:"専属専任は自己発見取引不可です。"},
+{ id:8,label:"業法 上B 08",
+exam:"宅建業者は、専属専任媒介契約を締結したときは、5日以内に指定流通機構へ登録しなければならない。",
+everyday:"専属専任は5日以内にレインズ登録、という話。",
+choices:["A：正しい","B：誤り（7日以内）","C：誤り（10日以内）","D：誤り（義務なし）"],
+answer:0,
+explain:"語呂：属5（専属専任は5日以内）。"},
+{ id:9,label:"業法 上B 08",
+exam:"宅建業者は、従業者名簿を作成し、事務所に備え付けなければならない。",
+everyday:"従業員リストは作って置いとけ、という話。",
+choices:["A：正しい","B：誤り（不要）","C：誤り（宅建士のみ）","D：誤り（本店のみ）"],
+answer:0,
+explain:"従業者名簿の作成・備付義務があります。"},
+{ id:10,label:"業法 上B 08",
+exam:"宅建業者は、宅建業の免許が失効した場合でも、取引を継続することができる。",
+everyday:"免許切れても仕事続けていい、という話。",
+choices:["A：正しい","B：誤り（免許失効後は業務不可）","C：誤り（3か月は可）","D：誤り（届出すれば可）"],
+answer:1,
+explain:"免許がなければ宅建業はできません。"}
+];
+
+const LS_KEY="takken_ref_template_white_v1_answers_v1";
+const grid=document.getElementById("grid");
+
+function esc(s){return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");}
+
+questions.forEach((q,i)=>{
+  const d=document.createElement("div");d.className="qcard";
+  d.innerHTML=`
+  <div class="qhead"><div class="qno">Q${i+1}</div><div class="tag">${q.label}</div></div>
+  <div class="block"><div class="label">① 試験風問題文</div>${esc(q.exam)}</div>
+  <div class="block"><div class="label">② 日常会話への言い換え</div>${esc(q.everyday)}</div>
+  <div class="block"><div class="label">③ 選択肢</div>
+    ${q.choices.map((c,ci)=>`<label class="choice"><input type="radio" name="q${q.id}" value="${ci}">${esc(c)}</label>`).join("")}
+  </div>
+  <div class="result" id="r${q.id}"><div class="rline"></div><div>${esc(q.explain)}</div></div>
+  `;
+  grid.appendChild(d);
+});
+
+document.getElementById("btnGrade").onclick=()=>{
+ let ok=0;
+ questions.forEach(q=>{
+  const v=document.querySelector(`input[name=q${q.id}]:checked`);
+  const r=document.getElementById("r"+q.id);
+  if(v&&Number(v.value)===q.answer){ok++;r.className="result ok";r.firstChild.textContent="正解";}
+  else{r.className="result ng";r.firstChild.textContent="不正解";}
+ });
+ document.getElementById("status").textContent=`${ok}/${questions.length}`;
+};
+</script>
+</body>
+</html>
