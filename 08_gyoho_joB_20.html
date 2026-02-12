@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>宅建：業法 上B 08（20問）</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --fg:#111;
+      --muted:#666;
+      --line:#e5e5e5;
+      --card:#ffffff;
+      --ok:#0a7a2f;
+      --ng:#b00020;
+      --btn:#111;
+      --btnfg:#fff;
+      --btn2:#f3f3f3;
+    }
+    html,body{background:var(--bg); color:var(--fg); margin:0; font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;}
+    .wrap{max-width:1100px; margin:0 auto; padding:16px;}
+    h1{font-size:18px; margin:0 0 10px;}
+    .topbar{
+      display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+      padding:12px; border:1px solid var(--line); border-radius:10px; background:var(--card);
+      margin-bottom:12px;
+    }
+    .topbar .status{margin-left:auto; color:var(--muted); font-size:13px;}
+    button{
+      border:0; border-radius:10px; padding:10px 12px; cursor:pointer;
+      background:var(--btn); color:var(--btnfg); font-weight:700;
+    }
+    button.secondary{background:var(--btn2); color:var(--fg); border:1px solid var(--line);}
+    button:active{transform:translateY(1px);}
+    textarea{
+      width:100%; min-height:86px; resize:vertical; padding:10px; border-radius:10px;
+      border:1px solid var(--line); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:12px;
+    }
+
+    /* レイアウト（最重要）：PCは2列、スマホは1列。JSロジックは触らずCSS gridのみで制御 */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+    @media (min-width: 920px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .qcard{
+      border:1px solid var(--line); border-radius:12px; background:var(--card);
+      padding:12px;
+    }
+    .qhead{display:flex; gap:10px; align-items:baseline; margin-bottom:6px;}
+    .qno{font-weight:900;}
+    .tag{font-size:12px; color:var(--muted);}
+    .block{margin:10px 0; padding:10px; border:1px solid var(--line); border-radius:10px; background:#fafafa;}
+    .label{font-size:12px; color:var(--muted); margin-bottom:6px;}
+    .choices{display:grid; gap:8px;}
+    .choice{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:10px; border:1px solid var(--line); border-radius:10px; background:#fff;
+    }
+    .choice input{margin-top:3px;}
+    .result{
+      margin-top:10px; padding:10px; border-radius:10px; display:none;
+      border:1px solid var(--line);
+    }
+    .result.ok{display:block; border-color: rgba(10,122,47,.35); background: rgba(10,122,47,.06);}
+    .result.ng{display:block; border-color: rgba(176,0,32,.35); background: rgba(176,0,32,.06);}
+    .result .rline{font-weight:900;}
+    .explain{margin-top:8px; color:#111;}
+    .muted{color:var(--muted); font-size:12px;}
+    .hr{height:1px; background:var(--line); margin:10px 0;}
+    .footerNote{color:var(--muted); font-size:12px; margin-top:10px;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>宅建：業法 上B 08（20問）</h1>
+
+    <div class="topbar">
+      <button id="btnGrade">採点</button>
+      <button id="btnSave" class="secondary">Save（保存）</button>
+      <button id="btnRestore" class="secondary">Restore（復元）</button>
+      <button id="btnCopy" class="secondary">Copy Answers（回答コピー）</button>
+      <button id="btnApply" class="secondary">Paste & Restore（回答貼って復元）</button>
+      <button id="btnReset" class="secondary">Reset（リセット）</button>
+      <div class="status" id="status">未採点</div>
+    </div>
+
+    <div class="block">
+      <div class="label">回答データ貼り付け欄（v1形式：例 v1|1=0,2=1,...）</div>
+      <textarea id="io" placeholder="ここに貼り付け（例：v1|1=0,2=2,3=1 ...）"></textarea>
+      <div class="footerNote">※保存は端末内（localStorage）です。他端末共有はしません。</div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <script>
+    /* ここだけ差し替え：questions 配列 */
+    const questions = [
+      {
+        id: 1,
+        label: "業法 上B 08",
+        exam: "宅地建物取引業者（宅建業者）は、重要事項説明（35条：重要な説明）をする前に、重要事項説明書（35条書面）を交付しなければならない。",
+        everyday: "大事な説明をするなら、その説明の紙（35条の紙）を先に渡してから説明しないとダメ、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（説明の後で交付すればよい）",
+          "C：誤り（口頭説明だけでよい）",
+          "D：誤り（買主の請求がある場合だけ交付すればよい）"
+        ],
+        answer: 0,
+        explain: "35条は『説明の前に書面交付→その内容を説明』が順番です。"
+      },
+      {
+        id: 2,
+        label: "業法 上B 08",
+        exam: "重要事項説明（35条）の説明は宅地建物取引士（宅建士）が行い、説明の際に宅建士証を提示しなければならない。",
+        everyday: "大事な説明は“資格持ち”がやって、身分証（宅建士証）も見せる必要がある、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（従業者証明書の提示で足りる）",
+          "C：誤り（説明は誰がしてもよい）",
+          "D：誤り（提示は求められた時だけでよい）"
+        ],
+        answer: 0,
+        explain: "35条説明は宅建士が行い、宅建士証の提示が必要です。"
+      },
+      {
+        id: 3,
+        label: "業法 上B 08",
+        exam: "37条書面（37条：契約内容を書いた書面）は、契約成立後、遅滞なく（すぐに）交付しなければならない。",
+        everyday: "契約が成立したら、契約の紙（37条の紙）を“あとで”ではなく早く渡せ、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（契約前に交付する）",
+          "C：誤り（交付義務はない）",
+          "D：誤り（交付は1か月以内でよい）"
+        ],
+        answer: 0,
+        explain: "37条は『契約成立後に遅滞なく交付』です。35条は前、37条は後。"
+      },
+      {
+        id: 4,
+        label: "業法 上B 08",
+        exam: "宅建業者が媒介契約（媒介：仲介の契約）を締結したときは、遅滞なく媒介契約書面（契約内容を書いた紙）を交付しなければならない。",
+        everyday: "仲介を頼まれたら、その約束を書いた紙をすぐ渡せ、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（口頭で足りる）",
+          "C：誤り（売買だけ義務、賃貸は義務なし）",
+          "D：誤り（請求があった場合のみ義務）"
+        ],
+        answer: 0,
+        explain: "媒介契約は、締結時に書面交付が必要です（遅滞なく）。"
+      },
+      {
+        id: 5,
+        label: "業法 上B 08",
+        exam: "一般媒介契約（一般：複数社に依頼できる契約）では、宅建業者に指定流通機構（レインズ：物件共有網）への登録義務がある。",
+        everyday: "一般でも、必ずレインズに載せろ、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（一般媒介はレインズ登録義務はない）",
+          "C：誤り（依頼者が登録する義務がある）",
+          "D：誤り（賃貸は義務だが売買は義務なし）"
+        ],
+        answer: 1,
+        explain: "レインズ登録義務があるのは専任・専属専任です。一般媒介は登録義務まではありません。"
+      },
+      {
+        id: 6,
+        label: "業法 上B 08",
+        exam: "専任媒介契約（専任：1社だけに任せる契約）では、宅建業者は依頼者に対し、業務処理状況の報告を2週間に1回以上しなければならない。",
+        everyday: "専任で任せたら、不動産屋は“2週間に1回は進み具合を報告しろ”という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（1週間に1回以上）",
+          "C：誤り（4週間に1回以上）",
+          "D：誤り（報告義務はない）"
+        ],
+        answer: 0,
+        explain: "専任は2週間に1回以上の報告。専属専任は1週間に1回以上です。"
+      },
+      {
+        id: 7,
+        label: "業法 上B 08",
+        exam: "専属専任媒介契約（専属専任：より縛りが強い1社契約）では、宅建業者は1週間に1回以上、依頼者に報告しなければならない。",
+        everyday: "専属専任は縛りが強いから、報告も“毎週”しろ、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（2週間に1回以上）",
+          "C：誤り（報告義務はない）",
+          "D：誤り（毎日報告が必要）"
+        ],
+        answer: 0,
+        explain: "専属専任は1週間に1回以上の報告義務です。"
+      },
+      {
+        id: 8,
+        label: "業法 上B 08",
+        exam: "専属専任媒介契約では、宅建業者は指定流通機構（レインズ）へ、媒介契約締結の日から5日以内に登録しなければならない。",
+        everyday: "専属専任なら、レインズ登録は“5日以内”。（属5）",
+        choices: [
+          "A：正しい",
+          "B：誤り（7日以内）",
+          "C：誤り（10日以内）",
+          "D：誤り（登録義務はない）"
+        ],
+        answer: 0,
+        explain: "属5（専属専任は5日以内）。ここは暗記ミス禁止ポイントです。"
+      },
+      {
+        id: 9,
+        label: "業法 上B 08",
+        exam: "専任媒介契約では、宅建業者は指定流通機構（レインズ）へ、媒介契約締結の日から7日以内に登録しなければならない。",
+        everyday: "専任なら、レインズ登録は“7日以内”。（7任）",
+        choices: [
+          "A：正しい",
+          "B：誤り（5日以内）",
+          "C：誤り（14日以内）",
+          "D：誤り（登録義務はない）"
+        ],
+        answer: 0,
+        explain: "7任（専任は7日以内）。専属専任（属5）とセットです。"
+      },
+      {
+        id: 10,
+        label: "業法 上B 08",
+        exam: "専属専任媒介契約では、依頼者は自己発見取引（自分で相手を見つけて直接取引）をすることができる。",
+        everyday: "専属専任でも“自分で相手見つけたから直で売るわ”ができる、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（専属専任では自己発見取引はできない）",
+          "C：誤り（専任だけ自己発見取引ができない）",
+          "D：誤り（一般媒介だけ自己発見取引ができない）"
+        ],
+        answer: 1,
+        explain: "専属専任は縛りが強く、自己発見取引ができません。専任は自己発見取引OKです。"
+      },
+      {
+        id: 11,
+        label: "業法 上B 08",
+        exam: "クーリング・オフ（無条件解除）は、宅建業者の事務所（事務所：店）で買主が申込みをした場合でも適用される。",
+        everyday: "店で申込してもクーリングオフできる、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（事務所等での申込みは原則として対象外）",
+          "C：誤り（常にクーリングオフ不可）",
+          "D：誤り（買主が宅建士なら常に不可）"
+        ],
+        answer: 1,
+        explain: "クーリングオフは『事務所等以外』での申込み等が中心。事務所等は原則対象外です。"
+      },
+      {
+        id: 12,
+        label: "業法 上B 08",
+        exam: "宅建業者が広告をする場合、取引態様（態様：売主か仲介か等）を明示しなければならない。",
+        everyday: "自分が売主なのか仲介なのか、ちゃんと書け、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（明示は任意）",
+          "C：誤り（契約後に明示すればよい）",
+          "D：誤り（売買だけ明示、賃貸は不要）"
+        ],
+        answer: 0,
+        explain: "広告では取引態様の明示が必要です（相手が誤解しないため）。"
+      },
+      {
+        id: 13,
+        label: "業法 上B 08",
+        exam: "宅建業者は、断定的判断（断定：必ずそうなると言い切る）を提供して勧誘してはならない。",
+        everyday: "『絶対上がります』みたいに決めつけて売るのはダメ、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（口頭なら可）",
+          "C：誤り（売買のみ禁止で賃貸は可）",
+          "D：誤り（説明書に書けば可）"
+        ],
+        answer: 0,
+        explain: "将来の価格・環境などを断言して勧誘するのは禁止です。"
+      },
+      {
+        id: 14,
+        label: "業法 上B 08",
+        exam: "宅建業者は、おとり広告（おとり：実際に取引できない物件で客を釣る）をしてはならない。",
+        everyday: "存在しない・売れない物件を出して客を呼ぶのは禁止、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（後で別物件を紹介すれば可）",
+          "C：誤り（ネット広告だけ禁止で紙は可）",
+          "D：誤り（売主なら可）"
+        ],
+        answer: 0,
+        explain: "取引できない物件で誘導する広告は不当で禁止です。"
+      },
+      {
+        id: 15,
+        label: "業法 上B 08",
+        exam: "宅建業者は、報酬（報酬：仲介手数料など）について、法令で定める上限を超えて受領してはならない。",
+        everyday: "手数料は取りすぎ禁止。上限が決まってる、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（合意があれば上限超えも可）",
+          "C：誤り（上限は行政指導で法的拘束がない）",
+          "D：誤り（上限は売買だけで賃貸は無制限）"
+        ],
+        answer: 0,
+        explain: "報酬は上限規制があり、超えて受け取れません。"
+      },
+      {
+        id: 16,
+        label: "業法 上B 08",
+        exam: "宅建業者は、従業者に従業者証明書（従業者：スタッフの身分証）を携帯させなければならない。",
+        everyday: "スタッフは『この会社の人です』の証明書を持ち歩け、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（携帯は任意）",
+          "C：誤り（宅建士だけが携帯すればよい）",
+          "D：誤り（名刺があれば不要）"
+        ],
+        answer: 0,
+        explain: "従業者証明書の携帯義務があります（宅建士証とは別物）。"
+      },
+      {
+        id: 17,
+        label: "業法 上B 08",
+        exam: "宅建業者は、事務所に標識（標識：看板）を掲げなければならない。",
+        everyday: "店に『免許業者です』の看板を出せ、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（掲示は任意）",
+          "C：誤り（本店だけ掲示すればよい）",
+          "D：誤り（広告になるので禁止）"
+        ],
+        answer: 0,
+        explain: "事務所には標識の掲示義務があります。"
+      },
+      {
+        id: 18,
+        label: "業法 上B 08",
+        exam: "宅建業者は、取引の関係書類について帳簿（帳簿：記録）を備え付け、一定期間保存しなければならない。",
+        everyday: "取引の記録は残して保管しとけ、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（保存義務はない）",
+          "C：誤り（口頭メモで足りる）",
+          "D：誤り（買主が保存する義務）"
+        ],
+        answer: 0,
+        explain: "帳簿の備付け・保存義務があります。『取引の記録は残す』が基本です。"
+      },
+      {
+        id: 19,
+        label: "業法 上B 08",
+        exam: "宅建業の免許は、複数の都道府県に事務所（事務所：店）を置く場合は国土交通大臣免許となる。",
+        everyday: "店が県をまたぐなら“国（大臣）免許”、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（県をまたいでも知事免許）",
+          "C：誤り（従業者数で決まる）",
+          "D：誤り（本店の所在地だけで決まる）"
+        ],
+        answer: 0,
+        explain: "免許区分は『事務所が複数都道府県にあるか』で決まります。"
+      },
+      {
+        id: 20,
+        label: "業法 上B 08",
+        exam: "宅建業者が保証協会（保証協会：弁済業務保証金を積む団体）に加入した場合、営業保証金（営業保証金：営業の担保金）の供託（供託：預ける）は不要となる。",
+        everyday: "協会に入ってるなら、営業保証金を別で積まなくていい、という話。",
+        choices: [
+          "A：正しい",
+          "B：誤り（協会加入でも営業保証金の供託が必要）",
+          "C：誤り（協会は存在しない制度）",
+          "D：誤り（協会加入は賃貸だけの制度）"
+        ],
+        answer: 0,
+        explain: "保証協会加入の場合は、弁済業務保証金分担金の枠組みとなり、営業保証金の供託とは制度が切り替わります。"
+      }
+    ];
+
+    const LS_KEY = "takken_ref_template_white_v1_answers_v1";
+
+    function el(tag, attrs={}, children=[]){
+      const e = document.createElement(tag);
+      Object.entries(attrs).forEach(([k,v])=>{
+        if(k==="class") e.className=v;
+        else if(k==="html") e.innerHTML=v;
+        else e.setAttribute(k,v);
+      });
+      children.forEach(c=> e.appendChild(c));
+      return e;
+    }
+
+    function render(){
+      const grid = document.getElementById("grid");
+      grid.innerHTML = "";
+      questions.forEach((q, idx)=>{
+        const card = el("div", {class:"qcard", "data-qid": String(q.id)});
+        const head = el("div", {class:"qhead"}, [
+          el("div", {class:"qno", html:`Q${idx+1}`}),
+          el("div", {class:"tag", html:`${q.label}`})
+        ]);
+
+        const b1 = el("div", {class:"block"});
+        b1.appendChild(el("div", {class:"label", html:"① 試験風問題文"}));
+        b1.appendChild(el("div", {html: escapeHtml(q.exam)}));
+
+        const b2 = el("div", {class:"block"});
+        b2.appendChild(el("div", {class:"label", html:"② 日常会話への言い換え"}));
+        b2.appendChild(el("div", {html: escapeHtml(q.everyday)}));
+
+        const b3 = el("div", {class:"block"});
+        b3.appendChild(el("div", {class:"label", html:"③ 選択肢（1問1択：A/B/C/D）"}));
+
+        const choices = el("div", {class:"choices"});
+        q.choices.forEach((txt, cidx)=>{
+          const id = `q${q.id}_${cidx}`;
+          const row = el("label", {class:"choice", for:id});
+          const input = el("input", {type:"radio", name:`q${q.id}`, id, value:String(cidx)});
+          const span = el("div", {html: escapeHtml(txt)});
+          row.appendChild(input);
+          row.appendChild(span);
+          choices.appendChild(row);
+        });
+        b3.appendChild(choices);
+
+        const res = el("div", {class:"result", id:`res_${q.id}`}, [
+          el("div", {class:"rline", id:`rline_${q.id}`}),
+          el("div", {class:"explain", id:`exp_${q.id}`})
+        ]);
+
+        card.appendChild(head);
+        card.appendChild(b1);
+        card.appendChild(b2);
+        card.appendChild(b3);
+        card.appendChild(el("div", {class:"hr"}));
+        card.appendChild(el("div", {class:"muted", html:"④ 回答 → ⑤ 採点 → ⑥ 解説（採点後のみ表示）"}));
+        card.appendChild(res);
+
+        grid.appendChild(card);
+      });
+    }
+
+    function escapeHtml(s){
+      return String(s)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;")
+        .replaceAll("\n","<br>");
+    }
+
+    function getAnswersArray(){
+      return questions.map(q=>{
+        const checked = document.querySelector(`input[name="q${q.id}"]:checked`);
+        return checked ? Number(checked.value) : -1;
+      });
+    }
+
+    function setAnswersArray(arr){
+      questions.forEach((q, i)=>{
+        const v = arr[i];
+        const radios = document.querySelectorAll(`input[name="q${q.id}"]`);
+        radios.forEach(r=> r.checked = false);
+        if(v>=0 && v<=3){
+          const t = document.querySelector(`input[name="q${q.id}"][value="${v}"]`);
+          if(t) t.checked = true;
+        }
+      });
+    }
+
+    function toV1String(arr){
+      const parts = arr.map((v,i)=> `${i+1}=${v}`);
+      return `v1|${parts.join(",")}`;
+    }
+
+    function fromV1String(s){
+      const t = String(s||"").trim();
+      if(!t.startsWith("v1|")) return null;
+      const body = t.slice(3);
+      const map = new Map();
+      body.split(",").forEach(p=>{
+        const [k,v] = p.split("=");
+        const ki = Number(k);
+        const vi = Number(v);
+        if(Number.isFinite(ki) && Number.isFinite(vi)) map.set(ki, vi);
+      });
+      const arr = [];
+      for(let i=1;i<=questions.length;i++){
+        arr.push(map.has(i) ? map.get(i) : -1);
+      }
+      return arr;
+    }
+
+    function clearResults(){
+      questions.forEach(q=>{
+        const box = document.getElementById(`res_${q.id}`);
+        box.className = "result";
+      });
+      document.getElementById("status").textContent = "未採点";
+    }
+
+    function grade(){
+      const ans = getAnswersArray();
+      let ok = 0, done = 0;
+      questions.forEach((q, idx)=>{
+        const picked = ans[idx];
+        const box = document.getElementById(`res_${q.id}`);
+        const rline = document.getElementById(`rline_${q.id}`);
+        const exp = document.getElementById(`exp_${q.id}`);
+
+        if(picked !== -1) done++;
+
+        if(picked === q.answer){
+          ok++;
+          box.className = "result ok";
+          rline.textContent = `正解：${q.choices[q.answer].split("：")[0]}（あなたの回答：${picked===-1?"未回答":q.choices[picked].split("：")[0]}）`;
+        }else{
+          box.className = "result ng";
+          const your = picked===-1 ? "未回答" : q.choices[picked].split("：")[0];
+          const cor = q.choices[q.answer].split("：")[0];
+          rline.textContent = `不正解：正解は ${cor}（あなたの回答：${your}）`;
+        }
+        // 解説は採点後のみ表示（ここで入れる）
+        exp.textContent = q.explain;
+      });
+
+      document.getElementById("status").textContent = `採点：${ok}/${questions.length}（回答済み ${done}/${questions.length}）`;
+      document.getElementById("io").value = toV1String(ans);
+    }
+
+    function save(){
+      const ans = getAnswersArray();
+      const s = toV1String(ans);
+      localStorage.setItem(LS_KEY, s);
+      document.getElementById("status").textContent = "保存しました（localStorage）";
+    }
+
+    function restore(){
+      const s = localStorage.getItem(LS_KEY);
+      if(!s){
+        document.getElementById("status").textContent = "復元データがありません";
+        return;
+      }
+      const arr = fromV1String(s);
+      if(!arr){
+        document.getElementById("status").textContent = "復元データ形式が不正です";
+        return;
+      }
+      setAnswersArray(arr);
+      document.getElementById("io").value = s;
+      clearResults();
+      document.getElementById("status").textContent = "復元しました";
+    }
+
+    function copyAnswers(){
+      const s = toV1String(getAnswersArray());
+      document.getElementById("io").value = s;
+      navigator.clipboard?.writeText(s).then(()=>{
+        document.getElementById("status").textContent = "コピーしました（クリップボード）";
+      }).catch(()=>{
+        document.getElementById("status").textContent = "コピーできませんでした（端末制限の可能性）";
+      });
+    }
+
+    function applyFromText(){
+      const t = document.getElementById("io").value;
+      const arr = fromV1String(t);
+      if(!arr){
+        document.getElementById("status").textContent = "貼り付け形式が不正です（v1|...）";
+        return;
+      }
+      setAnswersArray(arr);
+      clearResults();
+      document.getElementById("status").textContent = "貼り付け復元しました";
+    }
+
+    function resetAll(){
+      setAnswersArray(new Array(questions.length).fill(-1));
+      document.getElementById("io").value = "";
+      clearResults();
+      document.getElementById("status").textContent = "リセットしました";
+    }
+
+    render();
+
+    document.getElementById("btnGrade").addEventListener("click", grade);
+    document.getElementById("btnSave").addEventListener("click", save);
+    document.getElementById("btnRestore").addEventListener("click", restore);
+    document.getElementById("btnCopy").addEventListener("click", copyAnswers);
+    document.getElementById("btnApply").addEventListener("click", applyFromText);
+    document.getElementById("btnReset").addEventListener("click", resetAll);
+  </script>
+</body>
+</html>
