@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>宅建 公式過去問（令和7年）問11〜問20（B：日常訳あり／白背景）</title>
+  <style>
+    :root{
+      /* ===== 白背景（ライト）版 ===== */
+      --bg:#ffffff;
+      --card:#ffffff;
+      --card2:#f7f8fb;
+      --text:#0b0f14;
+      --muted:#556274;
+      --line:#d7dde6;
+      --ok:#16a34a;
+      --ng:#e11d48;
+      --btn:#f3f4f6;
+      --btn2:#e5e7eb;
+      --accent:#2563eb;
+      --warn:#b45309;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+      background:#ffffff; /* 背景は白固定 */
+      color:var(--text);
+    }
+    header{
+      padding:24px 16px 12px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    h1{
+      margin:0 0 6px;
+      font-size:20px;
+      letter-spacing:.02em;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:12px 16px 36px;
+    }
+    .panel{
+      background:rgba(255,255,255,.92);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      position:sticky;
+      top:0;
+      backdrop-filter: blur(10px);
+      z-index:10;
+    }
+    button{
+      border:1px solid var(--line);
+      background:var(--btn);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:13px;
+    }
+    button:hover{ border-color:#9fb3d9; }
+    button.primary{ background:#eef2ff; border-color:#2563eb; }
+    button.danger{ background:#fff1f2; border-color:#e11d48; color:#9f1239;}
+    button.ghost{ background:transparent; }
+    .stat{
+      margin-left:auto;
+      display:flex;
+      gap:12px;
+      align-items:baseline;
+      flex-wrap:wrap;
+    }
+    .stat b{font-size:14px}
+    .stat span{color:var(--muted); font-size:13px}
+    .note{
+      width:100%;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+      margin-top:4px;
+    }
+
+    .restore{
+      margin-top:12px;
+      background:rgba(255,255,255,.9);
+      border:1px dashed #9fb3d9;
+      border-radius:14px;
+      padding:12px;
+    }
+    .restore label{
+      display:block;
+      font-weight:700;
+      font-size:13px;
+      margin-bottom:6px;
+    }
+    textarea{
+      width:100%;
+      min-height:90px;
+      resize:vertical;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#ffffff;
+      color:var(--text);
+      padding:10px;
+      font-size:13px;
+      line-height:1.5;
+      outline:none;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    @media (max-width:980px){
+      .grid{ grid-template-columns:1fr; }
+      .stat{ margin-left:0; width:100%;}
+    }
+    .qcard{
+      background:rgba(255,255,255,.95);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+    }
+    .qhead{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+    .qid{
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+    .tag{
+      font-size:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background:rgba(0,0,0,.02);
+      white-space:nowrap;
+    }
+    .blocktitle{
+      margin:10px 0 6px;
+      font-size:12px;
+      color:var(--muted);
+      letter-spacing:.04em;
+    }
+    .box{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      background:rgba(0,0,0,.02);
+      line-height:1.65;
+      font-size:13px;
+    }
+    .choices{
+      margin-top:10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .choice{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      background:rgba(0,0,0,.01);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      cursor:pointer;
+    }
+    .choice:hover{ border-color:#9fb3d9; }
+    .choice input{ margin-top:3px; transform:scale(1.1); }
+    .choice .cbody{ flex:1; }
+    .choice .clabel{ font-weight:900; margin-right:8px; color:#1d4ed8; }
+    .result{
+      margin-top:10px;
+      border-radius:14px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.02);
+      display:none;
+    }
+    .result.ok{ border-color:rgba(22,163,74,.55); background:rgba(22,163,74,.08); }
+    .result.ng{ border-color:rgba(225,29,72,.55); background:rgba(225,29,72,.06); }
+    .result .line1{ font-weight:900; margin-bottom:6px; }
+    .result .small{ color:var(--muted); font-size:12px; line-height:1.6; }
+    .muted{ color:var(--muted); }
+    .pill{
+      display:inline-block;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      font-size:12px;
+      color:var(--muted);
+      margin-left:8px;
+      background:rgba(0,0,0,.01);
+    }
+    .warn{
+      color:var(--warn);
+      font-weight:800;
+    }
+    .foot{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>宅建 公式過去問（令和7年）問11〜問20（B：日常訳あり／白背景）</h1>
+    <p class="sub">
+      表示順は固定：問題文（試験風）→ 日常の言い換え → 選択肢。<br/>
+      1問1択。採点後にだけ「正解＋ピンポイント解説」を表示。<br/>
+      「回答をコピー」→ 文字列をメモ → 消えても「回答を貼って復元」で戻せます。端末内保存（localStorage）対応。
+    </p>
+  </header>
+
+  <div class="wrap">
+    <div class="panel">
+      <button class="primary" id="btnScore">採点する</button>
+      <button class="ghost" id="btnShowExp">解説を表示</button>
+      <button class="ghost" id="btnCopy">回答をコピー</button>
+      <button class="ghost" id="btnSave">回答を保存</button>
+      <button class="ghost" id="btnRestore">回答を貼って復元</button>
+      <button class="danger" id="btnReset">リセット</button>
+
+      <div class="stat">
+        <b id="statText">合計：10問中 0 正解（未採点）</b>
+        <span id="statSub">未回答：10 / 10</span>
+      </div>
+
+      <div class="note">
+        ※解説は「採点」後にだけ表示されます。<br/>
+        ※「保存」はこの端末のブラウザ内です（ログイン不要・他端末には移りません）。
+      </div>
+    </div>
+
+    <div class="restore">
+      <label>復元用（必要なときだけ）</label>
+      <textarea id="restoreBox" placeholder="ここに『回答をコピー』で出た文字列を貼ってから『回答を貼って復元』"></textarea>
+      <div class="foot">※この欄は普段は使いません（事故の保険）。</div>
+    </div>
+
+    <div class="grid" id="qGrid"></div>
+
+    <div class="foot">
+      注意：このセットは「公式過去問（令和7年）問11〜問20／B（日常訳あり）」です。<br/>
+      A運用にするときは、daily を空文字（""）にして同じ形のまま回します（UIはいじらない前提）。
+    </div>
+  </div>
+
+<script>
+(function(){
+  // ====== 問題データ ======
+  // ルール：Bは「日常訳あり（必須）」＋「専門用語は直後に（）で日本語言い換え」
+  const questions = [
+    {
+      id: 1,
+      tag: "r7・問11（借地借家法：借地）",
+      stem: "借地借家法に関する次の記述のうち、正しいものはどれか。",
+      daily: "借地（人の土地を借りて建物を建てる契約）の話。\n対抗（第三者に『自分の権利を言えること』）の要件や、定期借地（更新がない借地）の条件が論点。どれが正しい？",
+      choices: [
+        "Ａが、Ｂに所有権登記のある甲土地を建物所有目的で賃貸し、Ｂが甲土地上に自己の所有する建物を新築した後、当該建物につきＢの妻であるＣ名義で所有権保存登記をした。この場合において、その後、Ａが甲土地を第三者Ｄに売却し、Ｄが所有権移転登記をしたときは、Ｂは、ＡＢ間の賃借権設定登記がなくても、Ｄに対してＡＢ間の賃借権を対抗することができる。",
+        "Ａが、Ｂに所有権登記のある甲土地を建物所有目的で賃貸し、存続期間を50年と定めるとともに、契約の更新、存続期間の延長及び建物の買取請求をしない旨を定め、さらに、一定の期間、ＢはＡに対し地代の減額を請求することができない旨の特約を定めた場合、その特約は有効である。",
+        "Ａが、Ｂに所有権登記のある甲土地を建物所有目的で賃貸し、ＡＢ間の契約において、Ｂが甲土地上に専ら事業の用に供する建物を所有する目的で甲土地を使用することとし、存続期間を50年と定め、契約の更新及び存続期間の延長をしない旨を定めた場合、この借地権は事業用定期借地権となる。",
+        "Ａが、Ｂに所有権登記のある甲土地を建物所有目的で賃貸し、ＡＢ間の契約において、公正証書により居住の用に供する建物を所有する目的で甲土地を使用することとし、存続期間を20年と定め、更新しない旨を定めた場合、Ａは、期間満了を理由とする借地契約の終了をＢに対し主張することができる。"
+      ],
+      answer: 2,
+      exp: "判断軸：定期借地権（更新なしの借地）の要件（期間・方式・内容）と、対抗要件（第三者に言える条件）の整理。"
+    },
+    {
+      id: 2,
+      tag: "r7・問12（借地借家法：借家）",
+      stem: "借地借家法に関する次の記述のうち、正しいものはどれか。",
+      daily: "借家（建物を借りる契約）の話。\n期間の定めがない場合の解約申入（やめます通知）の効力発生時期、法定更新（自動更新）の効果、造作買取請求（付けた設備を買い取れの請求）などが論点。どれが正しい？",
+      choices: [
+        "期間の定めのない建物の賃貸借において、賃貸人Ａ又は賃借人Ｂから解約の申入れがされた場合、建物の賃貸借は、解約の申入れがされた日から6月を経過することによって終了する。",
+        "期間を2年と定めた建物の賃貸借において、賃貸人Ａが賃借人Ｂに対し期間の満了の1年前から6月前までの間に更新しない旨の通知をしなかったときは、従前の契約と同一の条件で期間を2年とする契約が更新されたものとみなされる。",
+        "建物の賃貸借において、賃借人が賃貸人の同意を得て取り付けた造作について、賃借人は、賃貸借の終了時に、賃貸人に時価で買い取るべきことを請求することができるが、その請求権を排除する旨の特約を定めることはできない。",
+        "賃貸人Ａと賃借人Ｂが、建物を賃貸する目的が当該建物を取り壊すことにある場合の建物の賃貸借について公正証書により契約を締結した場合において、賃借人Ｂが契約締結時に当該建物の賃貸借が更新されない旨を記載した書面の交付を受けていないときであっても、賃貸人Ａは、建物の取壊しをするために、期間の満了により賃貸借が終了することを賃借人Ｂに対し主張することができる。"
+      ],
+      answer: 2,
+      exp: "判断軸：法定更新（通知がないときの扱い）と、造作買取請求権（特約で排除できるか）の整理。"
+    },
+    {
+      id: 3,
+      tag: "r7・問13（区分所有法）",
+      stem: "区分所有法に関する次の記述のうち、誤っているものはどれか。",
+      daily: "マンション管理（区分所有法）の話。\n規約（マンション内ルール）の設定・変更、総会の招集、議事録（会議の記録）の署名押印（サイン）などが論点。どれが誤り？",
+      choices: [
+        "専有部分の床面積の過半数を有する区分所有者が他の区分所有者に対して規約の設定について書面による同意を求めたときは、他の区分所有者は、正当な理由がなければ、その同意を拒むことができない。",
+        "区分所有者の5分の1以上で議決権の5分の1以上を有する者は、管理者に対し、集会の招集を請求することができる。",
+        "集会の議事録には、議長及び集会に出席した区分所有者全員が署名押印しなければならない。",
+        "区分所有者が団体を構成し、区分所有者の団体の決議をもって管理者を選任した場合、選任された管理者は、区分所有者の団体の構成員及びその包括承継人に対してその効力を生じる。"
+      ],
+      answer: 2,
+      exp: "判断軸：議事録（会議の記録）の署名押印（サイン）が『全員必須』かどうか。"
+    },
+    {
+      id: 4,
+      tag: "r7・問14（不動産登記法）",
+      stem: "不動産登記法に関する次の記述のうち、誤っているものはどれか。",
+      daily: "登記（名義や権利の記録）の話。\n職権（登記官が勝手に）でできるか、共同申請（権利者＋義務者で一緒に申請）が原則か、オンラインで証明書請求できるか、などが論点。どれが誤り？",
+      choices: [
+        "一筆の土地の一部が別の地目となったときであっても、登記官は、職権で、その土地の分筆の登記をすることができない。",
+        "何人も、登記情報提供サービスを利用して手数料を納付することにより、登記記録に記録されている事項の全部又は一部を証明した書面の交付の請求を情報通信技術を利用する方法により行うことができる。",
+        "権利に関する登記の申請は、法令に別段の定めがある場合を除き、登記権利者及び登記義務者が共同してしなければならない。",
+        "建物の合併の登記について、表題部所有者又は所有権の登記名義人以外の者は、申請することができない。"
+      ],
+      answer: 0,
+      exp: "判断軸：職権（登記官が権限で）で分筆登記（1筆を分ける登記）できる場面があるかどうか。"
+    },
+    {
+      id: 5,
+      tag: "r7・問15（都市計画法）",
+      stem: "都市計画法に関する次の記述のうち、誤っているものはどれか。",
+      daily: "都市計画法の地域地区（用途地域など）の話。\n準都市計画区域（都市計画区域じゃないが一部ルールをかける区域）／用途地域（使い方の区分）／都市計画（決定の手続き）などが論点。どれが誤り？",
+      choices: [
+        "準都市計画区域は、都市計画区域外の区域のうち、相当数の住居その他の建築物の建築又はその敷地の造成が現に行われており、又は行われる見込みが確実であると認められる一定の区域で、そのまま土地利用を整序し、又は環境を保全することが困難となるおそれがあるものを指定することができる。",
+        "準都市計画区域内における用途地域は、都道府県知事が定める。",
+        "市町村は、都市計画区域内において、市街地開発事業等を行う場合において必要があるときは、都市計画に、市街地開発事業等として定められた事業の施行の障害となるおそれがある土地の区域を、市街地開発事業等予定区域として定めることができる。",
+        "市町村は、都市計画区域内において、区域の区分を定めることができる。"
+      ],
+      answer: 3,
+      exp: "判断軸：誰が決めるか（都道府県／市町村）と、区域区分（線引き）ができる前提の整理。"
+    },
+    {
+      id: 6,
+      tag: "r7・問16（都市計画法）",
+      stem: "都市計画法に関する次の記述のうち、正しいものはどれか。",
+      daily: "都市計画法の開発許可（大きい造成・区画の変更の許可）の話。\n開発行為（区画形質の変更）の許可権者、許可が要る・要らないの条件、変更許可などが論点。どれが正しい？",
+      choices: [
+        "市町村は、都市計画区域内で政令で定める一定規模以上の開発行為については、都道府県知事の許可を受けて実施しなければならない。",
+        "開発許可は、都道府県知事が行うのが原則であるが、政令で定めるところにより、市町村の長がこれを行うことができる。",
+        "開発許可を受けた者は、開発行為に関する工事の完了公告があるまでの間は、当該開発行為の土地について、建築物の建築又は特定工作物の建設をすることができない。",
+        "開発許可を受けた者が、開発行為の変更をしようとする場合であっても、軽微な変更であるときは、変更の許可を受ける必要はない。"
+      ],
+      answer: 3,
+      exp: "判断軸：変更許可（変更にも許可が必要）の例外として『軽微な変更』があるかどうか。"
+    },
+    {
+      id: 7,
+      tag: "r7・問17（建築基準法）",
+      stem: "建築基準法に関する次の記述のうち、誤っているものはどれか。",
+      daily: "建築基準法の道路（接道）・容積率（延べ面積の上限）などの話。\n幅員（道路の幅）や、接道義務（道路に2m以上接する）など、計算・要件が論点。どれが誤り？",
+      choices: [
+        "特定行政庁は、建築基準法の規定により道路とされたものの幅員が4m未満である場合において、その道路の中心線からの水平距離2mの線が当該道路の境界線とみなされることとなるときは、その道路の中心線の位置を指定することができる。",
+        "道路の両側に建築物が立ち並ぶ道路で、その幅員が4m未満であるものについては、当該道路の中心線からの水平距離2mの線が当該道路の境界線とみなされる。",
+        "敷地が幅員12m未満の道路に接する場合において、当該敷地の容積率の限度が、都市計画によって定められた数値を超えるときは、当該敷地の容積率の限度は、当該道路の幅員に応じた数値に限られる。",
+        "建築物の敷地が建築基準法の道路に2m以上接しない場合であっても、特定行政庁が、交通上、安全上、防火上及び衛生上支障がないと認めて許可したときは、当該敷地に建築物を建築することができる。"
+      ],
+      answer: 1,
+      exp: "判断軸：2項道路（みなし道路）の境界線みなし方（中心線から2m）が『常に中心線』かどうか。"
+    },
+    {
+      id: 8,
+      tag: "r7・問18（建築基準法）",
+      stem: "建築基準法に関する次の記述のうち、正しいものはどれか。",
+      daily: "建築基準法の用途変更（使い方の変更）や、確認申請（工事前のチェック）、検査（完了検査）などの話。\nどの手続きが要るか（要らないか）が論点。どれが正しい？",
+      choices: [
+        "劇場を、法第6条第1項第1号に掲げる建築物に該当する特殊建築物である病院に用途変更しようとする場合において、用途変更後に病院部分の床面積の合計が200㎡以下であるときは、建築主事の確認を受ける必要はない。",
+        "法第6条第1項第4号に掲げる建築物について、確認済証の交付を受けた後に計画を変更しようとする場合であっても、その変更が軽微な変更であるときは、建築主事の確認を受ける必要はない。",
+        "建築物を新築する場合であっても、建築基準法の規定による完了検査を受ける必要がない場合がある。",
+        "建築物を増築する場合において、増築後における建築物全体が法第6条第1項第3号に掲げる建築物となるときは、増築に係る部分の床面積の合計が10㎡以下である場合であっても、建築主事の確認を受けなければならない。"
+      ],
+      answer: 1,
+      exp: "判断軸：『軽微な変更』で確認（建築主事のチェック）が不要になるかどうかの扱い。"
+    },
+    {
+      id: 9,
+      tag: "r7・問19（盛土規制法）",
+      stem: "宅地造成及び特定盛土等規制法に関する次の記述のうち、正しいものはどれか。",
+      daily: "盛土規制法（宅地造成等工事規制区域など）の話。\n許可が必要な工事の範囲、許可の名義（誰が取るか）、行政の命令（停止命令など）の要件が論点。どれが正しい？",
+      choices: [
+        "宅地造成等工事規制区域内において宅地造成等に関する工事を行う場合、宅地造成等に関する工事の許可を受けなければならないが、宅地造成等に関する工事が行われる土地の所有者は、その工事の請負人が宅地造成等に関する工事の許可を受けているときは、自ら宅地造成等に関する工事の許可を受ける必要はない。",
+        "宅地造成等工事規制区域内において宅地造成等に関する工事を行うための宅地造成等に関する工事の許可を受けた者が、その許可に付された条件に違反したときは、当該許可を受けた者がその条件に違反したことについて故意又は過失がある場合でなければ、都道府県知事は、その工事の施工の停止を命ずることができない。",
+        "宅地造成等工事規制区域内において行われる宅地造成等に関する工事の許可は、工事主が受けなければならないが、工事主が同一区域内において行われる二以上の宅地造成等に関する工事については、まとめて一の許可申請として行うことができる。",
+        "宅地造成等工事規制区域内において宅地造成等に関する工事が施行される土地において工事を行う者は、その工事が都道府県知事の許可を受けなければならない工事である場合において、当該工事が完了したときは、都道府県知事の検査を受け、これに合格した後でなければ、その土地を使用してはならない。"
+      ],
+      answer: 1,
+      exp: "判断軸：許可を受ける名義（工事主）と、命令（停止命令など）の要件（故意・過失が必要か）の整理。"
+    },
+    {
+      id: 10,
+      tag: "r7・問20（土地区画整理法）",
+      stem: "土地区画整理法に関する次の記述のうち、誤っているものはどれか。",
+      daily: "土地区画整理（道路や区画を作り直す事業）の話。\n施行者（事業をする人）、換地計画（どの土地をどこに割り当てるか）、移転（引っ越し補償）などが論点。どれが誤り？",
+      choices: [
+        "個人施行者は、施行地区となるべき区域内の宅地について所有権を有し又は借地権を有するすべての者の同意を得れば、都道府県知事の認可を受けて、土地区画整理事業を施行することができる。",
+        "個人施行者は、土地区画整理事業の施行のため必要がある場合において、施行地区内の工作物の移転若しくは除却を命じ、又は自ら工作物の移転若しくは除却を行うことができる。",
+        "個人施行者は、換地計画において、当該土地について換地を定めない場合においては、当該土地について所有権を有する者に対して、清算金を交付しなければならない。",
+        "個人施行者は、仮換地の指定があった場合において、その指定を受けた者が従前の宅地について使用若しくは収益を停止されるときは、その停止により通常生ずべき損失を補償しなければならない。"
+      ],
+      answer: 3,
+      exp: "判断軸：換地を定めない（換地なし）場合の扱いが『清算金』かどうかの整理。"
+    }
+  ];
+
+  // ====== DOM生成 ======
+  const qGrid = document.getElementById("qGrid");
+
+  function esc(s){
+    return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  function makeCard(q){
+    const card = document.createElement("div");
+    card.className = "qcard";
+    card.id = `q${q.id}`;
+
+    const head = document.createElement("div");
+    head.className = "qhead";
+    head.innerHTML = `<div class="qid">Q${q.id}</div><div class="tag">${esc(q.tag)}</div>`;
+    card.appendChild(head);
+
+    const bt1 = document.createElement("div");
+    bt1.className = "blocktitle";
+    bt1.textContent = "【問題文（試験風）】";
+    card.appendChild(bt1);
+
+    const b1 = document.createElement("div");
+    b1.className = "box";
+    b1.textContent = q.stem;
+    card.appendChild(b1);
+
+    const bt2 = document.createElement("div");
+    bt2.className = "blocktitle";
+    bt2.textContent = "【日常の言い換え】";
+    card.appendChild(bt2);
+
+    const b2 = document.createElement("div");
+    b2.className = "box";
+    b2.textContent = q.daily;
+    card.appendChild(b2);
+
+    const bt3 = document.createElement("div");
+    bt3.className = "blocktitle";
+    bt3.textContent = "【選択肢】（1つ選ぶ）";
+    card.appendChild(bt3);
+
+    const choices = document.createElement("div");
+    choices.className = "choices";
+
+    q.choices.forEach((c, idx) => {
+      const label = String.fromCharCode(65 + idx); // A,B,C,D
+      const row = document.createElement("label");
+      row.className = "choice";
+      row.innerHTML = `
+        <input type="radio" name="q_${q.id}" value="${idx}" />
+        <div class="cbody">
+          <span class="clabel">${label}</span>
+          <span>${esc(c)}</span>
+        </div>
+      `;
+      choices.appendChild(row);
+    });
+    card.appendChild(choices);
+
+    const res = document.createElement("div");
+    res.className = "result";
+    res.id = `res_${q.id}`;
+    res.innerHTML = `
+      <div class="line1"></div>
+      <div class="small"></div>
+    `;
+    card.appendChild(res);
+
+    return card;
+  }
+
+  questions.forEach(q => qGrid.appendChild(makeCard(q)));
+
+  // ====== 状態管理 ======
+  const KEY_SAVE = "takkenset_te-tsuke_mix_v1";
+  let scored = false;
+
+  function getSelected(qid){
+    const el = document.querySelector(`input[name="q_${qid}"]:checked`);
+    return el ? Number(el.value) : null;
+  }
+  function setSelected(qid, val){
+    const el = document.querySelector(`input[name="q_${qid}"][value="${val}"]`);
+    if(el) el.checked = true;
+  }
+  function clearSelected(qid){
+    const els = document.querySelectorAll(`input[name="q_${qid}"]`);
+    els.forEach(e => e.checked = false);
+  }
+
+  function countUnanswered(){
+    let n = 0;
+    questions.forEach(q => { if(getSelected(q.id) === null) n++; });
+    return n;
+  }
+
+  function updateStats(){
+    const unanswered = countUnanswered();
+    document.getElementById("statSub").textContent = `未回答：${unanswered} / ${questions.length}`;
+    if(!scored){
+      document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+    }
+  }
+
+  function score(){
+    let correct = 0;
+    questions.forEach(q => {
+      const sel = getSelected(q.id);
+      const res = document.getElementById(`res_${q.id}`);
+      const line1 = res.querySelector(".line1");
+      const small = res.querySelector(".small");
+
+      res.style.display = "block";
+
+      if(sel === null){
+        res.classList.remove("ok","ng");
+        res.classList.add("ng");
+        line1.innerHTML = `未回答 <span class="pill">正解：${String.fromCharCode(65+q.answer)}</span>`;
+        small.textContent = "採点後に解説を表示できます。まずはどれか1つ選んでください。";
+        return;
+      }
+
+      if(sel === q.answer){
+        correct++;
+        res.classList.remove("ng");
+        res.classList.add("ok");
+        line1.innerHTML = `正解 <span class="pill">あなた：${String.fromCharCode(65+sel)}</span>`;
+      }else{
+        res.classList.remove("ok");
+        res.classList.add("ng");
+        line1.innerHTML = `不正解 <span class="pill">あなた：${String.fromCharCode(65+sel)}</span> <span class="pill">正解：${String.fromCharCode(65+q.answer)}</span>`;
+      }
+      small.textContent = "（解説は『解説を表示』で表示）";
+    });
+
+    scored = true;
+    document.getElementById("statText").textContent = `合計：${questions.length}問中 ${correct} 正解（採点済）`;
+    updateStats();
+    return correct;
+  }
+
+  function showExplanations(){
+    if(!scored){
+      alert("先に『採点する』を押してください。");
+      return;
+    }
+    questions.forEach(q => {
+      const res = document.getElementById(`res_${q.id}`);
+      const sel = getSelected(q.id);
+      const small = res.querySelector(".small");
+      const ansLabel = String.fromCharCode(65+q.answer);
+      const yourLabel = (sel===null) ? "未回答" : String.fromCharCode(65+sel);
+      small.innerHTML =
+        `<div class="muted">正解：<b>${ansLabel}</b> ／ あなた：<b>${esc(yourLabel)}</b></div>` +
+        `<div style="margin-top:6px;line-height:1.65">${esc(q.exp)}</div>`;
+    });
+  }
+
+  function buildAnswerString(){
+    const parts = questions.map(q => {
+      const sel = getSelected(q.id);
+      return `${q.id}=${sel===null ? "x" : sel}`;
+    });
+    return `v1|${parts.join(",")}`;
+  }
+
+  function applyAnswerString(str){
+    const s = (str||"").trim();
+    if(!s.startsWith("v1|")) throw new Error("形式が違います（v1|...）");
+    const body = s.slice(3);
+    const kvs = body.split(",").map(x => x.trim()).filter(Boolean);
+
+    questions.forEach(q => clearSelected(q.id));
+
+    kvs.forEach(kv => {
+      const [k,v] = kv.split("=");
+      const qid = Number(k);
+      if(!Number.isFinite(qid)) return;
+      const q = questions.find(x => x.id === qid);
+      if(!q) return;
+      if(v === "x") return;
+      const val = Number(v);
+      if(Number.isFinite(val) && val >= 0 && val < 4){
+        setSelected(qid, val);
+      }
+    });
+
+    scored = false;
+    questions.forEach(q => {
+      const res = document.getElementById(`res_${q.id}`);
+      res.style.display = "none";
+      res.classList.remove("ok","ng");
+      res.querySelector(".line1").textContent = "";
+      res.querySelector(".small").textContent = "";
+    });
+    updateStats();
+    document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+  }
+
+  function saveLocal(){
+    const payload = {
+      v: 1,
+      ts: Date.now(),
+      ans: buildAnswerString()
+    };
+    localStorage.setItem(KEY_SAVE, JSON.stringify(payload));
+  }
+
+  function loadLocal(){
+    const raw = localStorage.getItem(KEY_SAVE);
+    if(!raw) return null;
+    try{
+      const obj = JSON.parse(raw);
+      if(!obj || !obj.ans) return null;
+      return obj.ans;
+    }catch(e){
+      return null;
+    }
+  }
+
+  function resetAll(){
+    if(!confirm("全回答をリセットします。よろしいですか？")) return;
+    questions.forEach(q => clearSelected(q.id));
+    scored = false;
+    questions.forEach(q => {
+      const res = document.getElementById(`res_${q.id}`);
+      res.style.display = "none";
+      res.classList.remove("ok","ng");
+      res.querySelector(".line1").textContent = "";
+      res.querySelector(".small").textContent = "";
+    });
+    localStorage.removeItem(KEY_SAVE);
+    document.getElementById("restoreBox").value = "";
+    updateStats();
+    document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+  }
+
+  document.getElementById("btnScore").addEventListener("click", () => {
+    const unanswered = countUnanswered();
+    if(unanswered === questions.length){
+      if(!confirm("まだ1問も選ばれていません。採点すると未回答が多く出ますが続けますか？")) return;
+    }
+    score();
+  });
+
+  document.getElementById("btnShowExp").addEventListener("click", () => {
+    showExplanations();
+  });
+
+  document.getElementById("btnCopy").addEventListener("click", async () => {
+    const s = buildAnswerString();
+    try{
+      await navigator.clipboard.writeText(s);
+      alert("回答をコピーしました。メモに貼って保存できます。");
+    }catch(e){
+      document.getElementById("restoreBox").value = s;
+      alert("クリップボードにコピーできなかったため、復元欄に入れました。手動でコピーしてください。");
+    }
+  });
+
+  document.getElementById("btnSave").addEventListener("click", () => {
+    saveLocal();
+    alert("端末内に保存しました。");
+  });
+
+  document.getElementById("btnRestore").addEventListener("click", () => {
+    const s = document.getElementById("restoreBox").value;
+    try{
+      applyAnswerString(s);
+      alert("復元しました（未採点状態に戻しました）。");
+    }catch(e){
+      alert("復元に失敗しました： " + e.message);
+    }
+  });
+
+  document.getElementById("btnReset").addEventListener("click", () => {
+    resetAll();
+  });
+
+  document.addEventListener("change", (ev) => {
+    if(ev.target && ev.target.matches('input[type="radio"]')){
+      updateStats();
+      if(scored){
+        scored = false;
+        document.getElementById("statText").textContent = `合計：${questions.length}問中 0 正解（未採点）`;
+        questions.forEach(q => {
+          const res = document.getElementById(`res_${q.id}`);
+          if(res.style.display === "block"){
+            res.querySelector(".small").innerHTML = `<span class="warn">※回答が変更されたため、再度『採点する』が必要です。</span>`;
+          }
+        });
+      }
+    }
+  });
+
+  const saved = loadLocal();
+  if(saved){
+    document.getElementById("restoreBox").value = saved;
+  }
+
+  updateStats();
+})();
+</script>
+</body>
+</html>
