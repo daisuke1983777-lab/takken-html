@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>宅建 公式過去問（令和7年）問1〜問10（B：日常訳あり／白背景）</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --fg:#111;
+      --muted:#666;
+      --line:#e6e6e6;
+      --card:#fff;
+      --ok:#0a7a2f;
+      --ng:#b00020;
+      --btn:#111;
+      --btnfg:#fff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+      background:var(--bg);
+      color:var(--fg);
+      line-height:1.45;
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:16px}
+    .title{font-weight:800;font-size:20px;margin:0 0 6px}
+    .sub{color:var(--muted);font-size:13px;margin:0 0 10px}
+    .sticky{
+      position:sticky;top:0;z-index:10;
+      background:var(--bg);
+      border-bottom:1px solid var(--line);
+    }
+    .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 16px}
+    .btn{
+      appearance:none;border:0;border-radius:10px;
+      padding:10px 12px;
+      background:var(--btn);color:var(--btnfg);
+      font-weight:700;font-size:14px;
+      cursor:pointer;
+    }
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .stat{margin-left:auto;color:var(--muted);font-size:13px}
+    .note{color:var(--muted);font-size:13px;margin:10px 0 0}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+    .card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--card);
+      padding:14px;
+    }
+    .tag{font-weight:800;font-size:13px;margin:0 0 10px}
+    .blockTitle{font-weight:800;font-size:13px;margin:10px 0 6px}
+    .stem{white-space:pre-wrap}
+    .daily{white-space:pre-wrap;color:#222}
+    .choices{display:grid;gap:8px;margin-top:8px}
+    label.choice{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:10px;border:1px solid var(--line);border-radius:12px;
+      cursor:pointer;
+    }
+    input[type="radio"]{margin-top:3px}
+    .result{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fafafa;
+      display:none;
+    }
+    .result.ok{border-color:rgba(10,122,47,.35);background:rgba(10,122,47,.06)}
+    .result.ng{border-color:rgba(176,0,32,.28);background:rgba(176,0,32,.06)}
+    .result .line1{font-weight:800}
+    .result.ok .line1{color:var(--ok)}
+    .result.ng .line1{color:var(--ng)}
+    .exp{margin-top:6px;display:none;white-space:pre-wrap;color:#222}
+    .restoreBox{
+      margin-top:16px;border-top:1px solid var(--line);padding-top:14px;
+    }
+    textarea{
+      width:100%;min-height:72px;
+      border:1px solid var(--line);border-radius:12px;
+      padding:10px;font-size:14px;
+    }
+    .small{color:var(--muted);font-size:13px;margin-top:6px}
+    @media (max-width:640px){
+      .wrap{padding:12px}
+      .btn{width:auto}
+      .stat{margin-left:0}
+    }
+  </style>
+</head>
+<body>
+  <div class="sticky">
+    <div class="wrap">
+      <div class="bar">
+        <button class="btn" id="btnGrade">採点する</button>
+        <button class="btn" id="btnExplain">解説を表示</button>
+        <button class="btn" id="btnCopy">回答をコピー</button>
+        <button class="btn" id="btnSave">回答を保存</button>
+        <button class="btn" id="btnRestore">回答を貼って復元</button>
+        <button class="btn" id="btnReset">リセット</button>
+        <div class="stat" id="stat">合計：10問中 0 正解（未採点）　未回答：10 / 10</div>
+      </div>
+      <div class="note">※解説は「採点」後にだけ表示されます。<br>※「保存」はこの端末のブラウザ内です（ログイン不要・他端末には移りません）。</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h1 class="title">宅建 公式過去問（令和7年）問1〜問10（B：日常訳あり／白背景）</h1>
+    <p class="sub">表示順は固定：問題文（試験風）→ 日常の言い換え → 選択肢。<br>1問1択。採点後にだけ「正解＋ピンポイント解説」を表示。<br>「回答をコピー」→ 文字列をメモ → 消えても「回答を貼って復元」で戻せます。端末内保存（localStorage）対応。</p>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="restoreBox">
+      <div class="blockTitle">復元用（必要なときだけ）</div>
+      <textarea id="restoreText" placeholder="ここに、コピーした回答文字列を貼り付けてください"></textarea>
+      <div class="small">※この欄は普段は使いません（事故の保険）。</div>
+    </div>
+  </div>
+
+<script>
+  // ===== ここだけ差し替え（questions配列） =====
+  const questions = [
+    {
+      id: 1,
+      tag: "r7・問1（民法）",
+      stem:
+`所有者ＡがＢに甲土地を売却し、その後にＢがＣに甲土地を売却した場合に関する次の記述のうち、民法の規定及び判例によれば、正しいものはどれか。なお、この問において、Ｃは背信的悪意者ではないものとする。`,
+      daily:
+`A→B→Cと同じ土地が順番に売られています。
+ポイントは「Aが後で解除（なかったことにする）・取消し（取り消す）をしても、Cが第三者（当事者じゃない人）として守られるか」です。
+結論は、第三者対抗（第三者に言えるか）は登記（名義の登録）で決まる、という問題です。`,
+      choices: [
+        `1 甲土地の所有権登記がＡの名義のままであったとしても、Ｂは、Ｃに甲土地を売却した後は、Ａに対して自己に甲土地の所有権移転登記をするよう請求することはできない。`,
+        `2 Ｃは、甲土地の所有権移転登記を備えなければ、Ａに対して自己が所有者であることを主張することができない。`,
+        `3 ＡＢ間の売買契約が、ＢＣ間の売買契約締結よりも前にＡにより解除されていた場合、又は、ＢＣ間の売買契約締結後にＡにより解除された場合のいずれの場合であっても、Ｃは、甲土地の所有権移転登記を備えれば、Ａに対して自己の所有権を主張することができる。`,
+        `4 ＡＢ間の売買契約が、ＢＣ間の売買契約よりも前にＢの強迫を理由として取り消されていた場合、又は、ＢＣ間の売買契約締結後にＢの強迫を理由として取り消された場合のいずれの場合であっても、Ｃは、Ｂの強迫につき善意でかつ過失がなければ、Ａに対して自己の所有権を主張することができる。`
+      ],
+      answer: 2,
+      exp:
+`正解は3。
+この問は「第三者に対抗（言い返せるか）」の基本で、結論は「登記を備えたCは、Aに自分の権利を主張できる」という整理です。`
+    },
+    {
+      id: 2,
+      tag: "r7・問2（民法）",
+      stem:
+`個人であるＡが、①賃貸人Ｂと賃借人Ｃとの間の期間を2年とする居住用甲建物の賃貸借契約に基づくＣの一切の債務の連帯保証契約をＢと締結した場合、②売主Ｄと買主Ｅとの間の居住用乙建物の売買契約に基づく代金支払債務の保証契約をＤと締結した場合、に関する次の記述のうち、民法の規定によれば、正しいものはどれか。`,
+      daily:
+`Aが「保証人（借りた人の代わりに払う人）」になります。
+①は家賃などの保証（連帯保証＝本人と同じレベルで請求される保証）
+②は売買代金の保証（普通の保証）
+ポイントは、保証の形式（書面が必要か）や、極度額（上限金額）の必要性などです。`,
+      choices: [
+        `1 ①の連帯保証契約は書面によってしなければ無効であるのに対し、②の保証契約は書面によらず、口頭で契約を締結しても有効である。`,
+        `2 ①のＢがＡに対して連帯保証債務の履行を請求してきた場合には、ＡはまずＣに請求するように主張できるのに対し、②のＤがＡに対して保証債務の履行を請求してきた場合には、ＡはまずＥに請求するように主張することはできない。`,
+        `3 ①の連帯保証契約は保証の限度額である極度額を定めなければ無効であるのに対し、②の保証契約は極度額を定める必要はない。`,
+        `4 ①も②もＡが主たる債務者Ｃ及びＥの委託を受けて保証した場合において、Ａが債権者Ｂ及びＤに対して主たる債務の履行状況に関する情報を提供するよう請求したときは、①のＢは、これらの情報を、遅滞なく、Ａに提供しなければならないのに対し、②のＤは、守秘義務を理由にこれらの情報の提供を拒否することができる。`
+      ],
+      answer: 2,
+      exp:
+`正解は3。
+家賃など「個人が保証人になる一定の保証」は、極度額（上限）を決めないと無効になる、という整理がポイントです。`
+    },
+    {
+      id: 3,
+      tag: "r7・問3（民法）",
+      stem:
+`意思表示に関する次の記述のうち、民法の規定によれば、誤っているものはいくつあるか。
+ア 表意者が真意でないことを知ってした意思表示は無効であるが、相手方がその意思表示が表意者の真意ではないことを知らなければ、知らないことにつき過失があっても、当該意思表示は有効となる。
+イ 相手方と通じてした虚偽の意思表示は無効であり、第三者がその虚偽表示につき善意であっても、過失があれば、当該第三者にその無効を対抗することができる。
+ウ 意思表示は、当該意思表示に対応する意思を欠く錯誤に基づくものであって、その錯誤が法律行為の目的及び取引上の社会通念に照らして重要なものであるときは、無効であるが、その錯誤につき善意でかつ過失がない第三者には、その無効を対抗することができない。
+エ 詐欺による意思表示は取り消すことができるが、その詐欺につき善意でかつ過失がない取消し前の第三者には、その取消しを対抗することができない。`,
+      daily:
+`「意思表示（言った・書いた意思）」がズレていたり、だまされたりしたときの話です。
+各文が「民法のルール通りか」を見て、間違いが何個あるかを答えます。`,
+      choices: [
+        `1 一つ`,
+        `2 二つ`,
+        `3 三つ`,
+        `4 四つ`
+      ],
+      answer: 2,
+      exp:
+`正解は3（＝誤っているものは三つ）。`
+    },
+    {
+      id: 4,
+      tag: "r7・問4（民法）",
+      stem:
+`ＡがＢから弁済の期限の定めなく金1,000万円を借り入れる金銭消費貸借契約（以下この問において「本件契約」という。）における次の記述のうち、民法の規定及び判例によれば、正しいものはどれか。`,
+      daily:
+`AがBから1000万円を借りています（期限の定めなし＝いつ返すか決めてない）。
+担保（返せないときのための約束）や、留置権（返さずに持っておける権利）、相殺（お互いの借金をぶつけて消す）などの可否を聞いています。`,
+      choices: [
+        `1 Ａは、本件契約におけるＡの債務を担保するために、Ａが所有する不動産に対し、Ｂのために、抵当権を設定することはできるが、質権を設定することはできない。`,
+        `2 Ａが本件契約に基づく債務の弁済を怠ったときに、ＢがＡから預かっている動産を占有している場合には、Ｂは当該動産の返還時期が到来しても弁済を受けるまでその動産に関して留置権を行使することができる。`,
+        `3 Ａが本件契約に基づく債務の弁済を怠った場合には、ＢはＡの総財産に対して先取特権を行使することができる。`,
+        `4 Ａが、期限が到来しているＢの悪意による不法行為に基づく金1,000万円の損害賠償請求債権をＢに対して有している場合、Ａは本件契約に基づく返還債務をＢに対する当該損害賠償請求債権で相殺することができる。`
+      ],
+      answer: 3,
+      exp:
+`正解は4。
+相殺（お互いの債権・債務をぶつけて消す）ができるか、という結論を問う問題です。`
+    },
+    {
+      id: 5,
+      tag: "r7・問5（民法）",
+      stem:
+`Ａの子がＢであり、Ｂの子がＣであり、ＣがＡの直系卑属である場合において、民法の規定によれば、次のアからエまでの記述のうち、Ａが死亡した際にＣがＢを代襲してＡの相続人となるときを全て掲げたものはどれか。
+ア Ａが死亡する以前にＢが死亡したとき
+イ Ｂが相続に関するＡの遺言書を偽造して相続権を失ったとき
+ウ ＢがＡによって相続人から廃除されて相続権を失ったとき
+エ Ｂが相続放棄をしたとき`,
+      daily:
+`代襲相続（本来の相続人がダメになったときに、その子が代わる）です。
+Bが相続人になれない理由が何かで、Cが代わるかどうかが変わります。`,
+      choices: [
+        `1 ア、エ`,
+        `2 イ、ウ`,
+        `3 イ、エ`,
+        `4 ア、イ、ウ`
+      ],
+      answer: 3,
+      exp:
+`正解は4（＝ア・イ・ウ）。代襲相続になるパターンの整理がポイントです。`
+    },
+    {
+      id: 6,
+      tag: "r7・問6（民法）",
+      stem:
+`Ａが所有している甲土地についての物権変動に関する次の記述のうち、民法の規定及び判例によれば、誤っているものはどれか。`,
+      daily:
+`土地の名義が動く場面（売買など）で、
+「登記（名義の登録）」「無権限（勝手に売った）」「あとから権利を取った」などのパターンが出ます。
+どれが間違いかを選びます。`,
+      choices: [
+        `1 Ｂが甲土地をＡに無断でＣに売却し、その後、ＢがＡから甲土地を購入した場合、Ｃは、Ｂから甲土地を購入した時点に（ci...）`,
+        `2 （PDF記載の選択肢2）`,
+        `3 （PDF記載の選択肢3）`,
+        `4 （PDF記載の選択肢4）`
+      ],
+      answer: 0,
+      exp:
+`正解は1。
+※この問題はPDF本文の選択肢2〜4の抽出がこちらの環境で途中欠けになったため、現時点では「読めた範囲（1）」のみ転記しています。`
+    },
+    {
+      id: 7,
+      tag: "r7・問7（民法）",
+      stem:
+`Ａは自己の所有する甲建物を事務所としてＢに賃貸し（以下この問において「本件契約」という。）、その後、本件契約の期間中に甲建物の屋根に雨漏りが生じたため、ＣがＢから甲建物の屋根の修理を請け負い、Ｃによる修理が完了した。この場合における次の記述のうち、民法の規定によれば、正しいものはどれか。`,
+      daily:
+`借りてる建物が雨漏り→修理。
+修理代を誰がどこまで負担するか、誰が誰に請求できるか、という整理です。`,
+      choices: [
+        `1 ＢがＣに修理代金を支払わないまま無資力となり、賃料を滞納して本件契約が解除さ...`,
+        `2 （PDF記載の選択肢2）`,
+        `3 （PDF記載の選択肢3）`,
+        `4 （PDF記載の選択肢4）`
+      ],
+      answer: 0,
+      exp:
+`正解は1。
+※この問題もPDF本文の選択肢2〜4の抽出が途中欠けになったため、現時点では「読めた範囲（1）」のみ転記しています。`
+    },
+    {
+      id: 8,
+      tag: "r7・問8（民法）",
+      stem:
+`Ａ、Ｂ及びＣがそれぞれ3分の1の持分の割合で甲土地を共有している場合に関する次の記述のうち、民法の規定及び判例によれば、誤っているものはどれか。なお、甲土地を分割しない旨の契約は存在しないものとする。`,
+      daily:
+`共有（みんなで持ってる土地）です。
+勝手に登記されたとき、共有者ができること（請求できること）などを聞いています。`,
+      choices: [
+        `1 甲土地につき無権利のＤが、自己への虚偽の所有権移転登記をした場合には、Ａは、...`,
+        `2 （PDF記載の選択肢2）`,
+        `3 （PDF記載の選択肢3）`,
+        `4 （PDF記載の選択肢4）`
+      ],
+      answer: 1,
+      exp:
+`正解は2。
+※この問題もPDF本文の選択肢2〜4の抽出が途中欠けになったため、現時点では「答え（2）」のみ確定で入れています。`
+    },
+    {
+      id: 9,
+      tag: "r7・問9（民法）",
+      stem:
+`連帯債務者の一人について生じた次の事由のうち、民法の規定によれば、他の連帯債務者に対して効力が生じないものとして正しいものはどれか。なお、この問において、連帯債務者の一人について生じた事由が他の連帯債務者に対して効力が生じる旨の別段の意思表示はないものとする。`,
+      daily:
+`連帯債務（みんなでまとめて払う借金）です。
+「一人に起きた出来事」が、他の人にも効くのか、効かないのか、を聞いています。`,
+      choices: [
+        `1 債権者がした連帯債務者の一人に対する履行の請求`,
+        `2 （PDF記載の選択肢2）`,
+        `3 （PDF記載の選択肢3）`,
+        `4 （PDF記載の選択肢4）`
+      ],
+      answer: 0,
+      exp:
+`正解は1。`
+    },
+    {
+      id: 10,
+      tag: "r7・問10（民法）",
+      stem:
+`Ａを売主、Ｂを買主とする甲土地の売買契約による甲土地の引渡し後に、目的物の品質に関して契約の内容に適合しない土壌汚染が見つかった場合の売主の担保の責任（以下この問において「契約不適合責任」という。）に基づく損害賠償に関する次の記述のうち、民法の規定によれば、正しいものはどれか。`,
+      daily:
+`土地を買ったあとで土壌汚染が発覚。
+これは契約不適合責任（契約で約束した品質じゃない責任）で、損害賠償を請求できる条件・期限などがポイントです。`,
+      choices: [
+        `1 Ｂは、甲土地の引渡しの日から11年が経過した時点で甲土地の土壌汚染を発見し、...`,
+        `2 （PDF記載の選択肢2）`,
+        `3 （PDF記載の選択肢3）`,
+        `4 （PDF記載の選択肢4）`
+      ],
+      answer: 2,
+      exp:
+`正解は3。`
+    }
+  ];
+  // ===== ここまで =====
+
+  // ※保存キー（テンプレ固定の想定）
+  const KEY_SAVE = "takken_kosiki_r7_q1-10_B";
+
+  const grid = document.getElementById("grid");
+  const stat = document.getElementById("stat");
+  const btnGrade = document.getElementById("btnGrade");
+  const btnExplain = document.getElementById("btnExplain");
+  const btnCopy = document.getElementById("btnCopy");
+  const btnSave = document.getElementById("btnSave");
+  const btnRestore = document.getElementById("btnRestore");
+  const btnReset = document.getElementById("btnReset");
+  const restoreText = document.getElementById("restoreText");
+
+  let graded = false;
+  let explainShown = false;
+
+  function esc(s){
+    return (s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function render(){
+    grid.innerHTML = "";
+    questions.forEach(q=>{
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="tag">${esc(q.tag)}</div>
+
+        <div class="blockTitle">問題文（試験風）</div>
+        <div class="stem">${esc(q.stem)}</div>
+
+        <div class="blockTitle">日常の言い換え</div>
+        <div class="daily">${esc(q.daily)}</div>
+
+        <div class="blockTitle">選択肢</div>
+        <div class="choices" id="choices-${q.id}"></div>
+
+        <div class="result" id="result-${q.id}">
+          <div class="line1" id="line1-${q.id}"></div>
+          <div class="line2" id="line2-${q.id}"></div>
+          <div class="exp" id="exp-${q.id}">${esc(q.exp)}</div>
+        </div>
+      `;
+      grid.appendChild(card);
+
+      const choices = card.querySelector(`#choices-${q.id}`);
+      q.choices.forEach((txt, idx)=>{
+        const id = `q${q.id}_${idx}`;
+        const lab = document.createElement("label");
+        lab.className = "choice";
+        lab.innerHTML = `
+          <input type="radio" name="q${q.id}" id="${id}" value="${idx}">
+          <div>${esc(txt)}</div>
+        `;
+        choices.appendChild(lab);
+      });
+    });
+    updateStat();
+    updateExplainButton();
+  }
+
+  function getSelectedIndex(qid){
+    const checked = document.querySelector(`input[name="q${qid}"]:checked`);
+    return checked ? Number(checked.value) : null;
+  }
+
+  function updateStat(){
+    const total = questions.length;
+    let unanswered = 0;
+    let correct = 0;
+
+    questions.forEach(q=>{
+      const sel = getSelectedIndex(q.id);
+      if(sel === null) unanswered++;
+      if(graded && sel !== null && sel === q.answer) correct++;
+    });
+
+    stat.textContent = `合計：${total}問中 ${correct} 正解（${graded ? "採点済み" : "未採点"}）　未回答：${unanswered} / ${total}`;
+  }
+
+  function grade(){
+    graded = true;
+    questions.forEach(q=>{
+      const sel = getSelectedIndex(q.id);
+      const box = document.getElementById(`result-${q.id}`);
+      const line1 = document.getElementById(`line1-${q.id}`);
+      const line2 = document.getElementById(`line2-${q.id}`);
+      const exp = document.getElementById(`exp-${q.id}`);
+
+      box.style.display = "block";
+      exp.style.display = "none";
+
+      if(sel === null){
+        box.classList.remove("ok","ng");
+        box.classList.add("ng");
+        line1.textContent = "未回答";
+        line2.textContent = `正解：${q.choices[q.answer] ?? ""}`;
+        return;
+      }
+
+      if(sel === q.answer){
+        box.classList.remove("ok","ng");
+        box.classList.add("ok");
+        line1.textContent = "正解";
+        line2.textContent = `あなたの回答：${q.choices[sel] ?? ""}`;
+      }else{
+        box.classList.remove("ok","ng");
+        box.classList.add("ng");
+        line1.textContent = "不正解";
+        line2.textContent = `あなたの回答：${q.choices[sel] ?? ""}\n正解：${q.choices[q.answer] ?? ""}`;
+      }
+    });
+    explainShown = false;
+    updateStat();
+    updateExplainButton();
+  }
+
+  function toggleExplain(){
+    if(!graded) return;
+    explainShown = !explainShown;
+    questions.forEach(q=>{
+      const exp = document.getElementById(`exp-${q.id}`);
+      if(exp) exp.style.display = explainShown ? "block" : "none";
+    });
+    btnExplain.textContent = explainShown ? "解説を非表示" : "解説を表示";
+  }
+
+  function updateExplainButton(){
+    btnExplain.disabled = !graded;
+    btnExplain.textContent = "解説を表示";
+  }
+
+  function buildAnswerString(){
+    // v1|1=選択肢番号(1-4), 未回答=0
+    const pairs = questions.map(q=>{
+      const sel = getSelectedIndex(q.id);
+      const v = (sel === null) ? 0 : (sel + 1);
+      return `${q.id}=${v}`;
+    });
+    return `v1|${pairs.join(",")}`;
+  }
+
+  function applyAnswerString(s){
+    const m = (s || "").trim().match(/^v1\|(.+)$/);
+    if(!m) return false;
+    const body = m[1];
+    const map = new Map();
+    body.split(",").forEach(kv=>{
+      const mm = kv.split("=");
+      if(mm.length !== 2) return;
+      const k = Number(mm[0]);
+      const v = Number(mm[1]);
+      if(Number.isFinite(k) && Number.isFinite(v)) map.set(k, v);
+    });
+
+    questions.forEach(q=>{
+      const v = map.get(q.id);
+      const name = `q${q.id}`;
+      const all = document.querySelectorAll(`input[name="${name}"]`);
+      all.forEach(r=>r.checked=false);
+      if(v && v >= 1 && v <= 4){
+        const target = document.querySelector(`input[name="${name}"][value="${v-1}"]`);
+        if(target) target.checked = true;
+      }
+    });
+
+    graded = false;
+    explainShown = false;
+    // 結果表示を消す
+    questions.forEach(q=>{
+      const box = document.getElementById(`result-${q.id}`);
+      if(box) box.style.display = "none";
+    });
+    updateStat();
+    updateExplainButton();
+    return true;
+  }
+
+  function save(){
+    const s = buildAnswerString();
+    localStorage.setItem(KEY_SAVE, s);
+  }
+
+  function restoreFromStorage(){
+    const s = localStorage.getItem(KEY_SAVE) || "";
+    if(s) applyAnswerString(s);
+  }
+
+  function copyToClipboard(text){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      return navigator.clipboard.writeText(text);
+    }
+    // fallback
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    return Promise.resolve();
+  }
+
+  function resetAll(){
+    // selections
+    questions.forEach(q=>{
+      const all = document.querySelectorAll(`input[name="q${q.id}"]`);
+      all.forEach(r=>r.checked=false);
+      const box = document.getElementById(`result-${q.id}`);
+      if(box) box.style.display = "none";
+    });
+    graded = false;
+    explainShown = false;
+    restoreText.value = "";
+    localStorage.removeItem(KEY_SAVE);
+    updateStat();
+    updateExplainButton();
+  }
+
+  btnGrade.addEventListener("click", grade);
+  btnExplain.addEventListener("click", toggleExplain);
+  btnCopy.addEventListener("click", ()=>{
+    const s = buildAnswerString();
+    copyToClipboard(s);
+    restoreText.value = s;
+  });
+  btnSave.addEventListener("click", save);
+  btnRestore.addEventListener("click", ()=>{
+    const ok = applyAnswerString(restoreText.value);
+    if(!ok){
+      // 何もしない（静かに）
+    }
+  });
+  btnReset.addEventListener("click", resetAll);
+
+  render();
+  // 起動時：保存があれば復元
+  restoreFromStorage();
+</script>
+</body>
+</html>
